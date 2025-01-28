@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/theme/app_theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/home.dart';
+import 'package:todo_app/simple_bloc_observer.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'todo_bloc/todo_bloc.dart';
 
-void main() {
-  runApp(const MainScreen());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
+  Bloc.observer = SimpleBlocObserver();
+  runApp(const MainApp());
 }
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TODO application',
-      theme: darkTheme,
-      home: Scaffold(
-        backgroundColor: Color(0xFF2E335A),
+      title: 'Todo App',
+      theme: ThemeData(
+        colorScheme: const ColorScheme.light(
+          surface: Colors.white,
+          onSurface: Colors.black,
+          primary: Colors.yellowAccent,
+          onPrimary: Colors.black,
+          secondary: Colors.lightGreen,
+          onSecondary: Colors.white,
+        ),
+      ),
+      home: BlocProvider<TodoBloc>(
+        create: (context) => TodoBloc()..add(TodoStarted()),
+        child: const HomeScreen(),
       ),
     );
   }
