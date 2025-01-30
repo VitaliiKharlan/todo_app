@@ -25,67 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         children: [
-          CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                pinned: true,
-                snap: true,
-                floating: true,
-                title: Center(
-                  child: Text(
-                    'TODO',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                elevation: 0,
-                surfaceTintColor: Colors.transparent,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(80),
-                  child: AddNewTaskButton(theme: theme),
-                ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 100,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 8,
-                    separatorBuilder: (context, index) => SizedBox(width: 20),
-                    padding: EdgeInsets.only(left: 20),
-                    itemBuilder: (context, index) => BaseContainer(
-                      width: 192,
-                      padding: EdgeInsets.all(16),
-                      margin: EdgeInsets.zero,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Monday',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.green),
-                          ),
-                          SizedBox(height: 10),
-                          Text('27/01/2025'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverList.builder(
-                itemBuilder: (context, index) => const TaskListCard(),
-              ),
-            ],
-          ),
+          TaskScreen(theme: theme),
           Scaffold(),
           Scaffold(),
         ],
@@ -123,6 +63,80 @@ class _HomeScreenState extends State<HomeScreen> {
         curve: Curves.bounceInOut,
       );
     });
+  }
+}
+
+class TaskScreen extends StatelessWidget {
+  const TaskScreen({
+    super.key,
+    required this.theme,
+  });
+
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          snap: true,
+          floating: true,
+          title: Center(
+            child: Text(
+              'TODO',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(80),
+            child: AddNewTaskButton(theme: theme),
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 100,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: 8,
+              separatorBuilder: (context, index) => SizedBox(width: 20),
+              padding: EdgeInsets.only(left: 20),
+              itemBuilder: (context, index) => BaseContainer(
+                width: 192,
+                padding: EdgeInsets.all(16),
+                margin: EdgeInsets.zero,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Monday',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.green),
+                    ),
+                    SizedBox(height: 10),
+                    Text('27/01/2025'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        SliverList.builder(
+          itemBuilder: (context, index) => const TaskListCard(),
+        ),
+      ],
+    );
   }
 }
 
