@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/home_screen.dart';
+import 'package:todo_app/router/router.dart';
 
 void main() async {
-  runApp(const MainApp());
+  runApp(const TodoApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class TodoApp extends StatefulWidget {
+  const TodoApp({super.key});
+
+  @override
+  State<TodoApp> createState() => _TodoAppState();
+}
+
+class _TodoAppState extends State<TodoApp> {
+  final _router = AppRouter();
 
   @override
   Widget build(BuildContext context) {
     final primaryColor = Color(0xFFF82B10);
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Todo App',
       theme: ThemeData(
@@ -27,7 +34,7 @@ class MainApp extends StatelessWidget {
           onSecondary: Colors.white,
         ),
       ),
-      home: const HomeScreen(),
+      routerConfig: _router.config(),
     );
   }
 }
