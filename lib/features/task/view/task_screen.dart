@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 
 @RoutePage()
 class TaskScreen extends StatelessWidget {
@@ -69,7 +71,7 @@ class TaskScreen extends StatelessWidget {
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
         SliverList.builder(
-          itemBuilder: (context, index) => const TaskListCard(),
+          itemBuilder: (context, index) => TaskListCard(),
         ),
       ],
     );
@@ -108,14 +110,56 @@ class BaseContainer extends StatelessWidget {
 }
 
 class TaskListCard extends StatelessWidget {
-  const TaskListCard({
+  TaskListCard({
     super.key,
   });
+
+  final _addNewTaskBloc = AddNewTaskBloc();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BaseContainer(
+    return BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
+      bloc: _addNewTaskBloc,
+      builder: (context, state) {
+        if (state is AddNewTaskLoaded) {
+          return BaseContainer(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.home,
+                  color: Colors.deepPurple,
+                ),
+                Text('Sliver list  Sliver list  Sliver list',
+                    style: theme.textTheme.bodyLarge),
+                Column(
+                  children: [
+                    Text(
+                      '29 Jan',
+                      style:
+                          TextStyle(fontSize: 10, fontWeight: FontWeight.w800),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      '23:24',
+                      style: TextStyle(fontSize: 8),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    BaseContainer(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 8),
       child: Row(

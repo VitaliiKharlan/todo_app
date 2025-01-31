@@ -48,8 +48,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   void _openPage(int index, TabsRouter tabsRouter) {
-
-      tabsRouter.setActiveIndex(index);
-
+    tabsRouter.setActiveIndex(index);
   }
 }
