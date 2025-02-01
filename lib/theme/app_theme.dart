@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 final darkTheme = ThemeData(
-  primarySwatch: Colors.yellow,
+  primarySwatch: Colors.purple,
   scaffoldBackgroundColor: const Color.fromARGB(248, 48, 48, 48),
   appBarTheme: const AppBarTheme(
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.white),
     backgroundColor: Color.fromARGB(48, 48, 48, 48),
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: Colors.red,
       fontWeight: FontWeight.w700,
       fontSize: 20,
     ),
@@ -20,7 +20,7 @@ final darkTheme = ThemeData(
       fontSize: 20,
     ),
     labelSmall: TextStyle(
-      color: Colors.white.withOpacity(0.8),
+      color: Colors.white.withAlpha(80),
       fontWeight: FontWeight.w700,
       fontSize: 14,
     ),

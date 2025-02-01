@@ -75,32 +75,36 @@ class TaskScreen extends StatelessWidget {
             ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
-          SliverList.builder(
-            itemCount: 5,
-            itemBuilder: (context, index) => TaskListCard(),
-          ),
-          //
-          // BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
-          //   builder: (context, state) {
-          //     if (state is AddNewTaskLoadedState) {
-          //       return SliverList.builder(
-          //         itemCount: state.tasks.length,
-          //         itemBuilder: (context, index) => TaskListCard(),
-          //       );
-          //     }
-          //     if (state is AddNewTaskLoadingFailureState) {
-          //       return Center(
-          //         child: Text(
-          //           state.exception?.toString() ?? 'MAGA',
-          //           style: AppTextStyle.defaultSemiBoldLargeTitle,
-          //         ),
-          //       );
-          //     }
-          //     return Center(
-          //       child: CircularProgressIndicator(),
-          //     );
-          //   },
+          // SliverList.builder(
+          //   itemCount: 5,
+          //   itemBuilder: (context, index) => TaskListCard(),
           // ),
+          //
+          BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
+            builder: (context, state) {
+              if (state is AddNewTaskLoadedState) {
+                return SliverList.builder(
+                  itemCount: state.tasks.length,
+                  itemBuilder: (context, index) => TaskListCard(),
+                );
+              }
+              if (state is AddNewTaskLoadingFailureState) {
+                return SliverFillRemaining(
+                  child: Center(
+                    child: Text(
+                      state.exception?.toString() ?? 'MAGA',
+                      style: AppTextStyle.defaultSemiBoldLargeTitle,
+                    ),
+                  ),
+                );
+              }
+              return SliverFillRemaining(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+          ),
           //
         ],
       ),
