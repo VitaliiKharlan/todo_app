@@ -2,17 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 
+import '../../task/view/task_screen.dart';
+
+// final addNewTaskBloc = AddNewTaskBloc();
+
 @RoutePage()
-class Task {
-  Task({
-    required this.title,
-    this.dateTime,
-  });
-
-  String title;
-  DateTime? dateTime;
-}
-
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
 
@@ -26,16 +20,10 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   DateTime? _selectedDateTime;
 
   void _addTodo() {
-    if (_controller.text.isNotEmpty) {
-      setState(() {
-        _todoList.add(Task(
-          title: _controller.text,
-          dateTime: _selectedDateTime,
-        ));
-        _controller.clear();
-        _selectedDateTime = null;
-      });
-    }
+    // _openPage(index, tabsRouter),
+    addNewTaskBloc.add(LoadedAddNewTaskEvent());
+
+    // addNewTaskBloc.add(LoadedAddNewTaskState());
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -136,4 +124,14 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       ),
     );
   }
+}
+
+class Task {
+  Task({
+    required this.title,
+    this.dateTime,
+  });
+
+  String title;
+  DateTime? dateTime;
 }

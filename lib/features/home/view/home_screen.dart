@@ -5,6 +5,7 @@ import '../../../router/router.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
+
   const HomeScreen({super.key});
 
   @override

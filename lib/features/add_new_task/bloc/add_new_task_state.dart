@@ -3,12 +3,22 @@ part of 'add_new_task_bloc.dart';
 // @immutable
 sealed class AddNewTaskState {}
 
-final class AddNewTaskInitial extends AddNewTaskState {}
+final class AddNewTaskInitialState extends AddNewTaskState {}
 
-class AddNewTaskLoading extends AddNewTaskState {}
+class AddNewTaskLoadingState extends AddNewTaskState {}
 
-class AddNewTaskLoaded extends AddNewTaskState {
-  AddNewTaskLoaded(this.task);
+class AddNewTaskLoadedState extends AddNewTaskState {
+  AddNewTaskLoadedState(
+    this.tasks,
+  );
 
-  final String task;
+  final List<Task> tasks;
+}
+
+class AddNewTaskLoadingFailureState extends AddNewTaskState {
+  AddNewTaskLoadingFailureState(
+    this.exception,
+  );
+
+  final Object? exception;
 }
