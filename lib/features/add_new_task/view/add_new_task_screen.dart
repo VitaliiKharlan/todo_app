@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 
 import '../../task/view/task_screen.dart';
 
-// final addNewTaskBloc = AddNewTaskBloc();
+
 
 @RoutePage()
 class AddNewTaskScreen extends StatefulWidget {
@@ -19,12 +20,12 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   final TextEditingController _controller = TextEditingController();
   DateTime? _selectedDateTime;
 
-  void _addTodo() {
-    // _openPage(index, tabsRouter),
-    addNewTaskBloc.add(LoadedAddNewTaskEvent());
-
-    // addNewTaskBloc.add(LoadedAddNewTaskState());
-  }
+  // void _addTodo() {
+  //   // _openPage(index, tabsRouter),
+  //   addNewTaskBloc.add(LoadedAddNewTaskEvent());
+  //
+  //   // addNewTaskBloc.add(LoadedAddNewTaskState());
+  // }
 
   Future<void> _selectDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -54,6 +55,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<AddNewTaskBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -88,11 +90,10 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                 ),
                 SizedBox(height: 40),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end ,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     ElevatedButton(
-                      onPressed: _addTodo,
+                      onPressed: bloc.state.toString,
                       child: Text('Add'),
                     ),
                   ],

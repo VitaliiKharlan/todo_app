@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/features/settings/bloc/settings_bloc.dart';
 import 'package:todo_app/features/task/bloc/task_bloc.dart';
 
 import '../../../router/router.dart';
@@ -31,6 +32,7 @@ class HomeScreen extends StatelessWidget {
           MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => TaskBloc()),
+            BlocProvider(create: (context) => SettingsBloc()),
             BlocProvider(create: (context) => AddNewTaskBloc()),
           ],
           child:

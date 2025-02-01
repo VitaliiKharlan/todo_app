@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 import 'package:todo_app/theme/app_text_style.dart';
 
-final addNewTaskBloc = AddNewTaskBloc();
+
 
 @RoutePage()
 class TaskScreen extends StatelessWidget {
@@ -17,97 +17,95 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AddNewTaskBloc(),
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            snap: true,
-            floating: true,
-            title: Center(
-              child: Text(
-                'TODO',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            elevation: 0,
-            surfaceTintColor: Colors.transparent,
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(80),
-              child: AddNewTaskButton(theme: theme),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: 24)),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 100,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: 8,
-                separatorBuilder: (context, index) => SizedBox(width: 20),
-                padding: EdgeInsets.only(left: 20),
-                itemBuilder: (context, index) => BaseContainer(
-                  width: 192,
-                  padding: EdgeInsets.all(16),
-                  margin: EdgeInsets.zero,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Monday',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.green),
-                      ),
-                      SizedBox(height: 10),
-                      Text('27/01/2025'),
-                    ],
-                  ),
-                ),
+
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverAppBar(
+          pinned: true,
+          snap: true,
+          floating: true,
+          title: Center(
+            child: Text(
+              'TODO',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 24)),
-          // SliverList.builder(
-          //   itemCount: 5,
-          //   itemBuilder: (context, index) => TaskListCard(),
-          // ),
-          //
-          BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
-            builder: (context, state) {
-              if (state is AddNewTaskLoadedState) {
-                return SliverList.builder(
-                  itemCount: state.tasks.length,
-                  itemBuilder: (context, index) => TaskListCard(),
-                );
-              }
-              if (state is AddNewTaskLoadingFailureState) {
-                return SliverFillRemaining(
-                  child: Center(
-                    child: Text(
-                      state.exception?.toString() ?? 'MAGA',
-                      style: AppTextStyle.defaultSemiBoldLargeTitle,
+          elevation: 0,
+          surfaceTintColor: Colors.transparent,
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(80),
+            child: AddNewTaskButton(theme: theme),
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 100,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: 8,
+              separatorBuilder: (context, index) => SizedBox(width: 20),
+              padding: EdgeInsets.only(left: 20),
+              itemBuilder: (context, index) => BaseContainer(
+                width: 192,
+                padding: EdgeInsets.all(16),
+                margin: EdgeInsets.zero,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Monday',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.green),
                     ),
-                  ),
-                );
-              }
+                    SizedBox(height: 10),
+                    Text('27/01/2025'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+        // SliverList.builder(
+        //   itemCount: 5,
+        //   itemBuilder: (context, index) => TaskListCard(),
+        // ),
+        //
+        BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
+          builder: (context, state) {
+            if (state is AddNewTaskLoadedState) {
+              return SliverList.builder(
+                itemCount: state.tasks.length,
+                itemBuilder: (context, index) => TaskListCard(),
+              );
+            }
+            if (state is AddNewTaskLoadingFailureState) {
               return SliverFillRemaining(
                 child: Center(
-                  child: CircularProgressIndicator(),
+                  child: Text(
+                    state.exception?.toString() ?? 'MAGA',
+                    style: AppTextStyle.defaultSemiBoldLargeTitle,
+                  ),
                 ),
               );
-            },
-          ),
-          //
-        ],
-      ),
+            }
+            return SliverFillRemaining(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
+        ),
+        //
+      ],
     );
   }
 }
