@@ -11,11 +11,12 @@ import '../../add_new_task/bloc/add_new_task_bloc.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  // final bloc = BlocProvider.of<AddNewTaskBloc>(context);
+
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
 
     return AutoTabsRouter(
       routes: [

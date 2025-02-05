@@ -3,10 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 
-import '../../task/view/task_screen.dart';
-
-
-
 @RoutePage()
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
@@ -20,12 +16,10 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   final TextEditingController _controller = TextEditingController();
   DateTime? _selectedDateTime;
 
-  // void _addTodo() {
-  //   // _openPage(index, tabsRouter),
-  //   addNewTaskBloc.add(LoadedAddNewTaskEvent());
-  //
-  //   // addNewTaskBloc.add(LoadedAddNewTaskState());
-  // }
+  // passing a variable to a function
+  void addTodo(AddNewTaskBloc bloc) {
+    bloc.add(AddNewTaskLoadedEvent());
+  }
 
   Future<void> _selectDateTime(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -93,7 +87,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: bloc.state.toString,
+                      onPressed: () => addTodo(bloc),
                       child: Text('Add'),
                     ),
                   ],
@@ -102,21 +96,25 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _todoList.length,
-              itemBuilder: (context, index) {
-                final todo = _todoList[index];
-                return ListTile(
-                  title: Text(todo.title),
-                  subtitle: todo.dateTime != null
-                      ? Text(
-                          '${todo.dateTime!.toLocal()}'.split(' ')[0] +
-                              ' ' +
-                              '${todo.dateTime!.toLocal()}'
-                                  .split(' ')[1]
-                                  .substring(0, 5),
-                        )
-                      : null,
+            child: BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
+              builder: (context, state) {
+                return ListView.builder(
+                  itemCount: _todoList.length,
+                  itemBuilder: (context, index) {
+                    final todo = _todoList[index];
+                    return ListTile(
+                      title: Text(todo.title),
+                      subtitle: todo.dateTime != null
+                          ? Text(
+                        '${todo.dateTime!.toLocal()}'.split(' ')[0] +
+                            ' ' +
+                            '${todo.dateTime!.toLocal()}'
+                                .split(' ')[1]
+                                .substring(0, 5),
+                      )
+                          : null,
+                    );
+                  },
                 );
               },
             ),
@@ -135,4 +133,9 @@ class Task {
 
   String title;
   DateTime? dateTime;
+
+// final String title;
+// final DateTime? dateTime;
+
+// List<Task> tasks;
 }

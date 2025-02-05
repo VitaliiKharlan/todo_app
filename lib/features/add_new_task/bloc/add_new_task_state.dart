@@ -13,6 +13,7 @@ class AddNewTaskLoadedState extends AddNewTaskState {
   );
 
   final List<Task> tasks;
+  // var data = Data(tasks []);
 }
 
 class AddNewTaskLoadingFailureState extends AddNewTaskState {

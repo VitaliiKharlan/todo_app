@@ -8,20 +8,28 @@ part 'add_new_task_state.dart';
 
 class AddNewTaskBloc extends Bloc<AddNewTaskEvent, AddNewTaskState> {
   AddNewTaskBloc() : super(AddNewTaskInitialState()) {
-    on<LoadAddNewTaskEvent>((event, emit) {
-      // TODO: implement event handler
-      print('Loading Add New Task');
+    on<AddNewTaskLoadEvent>((event, emit) {
+      print('Add New Task Load Event');
+      emit(AddNewTaskLoadedState([]));
     });
-    on<LoadedAddNewTaskEvent>((event, emit) async {
-      // TODO: implement event handler
-      try {
-        print('Loaded Add New Task');
 
-        emit(AddNewTaskLoadedState([]));
+    on<AddNewTaskLoadedEvent>((event, emit) async {
+      try {
+        print('Add New Task Loaded Event');
+
+        final task = Task(title: 'task1');
+        List<Task> tasks = [];
+        if (state is AddNewTaskLoadedState) {
+          final currentTasks = (state as AddNewTaskLoadedState).tasks;
+          tasks.addAll(currentTasks);
+          print('Add New Task Loaded State');
+        }
+        tasks.add(task);
+
+        emit(AddNewTaskLoadedState(tasks));
       } catch (e) {
         emit(AddNewTaskLoadingFailureState(e));
       }
     });
   }
-// final List[Task] tasks;
 }

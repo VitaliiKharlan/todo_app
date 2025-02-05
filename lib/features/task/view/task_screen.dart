@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
-import 'package:todo_app/theme/app_text_style.dart';
+import 'package:todo_app/features/task/widgets/widgets.dart';
+import 'package:todo_app/ui/theme/app_text_style.dart';
 
-
+import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
 class TaskScreen extends StatelessWidget {
@@ -17,7 +18,6 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
@@ -74,19 +74,18 @@ class TaskScreen extends StatelessWidget {
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
-        // SliverList.builder(
-        //   itemCount: 5,
-        //   itemBuilder: (context, index) => TaskListCard(),
-        // ),
-        //
         BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
           builder: (context, state) {
             if (state is AddNewTaskLoadedState) {
+              print(state.tasks);
               return SliverList.builder(
                 itemCount: state.tasks.length,
-                itemBuilder: (context, index) => TaskListCard(),
+                itemBuilder: (context, index) => TaskListCard(
+                    // task: tasks[index];
+                    ),
               );
             }
+
             if (state is AddNewTaskLoadingFailureState) {
               return SliverFillRemaining(
                 child: Center(
@@ -104,119 +103,7 @@ class TaskScreen extends StatelessWidget {
             );
           },
         ),
-        //
       ],
-    );
-  }
-}
-
-class BaseContainer extends StatelessWidget {
-  const BaseContainer({
-    super.key,
-    required this.width,
-    this.margin,
-    required this.child,
-    this.padding = const EdgeInsets.only(left: 12),
-  });
-
-  final double width;
-  final EdgeInsets? margin;
-  final EdgeInsets padding;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      width: width,
-      margin: margin,
-      padding: padding,
-      // padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: theme.hintColor.withAlpha(10),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: child,
-    );
-  }
-}
-
-class TaskListCard extends StatelessWidget {
-  const TaskListCard({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
-        builder: (context, state) {
-      if (state is AddNewTaskLoadedState) {
-        return BaseContainer(
-          width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Icon(
-                Icons.home,
-                color: Colors.deepPurple,
-              ),
-              Text(state.tasks.toString(),
-                  style: theme.textTheme.bodyLarge),
-              Column(
-                children: [
-                  Text(
-                    '29 Jan',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '23:24',
-                    style: TextStyle(fontSize: 8),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      }
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    });
-  }
-}
-
-class AddNewTaskButton extends StatelessWidget {
-  const AddNewTaskButton({
-    super.key,
-    required this.theme,
-  });
-
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return BaseContainer(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 8),
-      child: Row(
-        children: [
-          Icon(Icons.add),
-          SizedBox(height: 12),
-          Text(
-            'Add new task',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: theme.hintColor.withAlpha(40),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

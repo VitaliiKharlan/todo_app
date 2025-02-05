@@ -3,6 +3,6 @@ part of 'home_bloc.dart';
 // @immutable
 sealed class HomeEvent {}
 
-class LoadHomeEvent extends HomeEvent {}
+class HomeLoadEvent extends HomeEvent {}
 
-class LoadedHomeEvent extends HomeEvent {}
+class HomeLoadedEvent extends HomeEvent {}

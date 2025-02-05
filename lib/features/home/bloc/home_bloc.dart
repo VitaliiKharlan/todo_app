@@ -7,11 +7,11 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitialState()) {
-    on<LoadHomeEvent>((event, emit) {
+    on<HomeLoadEvent>((event, emit) {
       // TODO: implement event handler
       print('Loading Add New Task');
     });
-    on<LoadedHomeEvent>((event, emit) async {
+    on<HomeLoadedEvent>((event, emit) async {
       // TODO: implement event handler
       try {
         print('Loaded Add New Task');
