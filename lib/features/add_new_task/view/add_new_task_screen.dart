@@ -96,25 +96,21 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
             ),
           ),
           Expanded(
-            child: BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
-              builder: (context, state) {
-                return ListView.builder(
-                  itemCount: _todoList.length,
-                  itemBuilder: (context, index) {
-                    final todo = _todoList[index];
-                    return ListTile(
-                      title: Text(todo.title),
-                      subtitle: todo.dateTime != null
-                          ? Text(
-                        '${todo.dateTime!.toLocal()}'.split(' ')[0] +
-                            ' ' +
-                            '${todo.dateTime!.toLocal()}'
-                                .split(' ')[1]
-                                .substring(0, 5),
-                      )
-                          : null,
-                    );
-                  },
+            child: ListView.builder(
+              itemCount: _todoList.length,
+              itemBuilder: (context, index) {
+                final todo = _todoList[index];
+                return ListTile(
+                  title: Text(todo.title),
+                  subtitle: todo.dateTime != null
+                      ? Text(
+                          '${todo.dateTime!.toLocal()}'.split(' ')[0] +
+                              ' ' +
+                              '${todo.dateTime!.toLocal()}'
+                                  .split(' ')[1]
+                                  .substring(0, 5),
+                        )
+                      : null,
                 );
               },
             ),
@@ -134,8 +130,8 @@ class Task {
   String title;
   DateTime? dateTime;
 
-// final String title;
-// final DateTime? dateTime;
-
-// List<Task> tasks;
+// @override
+// String toString() {
+//   return '';
+// }
 }

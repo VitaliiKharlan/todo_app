@@ -76,16 +76,22 @@ class TaskScreen extends StatelessWidget {
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
         BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
           builder: (context, state) {
-            if (state is AddNewTaskLoadedState) {
-              print(state.tasks);
+
+            if (state is AddNewTaskLoadingState) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is AddNewTaskLoadedState) {
+              final tasks = state.tasks;
+              if (tasks.isEmpty) {
+                return Center(child: Text('No tasks available'));
+              }
+              // print(state.tasks);
               return SliverList.builder(
                 itemCount: state.tasks.length,
                 itemBuilder: (context, index) => TaskListCard(
-                    // task: tasks[index];
-                    ),
+                  task: tasks[index],
+                ),
               );
             }
-
             if (state is AddNewTaskLoadingFailureState) {
               return SliverFillRemaining(
                 child: Center(
