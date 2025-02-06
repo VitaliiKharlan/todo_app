@@ -16,9 +16,13 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   final TextEditingController _controller = TextEditingController();
   DateTime? _selectedDateTime;
 
+
   // passing a variable to a function
   void addTodo(AddNewTaskBloc bloc) {
-    bloc.add(AddNewTaskLoadedEvent());
+    final taskTitle = _controller.text.trim();
+    if (taskTitle.isNotEmpty) {
+      bloc.add(AddNewTaskLoadedEvent(taskTitle));
+    }
   }
 
   Future<void> _selectDateTime(BuildContext context) async {
@@ -102,15 +106,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                 final todo = _todoList[index];
                 return ListTile(
                   title: Text(todo.title),
-                  subtitle: todo.dateTime != null
-                      ? Text(
-                          '${todo.dateTime!.toLocal()}'.split(' ')[0] +
-                              ' ' +
-                              '${todo.dateTime!.toLocal()}'
-                                  .split(' ')[1]
-                                  .substring(0, 5),
-                        )
-                      : null,
+                  subtitle: Text(todo.title),
                 );
               },
             ),
@@ -124,14 +120,14 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 class Task {
   Task({
     required this.title,
-    this.dateTime,
+    this.createdAt,
   });
 
   String title;
-  DateTime? dateTime;
+  DateTime? createdAt;
 
-// @override
-// String toString() {
-//   return '';
-// }
+  // @override
+  // String toString() {
+  //   return 'Task(title: $title)';
+  // }
 }

@@ -17,7 +17,8 @@ class AddNewTaskBloc extends Bloc<AddNewTaskEvent, AddNewTaskState> {
       try {
         print('Add New Task Loaded Event');
 
-        final task = Task(title: 'task1');
+        // final task = Task(title: 'Toadstool');
+        final task = Task(title: event.title);
         List<Task> tasks = [];
         if (state is AddNewTaskLoadedState) {
           final currentTasks = (state as AddNewTaskLoadedState).tasks;
@@ -28,7 +29,8 @@ class AddNewTaskBloc extends Bloc<AddNewTaskEvent, AddNewTaskState> {
 
         emit(AddNewTaskLoadedState(tasks));
       } catch (e) {
-        emit(AddNewTaskLoadingFailureState(e));
+        print('Error adding task: $e');
+        emit(AddNewTaskLoadingFailureState(e.toString()));
       }
     });
   }

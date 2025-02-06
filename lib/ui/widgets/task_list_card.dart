@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 
@@ -21,23 +21,28 @@ class TaskListCard extends StatelessWidget {
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             Icons.home,
             color: Colors.deepPurple,
           ),
-          Text(task.title,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.green,
-              )),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(task.title,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.purple,
+                ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           Column(
             children: [
               Text(
-                '29 Jan',
-                style: TextStyle(
+                DateFormat('dd.MM.yyyy').format(task.createdAt ?? DateTime.now()),
+                style: theme.textTheme.bodySmall?.copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   color: Colors.purple,
@@ -45,8 +50,8 @@ class TaskListCard extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                '23:24',
-                style: TextStyle(
+                DateFormat('HH:mm').format(task.createdAt ?? DateTime.now()),
+                style: theme.textTheme.bodySmall?.copyWith(
                   fontSize: 10,
                   fontWeight: FontWeight.w800,
                   color: Colors.purple,

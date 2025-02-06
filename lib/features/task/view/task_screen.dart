@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 import 'package:todo_app/features/task/widgets/widgets.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
 
 import 'package:todo_app/ui/ui.dart';
 
@@ -76,7 +75,6 @@ class TaskScreen extends StatelessWidget {
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
         BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
           builder: (context, state) {
-
             if (state is AddNewTaskLoadingState) {
               return Center(child: CircularProgressIndicator());
             } else if (state is AddNewTaskLoadedState) {
@@ -84,7 +82,7 @@ class TaskScreen extends StatelessWidget {
               if (tasks.isEmpty) {
                 return Center(child: Text('No tasks available'));
               }
-              // print(state.tasks);
+              print(state.tasks);
               return SliverList.builder(
                 itemCount: state.tasks.length,
                 itemBuilder: (context, index) => TaskListCard(
