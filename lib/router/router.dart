@@ -11,27 +11,33 @@ part 'router.gr.dart';
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [
-        /// routes go here
-        AutoRoute(
-          page: HomeRoute.page,
-          path: '/',
-          children: [
-            AutoRoute(
-              page: TaskRoute.page,
-              path: 'task',
-            ),
-            AutoRoute(
-              page: SettingsRoute.page,
-              path: 'settings',
-            ),
-            AutoRoute(
-              page: AddNewTaskRoute.page,
-              path: 'add_new_task',
-            ),
-          ],
-        ),
-      ];
+  List<AutoRoute> get routes {
+    return [
+      /// routes go here
+      AutoRoute(
+        page: HomeRoute.page,
+        path: '/',
+        children: [
+          AutoRoute(
+            page: TaskRoute.page,
+            path: 'task',
+          ),
+          AutoRoute(
+            page: SettingsRoute.page,
+            path: 'settings',
+          ),
+          AutoRoute(
+            page: AddNewTaskRoute.page,
+            path: 'add_new_task',
+          ),
+        ],
+      ),
+      // AutoRoute(
+      //   page: TaskRoute.page,
+      //   path: '/',
+      // ),
+    ];
+  }
 }
 
 // @AutoRouterConfig(replaceInRouteName: 'Screen|Page,Route')

@@ -7,6 +7,7 @@ class AddNewTaskLoadEvent extends AddNewTaskEvent {}
 
 class AddNewTaskLoadedEvent extends AddNewTaskEvent {
   final String title;
+  // final DateTime? deadline;
 
   AddNewTaskLoadedEvent(this.title);
 }

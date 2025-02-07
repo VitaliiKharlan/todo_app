@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
+import 'package:todo_app/features/task/task.dart';
 
 @RoutePage()
 class AddNewTaskScreen extends StatefulWidget {
@@ -14,40 +15,49 @@ class AddNewTaskScreen extends StatefulWidget {
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   final List<Task> _todoList = [];
   final TextEditingController _controller = TextEditingController();
-  DateTime? _selectedDateTime;
-
+  DateTime? selectedDeadline;
 
   // passing a variable to a function
-  void addTodo(AddNewTaskBloc bloc) {
+  void _addTodo(AddNewTaskBloc bloc) {
     final taskTitle = _controller.text.trim();
     if (taskTitle.isNotEmpty) {
       bloc.add(AddNewTaskLoadedEvent(taskTitle));
+      //
+      // Navigator.of(context)
+      //
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => TaskScreen(theme: theme)));
+      //
+      //
+      // auto_route
+      //
+      // context.router.push(TaskScreenRoute());
+      //
     }
   }
 
-  Future<void> _selectDateTime(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2020),
       lastDate: DateTime(2101),
     );
-    if (pickedDate != null) {
-      final TimeOfDay? pickedTime = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-      );
-      if (pickedTime != null) {
-        setState(() {
-          _selectedDateTime = DateTime(
-            pickedDate.year,
-            pickedDate.month,
-            pickedDate.day,
-            pickedTime.hour,
-            pickedTime.minute,
-          );
-        });
-      }
+    if (picked != null && picked != selectedDeadline) {
+      selectedDeadline = picked;
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+    );
+    if (picked != null) {
+      final DateTime now = DateTime.now();
+      selectedDeadline =
+          DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
     }
   }
 
@@ -82,16 +92,25 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => _selectDateTime(context),
-                  child: Text('Pick Date & Time'),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () => _selectDate(context),
+                      child: Text('Pick Date'),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: () => _selectTime(context),
+                      child: const Text('Pick Time'),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: () => addTodo(bloc),
+                      onPressed: () => _addTodo(bloc),
                       child: Text('Add'),
                     ),
                   ],
@@ -106,7 +125,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                 final todo = _todoList[index];
                 return ListTile(
                   title: Text(todo.title),
-                  subtitle: Text(todo.title),
                 );
               },
             ),
@@ -117,17 +135,61 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   }
 }
 
+enum TaskType {
+  work,
+  personal,
+  shopping,
+  sport,
+  urgent,
+}
+
+extension TaskTypeExtension on TaskType {
+  String get name {
+    switch (this) {
+      case TaskType.work:
+        return 'Work';
+      case TaskType.personal:
+        return 'Personal';
+      case TaskType.shopping:
+        return 'Shopping';
+      case TaskType.sport:
+        return 'Sport';
+      case TaskType.urgent:
+        return 'Urgent';
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case TaskType.work:
+        return Colors.blue;
+      case TaskType.personal:
+        return Colors.green;
+      case TaskType.shopping:
+        return Colors.red;
+      case TaskType.sport:
+        return Colors.red;
+      case TaskType.urgent:
+        return Colors.red;
+    }
+  }
+}
+
 class Task {
   Task({
     required this.title,
-    this.createdAt,
-  });
+    this.taskType,
+    DateTime? createdAt,
+    this.deadline,
+  }) : createdAt = createdAt ?? DateTime.now();
 
-  String title;
-  DateTime? createdAt;
+  final String title;
+  final TaskType? taskType;
+  final DateTime? deadline;
+  final DateTime createdAt;
 
-  // @override
-  // String toString() {
-  //   return 'Task(title: $title)';
-  // }
+  @override
+  String toString() {
+    return 'Task(title: $title)';
+  }
 }

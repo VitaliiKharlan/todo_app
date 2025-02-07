@@ -11,12 +11,9 @@ import '../../add_new_task/bloc/add_new_task_bloc.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
 
     return AutoTabsRouter(
       routes: [
@@ -26,26 +23,13 @@ class HomeScreen extends StatelessWidget {
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
-        return
-          //
-          // MultiBlocProvider
-          //
-          MultiBlocProvider(
+        return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => TaskBloc()),
             BlocProvider(create: (context) => SettingsBloc()),
             BlocProvider(create: (context) => AddNewTaskBloc()),
           ],
-          child:
-          //
-              //
-              // BlocProvider
-              //
-              // BlocProvider(
-              // create: (context) => AddNewTaskBloc(),
-              // child:
-              //
-              Scaffold(
+          child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: child,
             bottomNavigationBar: BottomNavigationBar(
