@@ -17,9 +17,10 @@ class AddNewTaskBloc extends Bloc<AddNewTaskEvent, AddNewTaskState> {
       try {
         print('Add New Task Loaded Event');
 
-        // final task = Task(title: 'Toadstool');
-        final task =
-            Task(taskTitle: event.taskTitle, taskDeadline: event.taskDeadline);
+        final task = Task(
+            taskTitle: event.taskTitle,
+            taskDeadline: event.taskDeadline,
+            taskType: event.taskType);
         List<Task> tasks = [];
         if (state is AddNewTaskLoadedState) {
           final currentTasks = (state as AddNewTaskLoadedState).tasks;

@@ -16,20 +16,22 @@ class AddNewTaskScreen extends StatefulWidget {
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   final TextEditingController _controller = TextEditingController();
-  DateTime? selectedDeadline;
+  DateTime? _selectedDeadline;
+  TaskType? _selectedTaskType;
 
   // passing a variable to a function
   void _addTodo(AddNewTaskBloc bloc) {
     final theme = Theme.of(context);
     final taskTitle = _controller.text.trim();
-    final taskDeadline = selectedDeadline;
+    final taskDeadline = _selectedDeadline;
+    final taskType = _selectedTaskType;
     if (taskTitle.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a task title')),
       );
       return;
     }
-    bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDeadline));
+    bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDeadline, taskType));
     // context.router.popAndPush(TaskRoute(theme: theme));
 
     // AutoRouter.of(context).maybePop();
@@ -43,8 +45,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       firstDate: DateTime(2020),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDeadline) {
-      selectedDeadline = picked;
+    if (picked != null && picked != _selectedDeadline) {
+      _selectedDeadline = picked;
     }
   }
 
@@ -55,7 +57,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     );
     if (picked != null) {
       final DateTime now = DateTime.now();
-      selectedDeadline = DateTime(
+      _selectedDeadline = DateTime(
         now.year,
         now.month,
         now.day,
@@ -116,11 +118,39 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                     // ),
                   ],
                 ),
-                if (selectedDeadline != null) ...[
+                if (_selectedDeadline != null) ...[
                   const SizedBox(height: 10),
-                  Text('Selected Deadline: ${selectedDeadline!.toLocal()}')
+                  Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
                 ],
                 SizedBox(height: 40),
+                DropdownButton<TaskType>(
+                  value: _selectedTaskType,
+                  hint: const Text("Select Task Type"),
+                  onChanged: (TaskType? newValue) {
+                    setState(() {
+                      _selectedTaskType = newValue;
+                    });
+                  },
+                  items: TaskType.values.map((TaskType type) {
+                    return DropdownMenuItem<TaskType>(
+                      value: type,
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 12,
+                            height: 12,
+                            decoration: BoxDecoration(
+                              color: type.color,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(type.name),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -170,9 +200,9 @@ extension TaskTypeExtension on TaskType {
       case TaskType.personal:
         return Colors.green;
       case TaskType.shopping:
-        return Colors.red;
+        return Colors.orange;
       case TaskType.sport:
-        return Colors.red;
+        return Colors.yellow;
       case TaskType.urgent:
         return Colors.red;
     }

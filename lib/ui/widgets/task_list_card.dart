@@ -25,8 +25,8 @@ class TaskListCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
-            Icons.home,
-            color: Colors.deepPurple,
+            Icons.label,
+            color: task.taskType?.color ?? Colors.deepPurple,
           ),
           const SizedBox(width: 12),
           Expanded(

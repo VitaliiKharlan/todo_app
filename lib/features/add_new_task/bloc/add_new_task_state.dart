@@ -13,7 +13,6 @@ class AddNewTaskLoadedState extends AddNewTaskState {
   );
 
   final List<Task> tasks;
-
 }
 
 class AddNewTaskLoadingFailureState extends AddNewTaskState {
