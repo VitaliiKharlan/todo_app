@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const primaryColor = Colors.deepPurple;
+
 final themeData = ThemeData(
   useMaterial3: true,
   primaryColor: primaryColor,
@@ -9,7 +10,7 @@ final themeData = ThemeData(
     seedColor: primaryColor,
     surface: Colors.white,
     onSurface: Colors.black,
-    primary: Colors.yellowAccent,
+    primary: Colors.red,
     onPrimary: Colors.black,
     secondary: Colors.lightGreen,
     onSecondary: Colors.white,
@@ -44,4 +45,3 @@ final themeData = ThemeData(
   dividerColor: Colors.white24,
   listTileTheme: const ListTileThemeData(iconColor: Colors.white),
 );
-

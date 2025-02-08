@@ -18,7 +18,7 @@ class TaskListCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return BaseContainer(
-      height: 48,
+      height: 120,
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 24),
       child: Row(
@@ -65,18 +65,27 @@ class TaskListCard extends StatelessWidget {
                     ),
                   ),
                   if (task.taskDeadline != null) ...[
-                    SizedBox(height: 8),
+                    SizedBox(height: 12),
                     Text(
-                      'Deadline: ${DateFormat('d MMM').format(task.taskDeadline!)}',
+                      'Deadline: ',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: Colors.red,
                       ),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 4),
                     Text(
-                      'Deadline: ${DateFormat('HH:mm').format(task.taskDeadline!)}',
+                      DateFormat('d MMM').format(task.taskDeadline!),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      DateFormat('HH:mm').format(task.taskDeadline!),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,

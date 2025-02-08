@@ -80,6 +80,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
           ),
         ),
       ),
+      backgroundColor: Colors.blue,
       body: Column(
         children: [
           Padding(
