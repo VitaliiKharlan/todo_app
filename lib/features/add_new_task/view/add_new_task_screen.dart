@@ -3,6 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
+import 'package:todo_app/router/router.dart';
+import 'package:todo_app/ui/theme/app_theme.dart';
 
 @RoutePage()
 class AddNewTaskScreen extends StatefulWidget {
@@ -13,28 +15,25 @@ class AddNewTaskScreen extends StatefulWidget {
 }
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
-  final List<Task> _todoList = [];
   final TextEditingController _controller = TextEditingController();
   DateTime? selectedDeadline;
 
   // passing a variable to a function
   void _addTodo(AddNewTaskBloc bloc) {
+    final theme = Theme.of(context);
     final taskTitle = _controller.text.trim();
-    if (taskTitle.isNotEmpty) {
-      bloc.add(AddNewTaskLoadedEvent(taskTitle));
-      //
-      // Navigator.of(context)
-      //
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => TaskScreen(theme: theme)));
-      //
-      //
-      // auto_route
-      //
-      // context.router.push(TaskScreenRoute());
-      //
+    final taskDeadline = selectedDeadline;
+    if (taskTitle.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task title')),
+      );
+      return;
     }
+    bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDeadline));
+    // context.router.popAndPush(TaskRoute(theme: theme));
+
+    // AutoRouter.of(context).maybePop();
+    // context.router.maybePop();
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -56,8 +55,13 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     );
     if (picked != null) {
       final DateTime now = DateTime.now();
-      selectedDeadline =
-          DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      selectedDeadline = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        picked.hour,
+        picked.minute,
+      );
     }
   }
 
@@ -94,17 +98,27 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                 SizedBox(height: 20),
                 Row(
                   children: [
-                    ElevatedButton(
+                    ElevatedButton.icon(
                       onPressed: () => _selectDate(context),
-                      child: Text('Pick Date'),
+                      icon: const Icon(Icons.calendar_today),
+                      label: const Text('Pick Date'),
                     ),
                     const SizedBox(width: 8),
-                    ElevatedButton(
+                    ElevatedButton.icon(
                       onPressed: () => _selectTime(context),
-                      child: const Text('Pick Time'),
+                      icon: const Icon(Icons.access_time),
+                      label: const Text('Pick Time'),
                     ),
+                    // ElevatedButton(
+                    //   onPressed: () => _selectTime(context),
+                    //   child: const Text('Pick Time'),
+                    // ),
                   ],
                 ),
+                if (selectedDeadline != null) ...[
+                  const SizedBox(height: 10),
+                  Text('Selected Deadline: ${selectedDeadline!.toLocal()}')
+                ],
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -116,17 +130,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   ],
                 ),
               ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _todoList.length,
-              itemBuilder: (context, index) {
-                final todo = _todoList[index];
-                return ListTile(
-                  title: Text(todo.title),
-                );
-              },
             ),
           ),
         ],
@@ -177,19 +180,19 @@ extension TaskTypeExtension on TaskType {
 
 class Task {
   Task({
-    required this.title,
+    required this.taskTitle,
     this.taskType,
     DateTime? createdAt,
-    this.deadline,
-  }) : createdAt = createdAt ?? DateTime.now();
+    this.taskDeadline,
+  }) : taskCreatedAt = createdAt ?? DateTime.now();
 
-  final String title;
+  final String taskTitle;
   final TaskType? taskType;
-  final DateTime? deadline;
-  final DateTime createdAt;
+  final DateTime? taskDeadline;
+  final DateTime taskCreatedAt;
 
   @override
   String toString() {
-    return 'Task(title: $title)';
+    return 'Task(title: $taskTitle)';
   }
 }

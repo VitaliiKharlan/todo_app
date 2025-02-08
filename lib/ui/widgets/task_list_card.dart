@@ -31,7 +31,7 @@ class TaskListCard extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              task.title,
+              task.taskTitle,
               style: theme.textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -48,7 +48,7 @@ class TaskListCard extends StatelessWidget {
                 children: [
                   SizedBox(height: 4),
                   Text(
-                    DateFormat('d MMM').format(task.createdAt),
+                    DateFormat('d MMM').format(task.taskCreatedAt),
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
@@ -57,17 +57,17 @@ class TaskListCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    DateFormat('HH:mm').format(task.createdAt),
+                    DateFormat('HH:mm').format(task.taskCreatedAt),
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
                       color: Colors.purple,
                     ),
                   ),
-                  if (task.deadline != null) ...[
+                  if (task.taskDeadline != null) ...[
                     SizedBox(height: 8),
                     Text(
-                      'Deadline: ${DateFormat('d MMM').format(task.deadline!)}',
+                      'Deadline: ${DateFormat('d MMM').format(task.taskDeadline!)}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -76,7 +76,7 @@ class TaskListCard extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Deadline: ${DateFormat('HH:mm').format(task.deadline!)}',
+                      'Deadline: ${DateFormat('HH:mm').format(task.taskDeadline!)}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
