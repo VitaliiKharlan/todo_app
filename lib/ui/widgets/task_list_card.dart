@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
@@ -24,9 +25,16 @@ class TaskListCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
-            Icons.label,
-            color: task.taskType?.color ?? Colors.deepPurple,
+          SizedBox(
+            width: 32,
+            height: 32,
+            child: SvgPicture.asset(
+              'assets/svg/${task.taskType!.name}.svg',
+              width: 24,
+              height: 24,
+              colorFilter:
+                  ColorFilter.mode(task.taskType!.color, BlendMode.srcIn),
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(

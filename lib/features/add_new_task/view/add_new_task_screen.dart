@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
 import 'package:todo_app/router/router.dart';
@@ -25,6 +28,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     final taskTitle = _controller.text.trim();
     final taskDeadline = _selectedDeadline;
     final taskType = _selectedTaskType;
+    final tabsRouter = context.tabsRouter;
     if (taskTitle.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a task title')),
@@ -32,10 +36,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       return;
     }
     bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDeadline, taskType));
-    // context.router.popAndPush(TaskRoute(theme: theme));
 
-    // AutoRouter.of(context).maybePop();
-    // context.router.maybePop();
+    tabsRouter.setActiveIndex(0);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -112,10 +114,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                       icon: const Icon(Icons.access_time),
                       label: const Text('Pick Time'),
                     ),
-                    // ElevatedButton(
-                    //   onPressed: () => _selectTime(context),
-                    //   child: const Text('Pick Time'),
-                    // ),
                   ],
                 ),
                 if (_selectedDeadline != null) ...[
@@ -181,15 +179,15 @@ extension TaskTypeExtension on TaskType {
   String get name {
     switch (this) {
       case TaskType.work:
-        return 'Work';
+        return 'work';
       case TaskType.personal:
-        return 'Personal';
+        return 'personal';
       case TaskType.shopping:
-        return 'Shopping';
+        return 'shopping';
       case TaskType.sport:
-        return 'Sport';
+        return 'sport';
       case TaskType.urgent:
-        return 'Urgent';
+        return 'urgent';
     }
   }
 
@@ -205,6 +203,21 @@ extension TaskTypeExtension on TaskType {
         return Colors.yellow;
       case TaskType.urgent:
         return Colors.red;
+    }
+  }
+
+  Widget get icon {
+    switch (this) {
+      case TaskType.work:
+        return SvgPicture.asset('assets/svg/work.svg');
+      case TaskType.personal:
+        return SvgPicture.asset('assets/svg/personal.svg');
+      case TaskType.shopping:
+        return SvgPicture.asset('assets/svg/shopping.svg');
+      case TaskType.sport:
+        return SvgPicture.asset('assets/svg/sport.svg');
+      case TaskType.urgent:
+        return SvgPicture.asset('assets/svg/urgent.svg');
     }
   }
 }

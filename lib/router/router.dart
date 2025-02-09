@@ -32,10 +32,7 @@ class AppRouter extends RootStackRouter {
           ),
         ],
       ),
-      AutoRoute(
-        page: TaskRoute.page,
-        path: '/add_new_task',
-      ),
+
     ];
   }
 }
