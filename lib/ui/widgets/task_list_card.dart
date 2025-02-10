@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +8,7 @@ import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 
 import 'base_container.dart';
 
-class TaskListCard extends StatelessWidget {
+class TaskListCard extends StatefulWidget {
   const TaskListCard({
     super.key,
     required this.task,
@@ -15,13 +17,44 @@ class TaskListCard extends StatelessWidget {
   final Task task;
 
   @override
+  State<TaskListCard> createState() => _TaskListCardState();
+}
+
+class _TaskListCardState extends State<TaskListCard> {
+  late Timer _timer;
+  DateTime _currentTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(Duration(seconds: 60), _onTick);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _onTick(Timer timer) {
+    setState(() {
+      _currentTime = DateTime.now();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final now = _currentTime;
+    final isDeadlinePassed = widget.task.taskDeadline != null &&
+        now.isAfter(widget.task.taskDeadline!);
 
     return BaseContainer(
       height: 120,
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 24),
+      color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -29,17 +62,19 @@ class TaskListCard extends StatelessWidget {
             width: 32,
             height: 32,
             child: SvgPicture.asset(
-              'assets/svg/${task.taskType!.name}.svg',
+              'assets/svg/${widget.task.taskType!.name}.svg',
               width: 24,
               height: 24,
-              colorFilter:
-                  ColorFilter.mode(task.taskType!.color, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                widget.task.taskType!.color,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              task.taskTitle,
+              widget.task.taskTitle,
               style: theme.textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -56,7 +91,7 @@ class TaskListCard extends StatelessWidget {
                 children: [
                   SizedBox(height: 4),
                   Text(
-                    DateFormat('d MMM').format(task.taskCreatedAt),
+                    DateFormat('d MMM').format(widget.task.taskCreatedAt),
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
@@ -65,14 +100,14 @@ class TaskListCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    DateFormat('HH:mm').format(task.taskCreatedAt),
+                    DateFormat('HH:mm').format(widget.task.taskCreatedAt),
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
                       color: Colors.purple,
                     ),
                   ),
-                  if (task.taskDeadline != null) ...[
+                  if (widget.task.taskDeadline != null) ...[
                     SizedBox(height: 12),
                     Text(
                       'Deadline: ',
@@ -84,7 +119,7 @@ class TaskListCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      DateFormat('d MMM').format(task.taskDeadline!),
+                      DateFormat('d MMM').format(widget.task.taskDeadline!),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
@@ -93,7 +128,7 @@ class TaskListCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      DateFormat('HH:mm').format(task.taskDeadline!),
+                      DateFormat('HH:mm').format(widget.task.taskDeadline!),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
