@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
-import 'package:todo_app/features/task/task.dart';
-import 'package:todo_app/router/router.dart';
-import 'package:todo_app/ui/theme/app_theme.dart';
+import 'package:todo_app/ui/theme/app_svg_images.dart';
 
 @RoutePage()
 class AddNewTaskScreen extends StatefulWidget {
@@ -18,15 +16,18 @@ class AddNewTaskScreen extends StatefulWidget {
 }
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _controllerTaskTitle = TextEditingController();
+  final TextEditingController _controllerTaskDescription = TextEditingController();
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
-
+  String? _selectedTaskDescription;
 
   // passing a variable to a function
   void _addTodo(AddNewTaskBloc bloc) {
-    final theme = Theme.of(context);
-    final taskTitle = _controller.text.trim();
+    // final theme = Theme.of(context);
+    final taskTitle = _controllerTaskTitle.text.trim();
+    // final taskDescription = _selectedTaskDescription;
+    final taskDescription = _controllerTaskDescription.text.trim();
     final taskDeadline = _selectedDeadline;
     final taskType = _selectedTaskType;
     final tabsRouter = context.tabsRouter;
@@ -36,7 +37,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       );
       return;
     }
-    bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDeadline, taskType));
+    // bloc.add(AddNewTaskLoadedEvent(taskTitle,  taskDeadline, taskType));
+    bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDescription, taskDeadline, taskType));
 
     tabsRouter.setActiveIndex(0);
   }
@@ -95,10 +97,22 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
               children: [
                 SizedBox(height: 20),
                 TextField(
-                  controller: _controller,
+                  controller: _controllerTaskTitle,
                   decoration: InputDecoration(
                     labelText: 'Enter a task',
                     border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 200,
+                  child: TextField(
+                    controller: _controllerTaskDescription,
+                    decoration: InputDecoration(
+                      labelText: 'Enter a description',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -210,30 +224,30 @@ extension TaskTypeExtension on TaskType {
   Widget get icon {
     switch (this) {
       case TaskType.work:
-        return SvgPicture.asset('assets/svg/work.svg');
+        return SvgPicture.asset(AppSvgImages.iconTaskTypeWork);
       case TaskType.personal:
-        return SvgPicture.asset('assets/svg/personal.svg');
+        return SvgPicture.asset(AppSvgImages.iconTaskTypePersonal);
       case TaskType.shopping:
-        return SvgPicture.asset('assets/svg/shopping.svg');
+        return SvgPicture.asset(AppSvgImages.iconTaskTypeShopping);
       case TaskType.sport:
-        return SvgPicture.asset('assets/svg/sport.svg');
+        return SvgPicture.asset(AppSvgImages.iconTaskTypeSport);
       case TaskType.urgent:
-        return SvgPicture.asset('assets/svg/urgent.svg');
+        return SvgPicture.asset(AppSvgImages.iconTaskTypeUrgent);
     }
   }
 }
 
 class Task {
   Task({
-    // required this.taskId,
     required this.taskTitle,
+    this.taskDescription,
     this.taskType,
     DateTime? createdAt,
     this.taskDeadline,
   }) : taskCreatedAt = createdAt ?? DateTime.now();
 
-  // final String taskId;
   final String taskTitle;
+  final String? taskDescription;
   final TaskType? taskType;
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
