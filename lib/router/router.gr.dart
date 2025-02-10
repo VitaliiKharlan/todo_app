@@ -61,15 +61,12 @@ class SettingsRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [TaskDetailScreen]
 class TaskDetailRoute extends PageRouteInfo<TaskDetailRouteArgs> {
-  TaskDetailRoute({
-    Key? key,
-    required String taskTitle,
-    List<PageRouteInfo>? children,
-  }) : super(
-         TaskDetailRoute.name,
-         args: TaskDetailRouteArgs(key: key, taskTitle: taskTitle),
-         initialChildren: children,
-       );
+  TaskDetailRoute({Key? key, required Task task, List<PageRouteInfo>? children})
+    : super(
+        TaskDetailRoute.name,
+        args: TaskDetailRouteArgs(key: key, task: task),
+        initialChildren: children,
+      );
 
   static const String name = 'TaskDetailRoute';
 
@@ -77,21 +74,21 @@ class TaskDetailRoute extends PageRouteInfo<TaskDetailRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<TaskDetailRouteArgs>();
-      return TaskDetailScreen(key: args.key, taskTitle: args.taskTitle);
+      return TaskDetailScreen(key: args.key, task: args.task);
     },
   );
 }
 
 class TaskDetailRouteArgs {
-  const TaskDetailRouteArgs({this.key, required this.taskTitle});
+  const TaskDetailRouteArgs({this.key, required this.task});
 
   final Key? key;
 
-  final String taskTitle;
+  final Task task;
 
   @override
   String toString() {
-    return 'TaskDetailRouteArgs{key: $key, taskTitle: $taskTitle}';
+    return 'TaskDetailRouteArgs{key: $key, task: $task}';
   }
 }
 

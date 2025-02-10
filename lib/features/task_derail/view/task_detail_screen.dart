@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
-
+import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 
 @RoutePage()
 class TaskDetailScreen extends StatelessWidget {
   const TaskDetailScreen({
     super.key,
-    required this.taskTitle,
+    required this.task,
   });
 
-  final String taskTitle;
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +22,12 @@ class TaskDetailScreen extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-         mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Details for Task: '),
             SizedBox(height: 20),
             // Text(taskId),
-            Text(taskTitle),
+            Text(task.taskTitle),
           ],
         ),
       ),

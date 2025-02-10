@@ -54,7 +54,7 @@ class _TaskListCardState extends State<TaskListCard> {
 
     return GestureDetector(
       onTap: () {
-        context.router.push(TaskDetailRoute(taskTitle: widget.task.taskTitle));
+        context.router.push(TaskDetailRoute(task: widget.task));
       },
       child: BaseContainer(
         height: 120,
