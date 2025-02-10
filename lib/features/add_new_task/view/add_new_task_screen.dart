@@ -22,6 +22,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
 
+
   // passing a variable to a function
   void _addTodo(AddNewTaskBloc bloc) {
     final theme = Theme.of(context);
@@ -224,12 +225,14 @@ extension TaskTypeExtension on TaskType {
 
 class Task {
   Task({
+    required this.taskId,
     required this.taskTitle,
     this.taskType,
     DateTime? createdAt,
     this.taskDeadline,
   }) : taskCreatedAt = createdAt ?? DateTime.now();
 
+  final String taskId;
   final String taskTitle;
   final TaskType? taskType;
   final DateTime? taskDeadline;

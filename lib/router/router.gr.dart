@@ -59,6 +59,43 @@ class SettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [TaskDetailScreen]
+class TaskDetailRoute extends PageRouteInfo<TaskDetailRouteArgs> {
+  TaskDetailRoute({
+    Key? key,
+    required String taskId,
+    List<PageRouteInfo>? children,
+  }) : super(
+         TaskDetailRoute.name,
+         args: TaskDetailRouteArgs(key: key, taskId: taskId),
+         initialChildren: children,
+       );
+
+  static const String name = 'TaskDetailRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<TaskDetailRouteArgs>();
+      return TaskDetailScreen(key: args.key, taskId: args.taskId);
+    },
+  );
+}
+
+class TaskDetailRouteArgs {
+  const TaskDetailRouteArgs({this.key, required this.taskId});
+
+  final Key? key;
+
+  final String taskId;
+
+  @override
+  String toString() {
+    return 'TaskDetailRouteArgs{key: $key, taskId: $taskId}';
+  }
+}
+
+/// generated route for
 /// [TaskScreen]
 class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
   TaskRoute({Key? key, required ThemeData theme, List<PageRouteInfo>? children})

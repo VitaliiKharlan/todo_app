@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
+import 'package:todo_app/router/router.dart';
 
 import 'base_container.dart';
 
@@ -50,97 +52,104 @@ class _TaskListCardState extends State<TaskListCard> {
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
 
-    return BaseContainer(
-      height: 120,
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 24),
-      color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 32,
-            height: 32,
-            child: SvgPicture.asset(
-              'assets/svg/${widget.task.taskType!.name}.svg',
-              width: 24,
-              height: 24,
-              colorFilter: ColorFilter.mode(
-                widget.task.taskType!.color,
-                BlendMode.srcIn,
+    return GestureDetector(
+      onTap: () {
+        // Переход на экран с деталями задачи
+        context.router.push(TaskDetailRoute(taskId: widget.task.taskTitle)); // Передаем ID задачи
+        // context.router.push(TaskDetailRoute()); // Передаем ID задачи
+      },
+      child: BaseContainer(
+        height: 120,
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 24),
+        color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 32,
+              height: 32,
+              child: SvgPicture.asset(
+                'assets/svg/${widget.task.taskType!.name}.svg',
+                width: 24,
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                  widget.task.taskType!.color,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              widget.task.taskTitle,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.purple,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                widget.task.taskTitle,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.purple,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          SizedBox(
-            // width: 48,
-            width: 72,
-            child: Center(
-              child: Column(
-                children: [
-                  SizedBox(height: 4),
-                  Text(
-                    DateFormat('d MMM').format(widget.task.taskCreatedAt),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.purple,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    DateFormat('HH:mm').format(widget.task.taskCreatedAt),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.purple,
-                    ),
-                  ),
-                  if (widget.task.taskDeadline != null) ...[
-                    SizedBox(height: 12),
-                    Text(
-                      'Deadline: ',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.red,
-                      ),
-                    ),
+            SizedBox(
+              // width: 48,
+              width: 72,
+              child: Center(
+                child: Column(
+                  children: [
                     SizedBox(height: 4),
                     Text(
-                      DateFormat('d MMM').format(widget.task.taskDeadline!),
+                      DateFormat('d MMM').format(widget.task.taskCreatedAt),
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
-                        color: Colors.red,
+                        color: Colors.purple,
                       ),
                     ),
                     SizedBox(height: 4),
                     Text(
-                      DateFormat('HH:mm').format(widget.task.taskDeadline!),
+                      DateFormat('HH:mm').format(widget.task.taskCreatedAt),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        fontSize: 12,
+                        fontSize: 10,
                         fontWeight: FontWeight.w500,
-                        color: Colors.red,
+                        color: Colors.purple,
                       ),
                     ),
-                  ]
-                ],
+                    if (widget.task.taskDeadline != null) ...[
+                      SizedBox(height: 12),
+                      Text(
+                        'Deadline: ',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        DateFormat('d MMM').format(widget.task.taskDeadline!),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.red,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        DateFormat('HH:mm').format(widget.task.taskDeadline!),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ]
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

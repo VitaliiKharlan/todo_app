@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:todo_app/features/task_derail/task_detail.dart';
 
 import '../features/add_new_task/view/add_new_task_screen.dart';
 import '../features/home/view/home_screen.dart';
@@ -31,6 +32,10 @@ class AppRouter extends RootStackRouter {
             path: 'add_new_task',
           ),
         ],
+      ),
+    AutoRoute(
+    page: TaskDetailRoute.page,
+    path: '/task/:taskId',
       ),
 
     ];
