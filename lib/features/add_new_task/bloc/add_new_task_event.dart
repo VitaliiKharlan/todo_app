@@ -7,12 +7,10 @@ class AddNewTaskLoadEvent extends AddNewTaskEvent {}
 
 class AddNewTaskLoadedEvent extends AddNewTaskEvent {
   AddNewTaskLoadedEvent(
-
     this.taskTitle,
     this.taskDeadline,
     this.taskType,
   );
-
 
   final String taskTitle;
   final DateTime? taskDeadline;

@@ -63,11 +63,11 @@ class SettingsRoute extends PageRouteInfo<void> {
 class TaskDetailRoute extends PageRouteInfo<TaskDetailRouteArgs> {
   TaskDetailRoute({
     Key? key,
-    required String taskId,
+    required String taskTitle,
     List<PageRouteInfo>? children,
   }) : super(
          TaskDetailRoute.name,
-         args: TaskDetailRouteArgs(key: key, taskId: taskId),
+         args: TaskDetailRouteArgs(key: key, taskTitle: taskTitle),
          initialChildren: children,
        );
 
@@ -77,21 +77,21 @@ class TaskDetailRoute extends PageRouteInfo<TaskDetailRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<TaskDetailRouteArgs>();
-      return TaskDetailScreen(key: args.key, taskId: args.taskId);
+      return TaskDetailScreen(key: args.key, taskTitle: args.taskTitle);
     },
   );
 }
 
 class TaskDetailRouteArgs {
-  const TaskDetailRouteArgs({this.key, required this.taskId});
+  const TaskDetailRouteArgs({this.key, required this.taskTitle});
 
   final Key? key;
 
-  final String taskId;
+  final String taskTitle;
 
   @override
   String toString() {
-    return 'TaskDetailRouteArgs{key: $key, taskId: $taskId}';
+    return 'TaskDetailRouteArgs{key: $key, taskTitle: $taskTitle}';
   }
 }
 

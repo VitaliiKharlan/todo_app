@@ -19,7 +19,7 @@ class AddNewTaskBloc extends Bloc<AddNewTaskEvent, AddNewTaskState> {
 
         List<Task> tasks = [];
         final task = Task(
-          taskId: '',
+          // taskId: '',
           taskTitle: event.taskTitle,
           taskDeadline: event.taskDeadline,
           taskType: event.taskType,

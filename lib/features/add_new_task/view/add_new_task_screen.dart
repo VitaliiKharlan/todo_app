@@ -225,14 +225,14 @@ extension TaskTypeExtension on TaskType {
 
 class Task {
   Task({
-    required this.taskId,
+    // required this.taskId,
     required this.taskTitle,
     this.taskType,
     DateTime? createdAt,
     this.taskDeadline,
   }) : taskCreatedAt = createdAt ?? DateTime.now();
 
-  final String taskId;
+  // final String taskId;
   final String taskTitle;
   final TaskType? taskType;
   final DateTime? taskDeadline;

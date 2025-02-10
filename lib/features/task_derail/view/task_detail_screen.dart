@@ -1,14 +1,16 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
+import 'package:auto_route/auto_route.dart';
+
 
 @RoutePage()
 class TaskDetailScreen extends StatelessWidget {
   const TaskDetailScreen({
     super.key,
-    required this.taskId,
+    required this.taskTitle,
   });
 
-  final String taskId;
+  final String taskTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,8 @@ class TaskDetailScreen extends StatelessWidget {
           children: [
             Text('Details for Task: '),
             SizedBox(height: 20),
-            Text(taskId),
+            // Text(taskId),
+            Text(taskTitle),
           ],
         ),
       ),

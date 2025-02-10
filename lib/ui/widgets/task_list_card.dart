@@ -54,9 +54,7 @@ class _TaskListCardState extends State<TaskListCard> {
 
     return GestureDetector(
       onTap: () {
-        // Переход на экран с деталями задачи
-        context.router.push(TaskDetailRoute(taskId: widget.task.taskTitle)); // Передаем ID задачи
-        // context.router.push(TaskDetailRoute()); // Передаем ID задачи
+        context.router.push(TaskDetailRoute(taskTitle: widget.task.taskTitle));
       },
       child: BaseContainer(
         height: 120,
