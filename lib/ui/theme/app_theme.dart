@@ -5,7 +5,8 @@ const primaryColor = Colors.deepPurple;
 final themeData = ThemeData(
   useMaterial3: true,
   primaryColor: primaryColor,
-  scaffoldBackgroundColor: const Color.fromARGB(248, 48, 48, 48),
+  scaffoldBackgroundColor: Colors.white,
+  // scaffoldBackgroundColor: const Color.fromARGB(248, 48, 48, 48),
   colorScheme: ColorScheme.fromSeed(
     seedColor: primaryColor,
     surface: Colors.white,
@@ -18,6 +19,7 @@ final themeData = ThemeData(
   appBarTheme: const AppBarTheme(
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.white),
+
     backgroundColor: Color.fromARGB(48, 48, 48, 48),
     titleTextStyle: TextStyle(
       color: Colors.red,
