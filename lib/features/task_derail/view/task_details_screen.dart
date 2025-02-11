@@ -29,31 +29,48 @@ class TaskDetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: SizedBox(
-            width: 40,
-            child: ClipOval(
-              child: Container(
-                color: Colors.grey.withAlpha(20),
-                padding: EdgeInsets.all(4),
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios_new),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 12),
+            SizedBox(
+              width: 40,
+              height: 40,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: Colors.grey.withAlpha(20),
+                  child: Center(
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        title: Text(
-          'Task Details',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+            Expanded(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 32),
+                  child: Text(
+                    'Task Details',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       body: Padding(
@@ -70,8 +87,15 @@ class TaskDetailScreen extends StatelessWidget {
               children: [
                 Text(
                   task.taskTitle,
-                  style: themeData.textTheme.bodyLarge
-                      ?.copyWith(fontSize: 32, fontWeight: FontWeight.w800),
+                  // style: AppTextStyle.defaultListCardMain
+                  //     .copyWith(fontSize: 32, fontWeight: FontWeight.w800),
+                  style: AppTextStyle.appBar.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black),
+
+                  // style: themeData.textTheme.bodyLarge
+                  //     ?.copyWith(fontSize: 32, fontWeight: FontWeight.w800),
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -80,11 +104,11 @@ class TaskDetailScreen extends StatelessWidget {
                     ClipOval(
                       child: Container(
                         color: Colors.lightBlueAccent.withAlpha(40),
-                        padding: EdgeInsets.all(4),
+                        padding: EdgeInsets.all(12),
                         child: SvgPicture.asset(
                           'assets/svg/${task.taskType!.name}.svg',
-                          width: 32,
-                          height: 32,
+                          width: 24,
+                          height: 24,
                           colorFilter: ColorFilter.mode(
                             task.taskType!.color,
                             BlendMode.srcIn,

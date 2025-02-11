@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
+import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
 
 @RoutePage()
@@ -23,7 +23,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   String? _selectedTaskDescription;
 
   // passing a variable to a function
-  void _addTodo(AddNewTaskBloc bloc) {
+  void _addTodo(TasksBloc bloc) {
     // final theme = Theme.of(context);
     final taskTitle = _controllerTaskTitle.text.trim();
     // final taskDescription = _selectedTaskDescription;
@@ -38,7 +38,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       return;
     }
     // bloc.add(AddNewTaskLoadedEvent(taskTitle,  taskDeadline, taskType));
-    bloc.add(AddNewTaskLoadedEvent(taskTitle, taskDescription, taskDeadline, taskType));
+    bloc.add(LoadTasksEvent(taskTitle, taskDescription, taskDeadline, taskType));
 
     tabsRouter.setActiveIndex(0);
   }
@@ -74,7 +74,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<AddNewTaskBloc>(context);
+    final bloc = BlocProvider.of<TasksBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Center(

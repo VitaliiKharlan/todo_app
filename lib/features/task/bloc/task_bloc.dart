@@ -7,14 +7,14 @@ part 'task_state.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   TaskBloc() : super(TaskInitialState()) {
-    on<LoadTaskEvent>((event, emit) {
+    on<TaskLoadEvent>((event, emit) {
       // TODO: implement event handler
-      print('Loading Add New Task');
+      print('Task Load Event');
     });
-    on<LoadedTaskEvent>((event, emit) async {
+    on<TaskLoadedEvent>((event, emit) async {
       // TODO: implement event handler
       try {
-        print('Loaded Add New Task');
+        print('Task Delete Event');
 
         emit(TaskLoadedState([]));
       } catch (e) {

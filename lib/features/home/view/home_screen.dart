@@ -5,7 +5,7 @@ import 'package:todo_app/features/settings/bloc/settings_bloc.dart';
 import 'package:todo_app/features/task/bloc/task_bloc.dart';
 
 import '../../../router/router.dart';
-import '../../add_new_task/bloc/add_new_task_bloc.dart';
+import '../../add_new_task/bloc/tasks_bloc.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -25,9 +25,9 @@ class HomeScreen extends StatelessWidget {
         final tabsRouter = AutoTabsRouter.of(context);
         return MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => TaskBloc()),
+            BlocProvider(create: (context) => TasksBloc()),
             BlocProvider(create: (context) => SettingsBloc()),
-            BlocProvider(create: (context) => AddNewTaskBloc()),
+            BlocProvider(create: (context) => TasksBloc()),
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,

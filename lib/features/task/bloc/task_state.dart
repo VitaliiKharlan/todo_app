@@ -24,3 +24,4 @@ class TaskLoadingFailureState extends TaskState {
 
   final Object? exception;
 }
+

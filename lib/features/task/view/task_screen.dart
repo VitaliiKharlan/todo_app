@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'package:todo_app/features/add_new_task/bloc/add_new_task_bloc.dart';
+import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/task/bloc/task_bloc.dart';
 import 'package:todo_app/features/task/widgets/widgets.dart';
 
 import 'package:todo_app/ui/ui.dart';
@@ -52,11 +54,11 @@ class TaskScreen extends StatelessWidget {
               surfaceTintColor: Colors.transparent,
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
-            BlocBuilder<AddNewTaskBloc, AddNewTaskState>(
+            BlocBuilder<TasksBloc, TasksState>(
               builder: (context, state) {
                 if (state is AddNewTaskLoadingState) {
                   return Center(child: CircularProgressIndicator());
-                } else if (state is AddNewTaskLoadedState) {
+                } else if (state is LoadedTasksState) {
                   final tasks = state.tasks;
                   if (tasks.isEmpty) {
                     return Center(child: Text('No tasks available'));
@@ -64,12 +66,34 @@ class TaskScreen extends StatelessWidget {
                   print(state.tasks);
                   return SliverList.builder(
                     itemCount: state.tasks.length,
-                    itemBuilder: (context, index) => TaskListCard(
-                      task: tasks[index],
-                    ),
+                    itemBuilder: (context, index) {
+                      final deleteTask = tasks[index];
+                      return Slidable(
+                        key: ValueKey(index),
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (_) {
+                                context.read<TasksBloc>().add(DeleteTasksEvent(deleteTask));
+
+                              },
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                            ),
+                          ],
+                        ),
+
+                      child: TaskListCard(
+                        task: tasks[index],
+                      ),
+                    );
+    }
                   );
                 }
-                if (state is AddNewTaskLoadingFailureState) {
+                if (state is DeletingFailureTasksState) {
                   return SliverFillRemaining(
                     child: Center(
                       child: Text(
