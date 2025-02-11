@@ -6,6 +6,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
+import 'package:todo_app/features/task_derail/task_detail.dart';
+import 'package:todo_app/ui/theme/app_colors.dart';
+import 'package:todo_app/ui/theme/app_text_style.dart';
 import 'package:todo_app/ui/theme/app_theme.dart';
 
 @RoutePage()
@@ -25,13 +28,31 @@ class TaskDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
-        title: Center(
-          child: Text(
-            'Task Details',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: SizedBox(
+            width: 40,
+            child: ClipOval(
+              child: Container(
+                color: Colors.grey.withAlpha(20),
+                padding: EdgeInsets.all(4),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+
+                ),
+              ),
             ),
+          ),
+        ),
+        title: Text(
+          'Task Details',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -55,13 +76,20 @@ class TaskDetailScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 Row(
                   children: [
-                    SvgPicture.asset(
-                      'assets/svg/${task.taskType!.name}.svg',
-                      width: 24,
-                      height: 24,
-                      colorFilter: ColorFilter.mode(
-                        task.taskType!.color,
-                        BlendMode.srcIn,
+                    SizedBox(width: 8),
+                    ClipOval(
+                      child: Container(
+                        color: Colors.lightBlueAccent.withAlpha(40),
+                        padding: EdgeInsets.all(4),
+                        child: SvgPicture.asset(
+                          'assets/svg/${task.taskType!.name}.svg',
+                          width: 32,
+                          height: 32,
+                          colorFilter: ColorFilter.mode(
+                            task.taskType!.color,
+                            BlendMode.srcIn,
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(width: 24),
@@ -70,25 +98,37 @@ class TaskDetailScreen extends StatelessWidget {
                       Text(
                         DateFormat("dd MMMM, 'at' hh:mm a")
                             .format(task.taskDeadline!),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.red,
-                        ),
+                        style: AppTextStyle.dateProgressIndicator
+                            .copyWith(color: AppColors.dateProgressIndicator),
                       ),
                     ]
                   ],
                 ),
                 SizedBox(height: 32),
-                Text(
-                  'In Progress',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'In Progress',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      '60%',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 8),
+                InProgressIndicator(),
+                SizedBox(height: 8),
                 SizedBox(height: 20),
                 Text(
                   'Overview',
@@ -98,18 +138,29 @@ class TaskDetailScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 8),
                 SizedBox(
                   width: double.infinity,
                   height: 100,
-                  child: Text(
-                    task.taskDescription.toString(),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        task.taskDescription.toString(),
+                        style: AppTextStyle.description
+                            .copyWith(color: AppColors.dateProgressIndicator),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
+                      if (task.taskDescription.toString().length > 3)
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "...Read More",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 20),
@@ -182,8 +233,7 @@ class TaskDetailScreen extends StatelessWidget {
                   ),
                 ),
                 child: ImageFiltered(
-                  imageFilter:
-                      ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 ),
               ),
             ),

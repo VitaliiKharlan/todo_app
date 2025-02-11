@@ -74,7 +74,7 @@ class TaskScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         state.exception?.toString() ?? 'MAGA',
-                        style: AppTextStyle.defaultSemiBoldLargeTitle,
+                        style: AppTextStyle.defaultListCardMain,
                       ),
                     ),
                   );
