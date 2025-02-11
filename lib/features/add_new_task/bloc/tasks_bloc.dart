@@ -46,6 +46,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
               .where((task) => task.taskTitle != event.taskDelete)
               .toList();
 
+          updatedTasks.remove(event.taskDelete);
+
           print('Task deleted: ${event.taskDelete}');
           emit(LoadedTasksState(updatedTasks));
         } else {
