@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:radio_group_v2/radio_group_v2.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
 import 'package:todo_app/ui/theme/app_svg_images.dart';
@@ -22,6 +23,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       TextEditingController();
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
+
+  // final RadioGroupController myController = RadioGroupController();
   // final RadioGroupController myController = RadioGroupController();
 
   // passing a variable to a function
@@ -77,6 +80,13 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
     }
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   myController.value = TaskType.values.first.name;
+  //   _selectedTaskType = TaskType.values.first;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +151,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 8),
+            SizedBox(height: 20),
             Text(
               'Task Name',
               style: AppTextStyle.appBar.copyWith(
@@ -149,7 +159,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   fontWeight: FontWeight.w800,
                   color: Colors.black),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 20),
             TextField(
               controller: _controllerTaskTitle,
               decoration: InputDecoration(
@@ -164,7 +174,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 32),
             Text(
               'Category',
               style: AppTextStyle.appBar.copyWith(
@@ -173,35 +183,50 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   color: Colors.black),
             ),
             SizedBox(height: 20),
-            DropdownButton<TaskType>(
-              value: _selectedTaskType,
-              hint: const Text("Select Task Type"),
-              onChanged: (TaskType? newValue) {
-                setState(() {
-                  _selectedTaskType = newValue;
-                });
-              },
-              items: TaskType.values.map((TaskType type) {
-                return DropdownMenuItem<TaskType>(
-                  value: type,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: TaskType.values.take(5).map((TaskType type) {
+                return Expanded(
                   child: Row(
                     children: [
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: type.color,
-                          shape: BoxShape.circle,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _selectedTaskType == type
+                              ? Colors.blue
+                              : Colors.blue[100],
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                        ).copyWith(
+                          shape: WidgetStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _selectedTaskType = type;
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(type.name,
+                              style: TextStyle(color: _selectedTaskType == type ? Colors.white : Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Text(type.name),
+                      const SizedBox(width: 4),
                     ],
                   ),
                 );
               }).toList(),
             ),
-            SizedBox(height: 12),
+
+
+
+            SizedBox(height: 32),
             Text(
               'Date & Time',
               style: AppTextStyle.appBar.copyWith(
@@ -221,10 +246,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     icon: const Icon(Icons.calendar_today),
                     label: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      // Выровнять по левому краю
                       children: const [
-                        // Icon(Icons.access_time),
-                        SizedBox(width: 8), // Отступ между иконкой и текстом
+                        SizedBox(width: 8),
                         Text('Pick Time'),
                       ],
                     ),
@@ -249,10 +272,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     icon: const Icon(Icons.access_time),
                     label: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      // Выровнять по левому краю
                       children: const [
-                        // Icon(Icons.access_time),
-                        SizedBox(width: 8), // Отступ между иконкой и текстом
+                        SizedBox(width: 8),
                         Text('Pick Time'),
                       ],
                     ),
@@ -312,8 +333,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 ).copyWith(
                   shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),

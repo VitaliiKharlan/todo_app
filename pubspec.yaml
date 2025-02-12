@@ -19,6 +19,7 @@ dependencies:
   intl: ^0.19.0
 
   flutter_svg: ^2.0.17
+  radio_group_v2: ^3.3.0
 
   fleather: ^1.20.1
 
