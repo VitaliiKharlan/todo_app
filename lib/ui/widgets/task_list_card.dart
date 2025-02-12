@@ -54,10 +54,6 @@ class _TaskListCardState extends State<TaskListCard> {
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
 
-    // return GestureDetector(
-    //     onTap: () {
-    //       context.router.push(TaskDetailsRoute(task: widget.task));
-    //     },
 
     return GestureDetector(
       onTap: () {
@@ -66,7 +62,7 @@ class _TaskListCardState extends State<TaskListCard> {
             task: widget.task,
             onDelete: (task) {
               context.read<TasksBloc>().add(DeleteTasksEvent(task));
-              context.pop();
+              context.router.maybePop();
             },
           ),
         );

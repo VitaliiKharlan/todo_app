@@ -1,12 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
+import 'dart:ui';
+
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 import 'package:todo_app/features/task_derail/task_detail.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
@@ -82,8 +79,6 @@ class TaskDetailsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 onDelete(task);
-                // context.read<TasksBloc>().add(DeleteTasksEvent(task));
-                // Navigator.pop(context);
               },
             ),
           ],
