@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/features/settings/bloc/settings_bloc.dart';
-import 'package:todo_app/features/task/bloc/task_bloc.dart';
+import 'package:todo_app/router/router.dart';
 
-import '../../../router/router.dart';
-import '../../add_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -26,8 +25,9 @@ class HomeScreen extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => TasksBloc()),
-            BlocProvider(create: (context) => SettingsBloc()),
-            BlocProvider(create: (context) => TasksBloc()),
+            // BlocProvider(create: (context) => SettingsBloc()),
+            // BlocProvider(create: (context) => TasksBloc()),
+            // BlocProvider(create: (context) => TaskDetailsScreen()),
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
@@ -53,9 +53,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
             ),
-            //
-            // ),
-            //
           ),
         );
       },

@@ -3,26 +3,31 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 import 'package:todo_app/features/task_derail/task_detail.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
-import 'package:todo_app/ui/theme/app_theme.dart';
 
 @RoutePage()
-class TaskDetailScreen extends StatelessWidget {
-  const TaskDetailScreen({
+class TaskDetailsScreen extends StatelessWidget {
+  const TaskDetailsScreen({
     super.key,
     required this.task,
+    required this.onDelete,
   });
 
   final Task task;
 
+  final void Function(Task) onDelete;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -70,6 +75,17 @@ class TaskDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                onDelete(task);
+                // context.read<TasksBloc>().add(DeleteTasksEvent(task));
+                // Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
@@ -87,15 +103,10 @@ class TaskDetailScreen extends StatelessWidget {
               children: [
                 Text(
                   task.taskTitle,
-                  // style: AppTextStyle.defaultListCardMain
-                  //     .copyWith(fontSize: 32, fontWeight: FontWeight.w800),
                   style: AppTextStyle.appBar.copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: Colors.black),
-
-                  // style: themeData.textTheme.bodyLarge
-                  //     ?.copyWith(fontSize: 32, fontWeight: FontWeight.w800),
                 ),
                 SizedBox(height: 20),
                 Row(

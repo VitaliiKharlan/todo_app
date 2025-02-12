@@ -59,36 +59,50 @@ class SettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [TaskDetailScreen]
-class TaskDetailRoute extends PageRouteInfo<TaskDetailRouteArgs> {
-  TaskDetailRoute({Key? key, required Task task, List<PageRouteInfo>? children})
-    : super(
-        TaskDetailRoute.name,
-        args: TaskDetailRouteArgs(key: key, task: task),
-        initialChildren: children,
-      );
+/// [TaskDetailsScreen]
+class TaskDetailsRoute extends PageRouteInfo<TaskDetailsRouteArgs> {
+  TaskDetailsRoute({
+    Key? key,
+    required Task task,
+    required void Function(Task) onDelete,
+    List<PageRouteInfo>? children,
+  }) : super(
+         TaskDetailsRoute.name,
+         args: TaskDetailsRouteArgs(key: key, task: task, onDelete: onDelete),
+         initialChildren: children,
+       );
 
-  static const String name = 'TaskDetailRoute';
+  static const String name = 'TaskDetailsRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<TaskDetailRouteArgs>();
-      return TaskDetailScreen(key: args.key, task: args.task);
+      final args = data.argsAs<TaskDetailsRouteArgs>();
+      return TaskDetailsScreen(
+        key: args.key,
+        task: args.task,
+        onDelete: args.onDelete,
+      );
     },
   );
 }
 
-class TaskDetailRouteArgs {
-  const TaskDetailRouteArgs({this.key, required this.task});
+class TaskDetailsRouteArgs {
+  const TaskDetailsRouteArgs({
+    this.key,
+    required this.task,
+    required this.onDelete,
+  });
 
   final Key? key;
 
   final Task task;
 
+  final void Function(Task) onDelete;
+
   @override
   String toString() {
-    return 'TaskDetailRouteArgs{key: $key, task: $task}';
+    return 'TaskDetailsRouteArgs{key: $key, task: $task, onDelete: $onDelete}';
   }
 }
 

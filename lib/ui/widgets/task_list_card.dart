@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
 
 import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 import 'package:todo_app/router/router.dart';
@@ -52,9 +54,22 @@ class _TaskListCardState extends State<TaskListCard> {
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
 
+    // return GestureDetector(
+    //     onTap: () {
+    //       context.router.push(TaskDetailsRoute(task: widget.task));
+    //     },
+
     return GestureDetector(
       onTap: () {
-        context.router.push(TaskDetailRoute(task: widget.task));
+        context.router.push(
+          TaskDetailsRoute(
+            task: widget.task,
+            onDelete: (task) {
+              context.read<TasksBloc>().add(DeleteTasksEvent(task));
+              context.pop();
+            },
+          ),
+        );
       },
       child: BaseContainer(
         height: 120,

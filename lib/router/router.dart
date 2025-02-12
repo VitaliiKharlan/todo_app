@@ -34,7 +34,7 @@ class AppRouter extends RootStackRouter {
         ],
       ),
     AutoRoute(
-    page: TaskDetailRoute.page,
+    page: TaskDetailsRoute.page,
     path: '/task',
       ),
 
