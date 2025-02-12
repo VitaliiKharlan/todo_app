@@ -4,10 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui';
 
-import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
 import 'package:todo_app/features/task_derail/task_detail.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
+import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
 
 @RoutePage()
 class TaskDetailsScreen extends StatelessWidget {
@@ -194,78 +194,79 @@ class TaskDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                Text(
-                  'Members',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 56),
-                Text(
-                  'Tasks',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Expanded(
-                  child: CustomScrollView(
-                    slivers: [
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 16,
-                              ),
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.blueAccent,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                'Item ${index + 1}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            );
-                          },
-                          childCount: 4,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //     Text(
+                //       'Members',
+                //       style: theme.textTheme.bodySmall?.copyWith(
+                //         fontSize: 24,
+                //         fontWeight: FontWeight.w500,
+                //         color: Colors.black,
+                //       ),
+                //     ),
+                //     SizedBox(height: 56),
+                //     Text(
+                //       'Tasks',
+                //       style: theme.textTheme.bodySmall?.copyWith(
+                //         fontSize: 24,
+                //         fontWeight: FontWeight.w500,
+                //         color: Colors.black,
+                //       ),
+                //     ),
+                //     SizedBox(height: 20),
+                //     Expanded(
+                //       child: CustomScrollView(
+                //         slivers: [
+                //           SliverList(
+                //             delegate: SliverChildBuilderDelegate(
+                //               (context, index) {
+                //                 return Container(
+                //                   margin: const EdgeInsets.symmetric(
+                //                     vertical: 12,
+                //                     horizontal: 16,
+                //                   ),
+                //                   padding: const EdgeInsets.all(16),
+                //                   decoration: BoxDecoration(
+                //                     color: Colors.blueAccent,
+                //                     borderRadius: BorderRadius.circular(12),
+                //                   ),
+                //                   child: Text(
+                //                     'Item ${index + 1}',
+                //                     style: const TextStyle(
+                //                       color: Colors.white,
+                //                       fontSize: 18,
+                //                     ),
+                //                   ),
+                //                 );
+                //               },
+                //               childCount: 4,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // Positioned(
+                //   bottom: 0,
+                //   left: 0,
+                //   right: 0,
+                //   child: Container(
+                //     height: 96,
+                //     decoration: BoxDecoration(
+                //       gradient: LinearGradient(
+                //         begin: Alignment.topCenter,
+                //         end: Alignment.bottomCenter,
+                //         colors: [
+                //           Colors.white.withAlpha(80),
+                //           Colors.white.withAlpha(20),
+                //           Colors.white,
+                //         ],
+                //       ),
+                //     ),
+                //     child: ImageFiltered(
+                //       imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                //     ),
+                //   ),
               ],
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 96,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withAlpha(80),
-                      Colors.white.withAlpha(20),
-                      Colors.white,
-                    ],
-                  ),
-                ),
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                ),
-              ),
             ),
           ],
         ),

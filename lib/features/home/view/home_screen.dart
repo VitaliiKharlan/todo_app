@@ -4,7 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/router/router.dart';
 
-import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
       routes: [
         TaskRoute(theme: theme),
         SettingsRoute(),
-        AddNewTaskRoute(),
+        CreateNewTaskRoute(),
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.add),
-                  label: 'Add new task',
+                  label: 'Create new task',
                 ),
               ],
             ),

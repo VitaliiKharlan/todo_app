@@ -3,8 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
-import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
@@ -38,6 +38,7 @@ class TaskScreen extends StatelessWidget {
               pinned: true,
               snap: true,
               floating: true,
+              backgroundColor: Colors.transparent,
               title: Center(
                 child: Text(
                   'TODO',
@@ -102,11 +103,14 @@ class TaskScreen extends StatelessWidget {
                   );
                 }
                 return SliverFillRemaining(
-                  child: Center(
-                    child: Text(
-                      'Your task list is empty\nAdd a new task to get started',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.purple),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 400),
+                    child: Center(
+                      child: Text(
+                        'Your task list is empty\nCreate a new task to get started',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.purple),
+                      ),
                     ),
                   ),
                 );

@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app/features/add_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
-import 'package:todo_app/features/add_new_task/view/add_new_task_screen.dart';
+import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
 import 'package:todo_app/router/router.dart';
 
 import 'base_container.dart';

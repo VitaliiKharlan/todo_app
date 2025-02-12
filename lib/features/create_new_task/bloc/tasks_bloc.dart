@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../view/add_new_task_screen.dart';
+import '../view/create_new_task_screen.dart';
 
 part 'tasks_event.dart';
 

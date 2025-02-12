@@ -11,17 +11,17 @@
 part of 'router.dart';
 
 /// generated route for
-/// [AddNewTaskScreen]
-class AddNewTaskRoute extends PageRouteInfo<void> {
-  const AddNewTaskRoute({List<PageRouteInfo>? children})
-    : super(AddNewTaskRoute.name, initialChildren: children);
+/// [CreateNewTaskScreen]
+class CreateNewTaskRoute extends PageRouteInfo<void> {
+  const CreateNewTaskRoute({List<PageRouteInfo>? children})
+    : super(CreateNewTaskRoute.name, initialChildren: children);
 
-  static const String name = 'AddNewTaskRoute';
+  static const String name = 'CreateNewTaskRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const AddNewTaskScreen();
+      return const CreateNewTaskScreen();
     },
   );
 }
