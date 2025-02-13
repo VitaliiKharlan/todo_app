@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/ui/widgets/base_container.dart';
 
-class AddNewTaskButton extends StatelessWidget {
-  const AddNewTaskButton({
+class CreateTaskButton extends StatelessWidget {
+  const CreateTaskButton({
     super.key,
     required this.theme,
   });

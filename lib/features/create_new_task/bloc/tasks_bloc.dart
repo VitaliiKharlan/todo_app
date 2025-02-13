@@ -26,6 +26,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           print('Loaded Tasks State');
         }
         tasks.add(task);
+        // tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
 
         emit(LoadedTasksState(tasks));
       } catch (e) {

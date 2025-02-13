@@ -56,6 +56,7 @@ class TaskScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is LoadedTasksState) {
                   final tasks = state.tasks;
+                  tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
                   if (tasks.isEmpty) {
                     return SliverToBoxAdapter(
                       child: Center(

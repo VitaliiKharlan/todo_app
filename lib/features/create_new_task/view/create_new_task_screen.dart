@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:radio_group_v2/radio_group_v2.dart';
-import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
+import 'package:intl/intl.dart';
 
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
@@ -24,24 +24,61 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
 
-  // final RadioGroupController myController = RadioGroupController();
-  // final RadioGroupController myController = RadioGroupController();
+  //
+  // // hourly time selection
+  // int? _selectedHour;
+  //
+
+  //
+  // // hourly time selection
+  // List<String> hoursList = List.generate(24, (index) {
+  //   return index < 10 ? '0$index' : '$index';
+  // });
+  //
+
+  void _clearInputFields() {
+    _controllerTaskTitle.clear();
+    _controllerTaskDescription.clear();
+    setState(() {
+      _selectedDeadline = null;
+      _selectedTaskType = null;
+    });
+  }
 
   // passing a variable to a function
   void _addTodo(TasksBloc bloc) {
-    // final theme = Theme.of(context);
     final taskTitle = _controllerTaskTitle.text.trim();
-    final taskDescription = _controllerTaskDescription.text.trim();
-    final taskDeadline = _selectedDeadline;
     final taskType = _selectedTaskType;
+    final taskDeadline = _selectedDeadline;
+    final taskDescription = _controllerTaskDescription.text.trim();
+
     final tabsRouter = context.tabsRouter;
+
     if (taskTitle.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a task title')),
       );
       return;
     }
-    // bloc.add(AddNewTaskLoadedEvent(taskTitle,  taskDeadline, taskType));
+    if (taskType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task type')),
+      );
+      return;
+    }
+    if (taskDeadline == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task deadline')),
+      );
+      return;
+    }
+    if (taskDescription.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task description')),
+      );
+      return;
+    }
+
     bloc.add(LoadTasksEvent(
       taskTitle,
       taskDescription,
@@ -49,44 +86,57 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       taskType,
     ));
 
+    _clearInputFields();
+
     tabsRouter.setActiveIndex(0);
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _selectedDeadline ?? DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != _selectedDeadline) {
-      _selectedDeadline = picked;
+      setState(() {
+        _selectedDeadline = picked;
+      });
     }
   }
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.fromDateTime(DateTime.now()),
+      initialTime: _selectedDeadline != null
+          ? TimeOfDay.fromDateTime(_selectedDeadline!)
+          : TimeOfDay.now(),
     );
     if (picked != null) {
+      setState(() {
+        _selectedDeadline = DateTime(
+          _selectedDeadline!.year,
+          _selectedDeadline!.month,
+          _selectedDeadline!.day,
+          picked.hour,
+          picked.minute,
+        );
+      });
+    } else if (picked != null && _selectedDeadline != null) {
       final DateTime now = DateTime.now();
-      _selectedDeadline = DateTime(
-        now.year,
-        now.month,
-        now.day,
-        picked.hour,
-        picked.minute,
-      );
+      setState(() {
+        _selectedDeadline = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          picked.hour,
+          picked.minute,
+        );
+      });
+    } else {
+      print('super');
     }
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   myController.value = TaskType.values.first.name;
-  //   _selectedTaskType = TaskType.values.first;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -210,8 +260,12 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(type.name,
-                              style: TextStyle(color: _selectedTaskType == type ? Colors.white : Colors.black,
+                            Text(
+                              type.name,
+                              style: TextStyle(
+                                color: _selectedTaskType == type
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                             ),
                           ],
@@ -223,9 +277,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 );
               }).toList(),
             ),
-
-
-
             SizedBox(height: 32),
             Text(
               'Date & Time',
@@ -235,67 +286,99 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   color: Colors.black),
             ),
             SizedBox(height: 20),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () => _selectDate(context),
-                    icon: const Icon(Icons.calendar_today),
-                    label: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(width: 8),
-                        Text('Pick Time'),
-                      ],
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.white),
-                      foregroundColor:
-                          WidgetStatePropertyAll(Colors.black.withAlpha(60)),
-                      side: WidgetStatePropertyAll(
-                        BorderSide(
-                          color: Colors.grey.withAlpha(80),
-                          width: 2,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _selectDate(context),
+                      icon: const Icon(Icons.calendar_today),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 8),
+                          Text(
+                            _selectedDeadline == null
+                                ? 'Pick Date'
+                                : DateFormat('dd MMMM, EEEE')
+                                    .format(_selectedDeadline!),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                        foregroundColor:
+                            WidgetStatePropertyAll(Colors.black.withAlpha(60)),
+                        side: WidgetStatePropertyAll(
+                          BorderSide(
+                            color: Colors.grey.withAlpha(80),
+                            width: 2,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton.icon(
-                    onPressed: () => _selectTime(context),
-                    icon: const Icon(Icons.access_time),
-                    label: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(width: 8),
-                        Text('Pick Time'),
-                      ],
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.white),
-                      foregroundColor:
-                          WidgetStatePropertyAll(Colors.black.withAlpha(60)),
-                      side: WidgetStatePropertyAll(
-                        BorderSide(
-                          color: Colors.grey.withAlpha(80),
-                          width: 2,
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                      onPressed: () => _selectTime(context),
+                      icon: const Icon(Icons.access_time),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 8),
+                          Text(
+                            _selectedDeadline == null
+                                ? 'Pick Time'
+                                : DateFormat('HH:mm')
+                                    .format(_selectedDeadline!),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          //
+                          // // hourly time selection
+                          // DropdownButton<String>(
+                          //   value: _selectedHour == null
+                          //       ? null
+                          //       : _selectedHour.toString().padLeft(2, '0'),
+                          //   hint: Text('Select Hour'),
+                          //   items: hoursList.map((hour) {
+                          //     return DropdownMenuItem<String>(
+                          //       value: hour,
+                          //       child: Text(hour),
+                          //     );
+                          //   }).toList(),
+                          //   onChanged: _selectHour,
+                          // ),
+                          //
+                        ],
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                        foregroundColor:
+                            WidgetStatePropertyAll(Colors.black.withAlpha(60)),
+                        side: WidgetStatePropertyAll(
+                          BorderSide(
+                            color: Colors.grey.withAlpha(80),
+                            width: 2,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            if (_selectedDeadline != null) ...[
-              const SizedBox(height: 10),
-              Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
-            ],
+            // if (_selectedDeadline != null) ...[
+            //   const SizedBox(height: 10),
+            //   Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
+            // ],
             SizedBox(height: 20),
             Text(
               'Description',
@@ -307,8 +390,13 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
             SizedBox(height: 12),
             TextField(
               controller: _controllerTaskDescription,
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 28),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 24,
+                  horizontal: 8,
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderSide:
                       BorderSide(color: Colors.grey.withAlpha(80), width: 2),
