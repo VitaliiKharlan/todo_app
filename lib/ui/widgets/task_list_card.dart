@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-
-import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
+import 'package:todo_app/features/create_new_task/create_new_task.dart';
 import 'package:todo_app/router/router.dart';
-
 import 'base_container.dart';
 
 class TaskListCard extends StatefulWidget {
@@ -53,7 +52,6 @@ class _TaskListCardState extends State<TaskListCard> {
     final now = _currentTime;
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
-
 
     return GestureDetector(
       onTap: () {

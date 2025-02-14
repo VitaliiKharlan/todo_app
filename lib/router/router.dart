@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:todo_app/features/task_derail/task_detail.dart';
+import 'package:todo_app/features/task_derails/task_details.dart';
 
 import '../features/create_new_task/view/create_new_task_screen.dart';
 import '../features/home/view/home_screen.dart';

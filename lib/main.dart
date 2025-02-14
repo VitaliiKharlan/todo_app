@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-//
+
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
-import 'package:todo_app/features/task_derail/widgets/in_progress_indicator.dart';
 
 void main() async {
   runApp(const TodoApp());
@@ -26,6 +25,5 @@ class _TodoAppState extends State<TodoApp> {
       theme: themeData,
       routerConfig: _router.config(),
     );
-    // return InProgressIndicator();
   }
 }

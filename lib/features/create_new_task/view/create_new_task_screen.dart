@@ -167,7 +167,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         color: Colors.grey,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        AutoTabsRouter.of(context).setActiveIndex(0);
+                        // Navigator.pop(context);
                       },
                     ),
                   ),
@@ -191,245 +192,251 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          top: 12,
-          right: 20,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              'Task Name',
-              style: AppTextStyle.appBar.copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _controllerTaskTitle,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.grey.withAlpha(80), width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 20,
+                top: 12,
+                right: 20,
               ),
-            ),
-            SizedBox(height: 32),
-            Text(
-              'Category',
-              style: AppTextStyle.appBar.copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black),
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: TaskType.values.take(5).map((TaskType type) {
-                return Expanded(
-                  child: Row(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _selectedTaskType == type
-                              ? Colors.blue
-                              : Colors.blue[100],
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                        ).copyWith(
-                          shape: WidgetStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _selectedTaskType = type;
-                          });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              type.name,
-                              style: TextStyle(
-                                color: _selectedTaskType == type
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 32),
-            Text(
-              'Date & Time',
-              style: AppTextStyle.appBar.copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black),
-            ),
-            SizedBox(height: 20),
-            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _selectDate(context),
-                      icon: const Icon(Icons.calendar_today),
-                      label: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(width: 8),
-                          Text(
-                            _selectedDeadline == null
-                                ? 'Pick Date'
-                                : DateFormat('dd MMMM, EEEE')
-                                    .format(_selectedDeadline!),
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
+                  SizedBox(height: 20),
+                  Text(
+                    'Task Name',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _controllerTaskTitle,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                        BorderSide(color: Colors.grey.withAlpha(80), width: 2),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.white),
-                        foregroundColor:
-                            WidgetStatePropertyAll(Colors.black.withAlpha(60)),
-                        side: WidgetStatePropertyAll(
-                          BorderSide(
-                            color: Colors.grey.withAlpha(80),
-                            width: 2,
-                          ),
-                        ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: 200,
-                    height: 40,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _selectTime(context),
-                      icon: const Icon(Icons.access_time),
-                      label: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 8),
-                          Text(
-                            _selectedDeadline == null
-                                ? 'Pick Time'
-                                : DateFormat('HH:mm')
+                  SizedBox(height: 32),
+                  Text(
+                    'Category',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: TaskType.values.take(5).map((TaskType type) {
+                      return Expanded(
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: _selectedTaskType == type
+                                    ? Colors.blue
+                                    : Colors.blue[100],
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                              ).copyWith(
+                                shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _selectedTaskType = type;
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    type.name,
+                                    style: TextStyle(
+                                      color: _selectedTaskType == type
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 32),
+                  Text(
+                    'Date & Time',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 40,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _selectDate(context),
+                          icon: const Icon(Icons.calendar_today),
+                          label: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 8),
+                              Text(
+                                _selectedDeadline == null
+                                    ? 'Pick Date'
+                                    : DateFormat('dd MMMM, EEEE')
                                     .format(_selectedDeadline!),
-                            style: TextStyle(fontSize: 16),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
                           ),
-                          //
-                          // // hourly time selection
-                          // DropdownButton<String>(
-                          //   value: _selectedHour == null
-                          //       ? null
-                          //       : _selectedHour.toString().padLeft(2, '0'),
-                          //   hint: Text('Select Hour'),
-                          //   items: hoursList.map((hour) {
-                          //     return DropdownMenuItem<String>(
-                          //       value: hour,
-                          //       child: Text(hour),
-                          //     );
-                          //   }).toList(),
-                          //   onChanged: _selectHour,
-                          // ),
-                          //
-                        ],
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.white),
-                        foregroundColor:
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(Colors.white),
+                            foregroundColor:
                             WidgetStatePropertyAll(Colors.black.withAlpha(60)),
-                        side: WidgetStatePropertyAll(
-                          BorderSide(
-                            color: Colors.grey.withAlpha(80),
-                            width: 2,
+                            side: WidgetStatePropertyAll(
+                              BorderSide(
+                                color: Colors.grey.withAlpha(80),
+                                width: 2,
+                              ),
+                            ),
                           ),
                         ),
                       ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: 200,
+                        height: 40,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _selectTime(context),
+                          icon: const Icon(Icons.access_time),
+                          label: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: 8),
+                              Text(
+                                _selectedDeadline == null
+                                    ? 'Pick Time'
+                                    : DateFormat('HH:mm')
+                                    .format(_selectedDeadline!),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              //
+                              // // hourly time selection
+                              // DropdownButton<String>(
+                              //   value: _selectedHour == null
+                              //       ? null
+                              //       : _selectedHour.toString().padLeft(2, '0'),
+                              //   hint: Text('Select Hour'),
+                              //   items: hoursList.map((hour) {
+                              //     return DropdownMenuItem<String>(
+                              //       value: hour,
+                              //       child: Text(hour),
+                              //     );
+                              //   }).toList(),
+                              //   onChanged: _selectHour,
+                              // ),
+                              //
+                            ],
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(Colors.white),
+                            foregroundColor:
+                            WidgetStatePropertyAll(Colors.black.withAlpha(60)),
+                            side: WidgetStatePropertyAll(
+                              BorderSide(
+                                color: Colors.grey.withAlpha(80),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // if (_selectedDeadline != null) ...[
+                  //   const SizedBox(height: 10),
+                  //   Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
+                  // ],
+                  SizedBox(height: 20),
+                  Text(
+                    'Description',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 12),
+                  TextField(
+                    controller: _controllerTaskDescription,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 24,
+                        horizontal: 8,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                        BorderSide(color: Colors.grey.withAlpha(80), width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () => _addTodo(bloc),
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(fontSize: 18),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ).copyWith(
+                        shape: WidgetStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      child: Text('Create Task'),
                     ),
                   ),
                 ],
               ),
             ),
-            // if (_selectedDeadline != null) ...[
-            //   const SizedBox(height: 10),
-            //   Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
-            // ],
-            SizedBox(height: 20),
-            Text(
-              'Description',
-              style: AppTextStyle.appBar.copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black),
-            ),
-            SizedBox(height: 12),
-            TextField(
-              controller: _controllerTaskDescription,
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 24,
-                  horizontal: 8,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Colors.grey.withAlpha(80), width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: () => _addTodo(bloc),
-                style: ElevatedButton.styleFrom(
-                  textStyle: TextStyle(fontSize: 18),
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.blue,
-                ).copyWith(
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                child: Text('Create Task'),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+       
       ),
     );
   }

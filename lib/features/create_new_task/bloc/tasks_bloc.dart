@@ -35,7 +35,6 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
     });
 
-//
     on<DeleteTasksEvent>((event, emit) {
       try {
         print('Delete Event');
@@ -43,11 +42,17 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         if (state is LoadedTasksState) {
           final currentTasks = (state as LoadedTasksState).tasks;
 
-          final updatedTasks = currentTasks
-              .where((task) => task.taskTitle != event.taskDelete)
-              .toList();
+          //  first
+          // final updatedTasks =
+          //     currentTasks.remove(event.taskDelete) as List<Task>;
 
-          updatedTasks.remove(event.taskDelete);
+          // second
+          // List<Task> updatedTasks = List.of(currentTasks);
+          // updatedTasks.remove(event.taskDelete);
+
+          // third
+          final updatedTasks =
+              currentTasks.where((task) => task != event.taskDelete).toList();
 
           print('Task deleted: ${event.taskDelete}');
           emit(LoadedTasksState(updatedTasks));

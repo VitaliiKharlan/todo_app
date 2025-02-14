@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
@@ -22,7 +23,7 @@ class TaskScreen extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(
-          'assets/images/background_image.jpg',
+          AppImages.backgroundImage,
           fit: BoxFit.cover,
         ),
         BackdropFilter(
@@ -56,7 +57,8 @@ class TaskScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is LoadedTasksState) {
                   final tasks = state.tasks;
-                  tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
+                  tasks.sort(
+                      (a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
                   if (tasks.isEmpty) {
                     return SliverToBoxAdapter(
                       child: Center(
@@ -72,7 +74,14 @@ class TaskScreen extends StatelessWidget {
                         return Slidable(
                           key: ValueKey(index),
                           endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
+                            motion: Container(
+                              margin: EdgeInsets.only(bottom: 24),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const ScrollMotion(),
+                            ),
+                            extentRatio: 0.25,
                             children: [
                               SlidableAction(
                                 onPressed: (_) {
