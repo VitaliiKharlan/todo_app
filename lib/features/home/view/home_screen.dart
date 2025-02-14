@@ -25,9 +25,6 @@ class HomeScreen extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => TasksBloc()),
-            // BlocProvider(create: (context) => SettingsBloc()),
-            // BlocProvider(create: (context) => TasksBloc()),
-            // BlocProvider(create: (context) => TaskDetailsScreen()),
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,

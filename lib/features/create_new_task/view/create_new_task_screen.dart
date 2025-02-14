@@ -23,18 +23,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
 
-  //
-  // // hourly time selection
-  // int? _selectedHour;
-  //
-
-  //
-  // // hourly time selection
-  // List<String> hoursList = List.generate(24, (index) {
-  //   return index < 10 ? '0$index' : '$index';
-  // });
-  //
-
   void _clearInputFields() {
     _controllerTaskTitle.clear();
     _controllerTaskDescription.clear();
@@ -219,11 +207,16 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.grey.withAlpha(80), width: 2),
+                          color: Colors.grey.withAlpha(80),
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -318,7 +311,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                             backgroundColor:
                                 WidgetStatePropertyAll(Colors.white),
                             foregroundColor: WidgetStatePropertyAll(
-                                Colors.black.withAlpha(60)),
+                              Colors.black.withAlpha(60),
+                            ),
                             side: WidgetStatePropertyAll(
                               BorderSide(
                                 color: Colors.grey.withAlpha(80),
@@ -346,29 +340,14 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                                         .format(_selectedDeadline!),
                                 style: TextStyle(fontSize: 16),
                               ),
-                              //
-                              // // hourly time selection
-                              // DropdownButton<String>(
-                              //   value: _selectedHour == null
-                              //       ? null
-                              //       : _selectedHour.toString().padLeft(2, '0'),
-                              //   hint: Text('Select Hour'),
-                              //   items: hoursList.map((hour) {
-                              //     return DropdownMenuItem<String>(
-                              //       value: hour,
-                              //       child: Text(hour),
-                              //     );
-                              //   }).toList(),
-                              //   onChanged: _selectHour,
-                              // ),
-                              //
                             ],
                           ),
                           style: ButtonStyle(
                             backgroundColor:
                                 WidgetStatePropertyAll(Colors.white),
                             foregroundColor: WidgetStatePropertyAll(
-                                Colors.black.withAlpha(60)),
+                              Colors.black.withAlpha(60),
+                            ),
                             side: WidgetStatePropertyAll(
                               BorderSide(
                                 color: Colors.grey.withAlpha(80),
@@ -380,10 +359,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ],
                   ),
-                  // if (_selectedDeadline != null) ...[
-                  //   const SizedBox(height: 10),
-                  //   Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
-                  // ],
                   SizedBox(height: 20),
                 ],
               ),
@@ -413,11 +388,16 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.grey.withAlpha(80), width: 2),
+                          color: Colors.grey.withAlpha(80),
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),

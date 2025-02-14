@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:todo_app/features/task_details/task_details.dart';
 
-import '../features/create_new_task/view/create_new_task_screen.dart';
-import '../features/home/view/home_screen.dart';
-import '../features/settings/view/settings_screen.dart';
-import '../features/task/view/task_screen.dart';
+import 'package:auto_route/auto_route.dart';
+
+import 'package:todo_app/features/create_new_task/create_new_task.dart';
+import 'package:todo_app/features/home/home.dart';
+import 'package:todo_app/features/settings/settings.dart';
+import 'package:todo_app/features/task/task.dart';
+import 'package:todo_app/features/task_details/task_details.dart';
 
 part 'router.gr.dart';
 
