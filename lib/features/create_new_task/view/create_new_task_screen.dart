@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
@@ -79,7 +78,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       return;
     }
 
-    bloc.add(LoadTasksEvent(
+    bloc.add(AddTaskEvent(
       taskTitle,
       taskDescription,
       taskDeadline,
@@ -100,7 +99,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     );
     if (picked != null && picked != _selectedDeadline) {
       setState(() {
-        _selectedDeadline = picked;
+        _selectedDeadline = picked.copyWith(
+            hour: _selectedDeadline?.hour, minute: _selectedDeadline?.minute);
       });
     }
   }
@@ -143,6 +143,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     final bloc = BlocProvider.of<TasksBloc>(context);
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
@@ -168,7 +169,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                       onPressed: () {
                         AutoTabsRouter.of(context).setActiveIndex(0);
-                        // Navigator.pop(context);
                       },
                     ),
                   ),
@@ -192,15 +192,15 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
           ],
         ),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                top: 12,
-                right: 20,
-              ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: 20,
+          top: 12,
+          right: 20,
+        ),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,8 +218,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     controller: _controllerTaskTitle,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: Colors.grey.withAlpha(80), width: 2),
+                        borderSide: BorderSide(
+                            color: Colors.grey.withAlpha(80), width: 2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -248,7 +248,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                                 backgroundColor: _selectedTaskType == type
                                     ? Colors.blue
                                     : Colors.blue[100],
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                               ).copyWith(
                                 shape: WidgetStatePropertyAll(
                                   RoundedRectangleBorder(
@@ -308,15 +309,16 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                                 _selectedDeadline == null
                                     ? 'Pick Date'
                                     : DateFormat('dd MMMM, EEEE')
-                                    .format(_selectedDeadline!),
+                                        .format(_selectedDeadline!),
                                 style: TextStyle(fontSize: 16),
                               ),
                             ],
                           ),
                           style: ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(Colors.white),
-                            foregroundColor:
-                            WidgetStatePropertyAll(Colors.black.withAlpha(60)),
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.white),
+                            foregroundColor: WidgetStatePropertyAll(
+                                Colors.black.withAlpha(60)),
                             side: WidgetStatePropertyAll(
                               BorderSide(
                                 color: Colors.grey.withAlpha(80),
@@ -341,7 +343,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                                 _selectedDeadline == null
                                     ? 'Pick Time'
                                     : DateFormat('HH:mm')
-                                    .format(_selectedDeadline!),
+                                        .format(_selectedDeadline!),
                                 style: TextStyle(fontSize: 16),
                               ),
                               //
@@ -363,9 +365,10 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                             ],
                           ),
                           style: ButtonStyle(
-                            backgroundColor: WidgetStatePropertyAll(Colors.white),
-                            foregroundColor:
-                            WidgetStatePropertyAll(Colors.black.withAlpha(60)),
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.white),
+                            foregroundColor: WidgetStatePropertyAll(
+                                Colors.black.withAlpha(60)),
                             side: WidgetStatePropertyAll(
                               BorderSide(
                                 color: Colors.grey.withAlpha(80),
@@ -382,6 +385,15 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   //   Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
                   // ],
                   SizedBox(height: 20),
+                ],
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
                     'Description',
                     style: AppTextStyle.appBar.copyWith(
@@ -400,8 +412,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         horizontal: 8,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: Colors.grey.withAlpha(80), width: 2),
+                        borderSide: BorderSide(
+                            color: Colors.grey.withAlpha(80), width: 2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -411,8 +423,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 16),
+                  SizedBox(
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
@@ -431,12 +442,12 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       child: Text('Create Task'),
                     ),
                   ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
-          ),
-        ],
-       
+          ],
+        ),
       ),
     );
   }
@@ -481,18 +492,18 @@ extension TaskTypeExtension on TaskType {
     }
   }
 
-  Widget get icon {
+  String get iconPath {
     switch (this) {
       case TaskType.work:
-        return SvgPicture.asset(AppSvgImages.iconTaskTypeWork);
+        return AppSvgImages.iconTaskTypeWork;
       case TaskType.personal:
-        return SvgPicture.asset(AppSvgImages.iconTaskTypePersonal);
+        return AppSvgImages.iconTaskTypePersonal;
       case TaskType.shopping:
-        return SvgPicture.asset(AppSvgImages.iconTaskTypeShopping);
+        return AppSvgImages.iconTaskTypeShopping;
       case TaskType.sport:
-        return SvgPicture.asset(AppSvgImages.iconTaskTypeSport);
+        return AppSvgImages.iconTaskTypeSport;
       case TaskType.urgent:
-        return SvgPicture.asset(AppSvgImages.iconTaskTypeUrgent);
+        return AppSvgImages.iconTaskTypeUrgent;
     }
   }
 }
@@ -511,6 +522,10 @@ class Task {
   final TaskType? taskType;
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
+
+  double get progress {
+    return 60;
+  }
 
   @override
   String toString() {

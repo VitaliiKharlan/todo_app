@@ -55,7 +55,7 @@ class TaskScreen extends StatelessWidget {
             const SliverToBoxAdapter(child: SizedBox(height: 24)),
             BlocBuilder<TasksBloc, TasksState>(
               builder: (context, state) {
-                if (state is LoadedTasksState) {
+                if (state is TasksLoadedState) {
                   final tasks = state.tasks;
                   tasks.sort(
                       (a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
@@ -87,7 +87,7 @@ class TaskScreen extends StatelessWidget {
                                 onPressed: (_) {
                                   context
                                       .read<TasksBloc>()
-                                      .add(DeleteTasksEvent(deleteTask));
+                                      .add(DeleteTaskEvent(deleteTask));
                                 },
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
@@ -102,7 +102,7 @@ class TaskScreen extends StatelessWidget {
                         );
                       });
                 }
-                if (state is DeletingFailureTasksState) {
+                if (state is TasksDeletingFailureState) {
                   return SliverFillRemaining(
                     child: Center(
                       child: Text(

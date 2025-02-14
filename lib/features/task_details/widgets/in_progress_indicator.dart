@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 class InProgressIndicator extends StatefulWidget {
-  const InProgressIndicator({super.key});
+  const InProgressIndicator({
+    super.key,
+    required this.progress,
+  });
+
+  final double progress;
 
   @override
   _InProgressIndicatorState createState() => _InProgressIndicatorState();
 }
 
-final double _value = 60;
-final double _valuePercent = _value/100;
-
 class _InProgressIndicatorState extends State<InProgressIndicator> {
-
   @override
   Widget build(BuildContext context) {
+    final valuePercent = widget.progress / 100;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +30,7 @@ class _InProgressIndicatorState extends State<InProgressIndicator> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
-                  value: _valuePercent,
+                  value: valuePercent,
                   backgroundColor: Colors.lightBlueAccent[300],
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
                 ),
