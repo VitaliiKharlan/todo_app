@@ -10,7 +10,7 @@ import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
 import 'package:todo_app/router/router.dart';
 
-import 'base_container.dart';
+import '../../../ui/widgets/base_container.dart';
 
 class TaskListCard extends StatefulWidget {
   const TaskListCard({
@@ -54,14 +54,13 @@ class _TaskListCardState extends State<TaskListCard> {
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
 
-
     return GestureDetector(
       onTap: () {
         context.router.push(
           TaskDetailsRoute(
             task: widget.task,
             onDelete: (task) {
-              context.read<TasksBloc>().add(DeleteTasksEvent(task));
+              context.read<TasksBloc>().add(DeleteTaskEvent(task));
               context.router.maybePop();
             },
           ),

@@ -26,6 +26,5 @@ class _TodoAppState extends State<TodoApp> {
       theme: themeData,
       routerConfig: _router.config(),
     );
-    // return InProgressIndicator();
   }
 }

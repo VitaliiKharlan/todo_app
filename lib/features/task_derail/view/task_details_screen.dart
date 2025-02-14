@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
-import 'dart:ui';
-
+import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
 import 'package:todo_app/features/task_derail/task_detail.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
-import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
 
 @RoutePage()
 class TaskDetailsScreen extends StatelessWidget {
@@ -107,21 +105,22 @@ class TaskDetailsScreen extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(width: 8),
-                    ClipOval(
-                      child: Container(
-                        color: Colors.lightBlueAccent.withAlpha(40),
-                        padding: EdgeInsets.all(12),
-                        child: SvgPicture.asset(
-                          'assets/svg/${task.taskType!.name}.svg',
-                          width: 24,
-                          height: 24,
-                          colorFilter: ColorFilter.mode(
-                            task.taskType!.color,
-                            BlendMode.srcIn,
+                    if (task.taskType != null)
+                      ClipOval(
+                        child: Container(
+                          color: Colors.lightBlueAccent.withAlpha(40),
+                          padding: EdgeInsets.all(12),
+                          child: SvgPicture.asset(
+                            task.taskType!.iconPath,
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              task.taskType!.color,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ),
-                    ),
                     SizedBox(width: 24),
                     if (task.taskDeadline != null) ...[
                       SizedBox(height: 12),
@@ -147,7 +146,7 @@ class TaskDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '60%',
+                      '${task.progress}%',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
@@ -157,7 +156,9 @@ class TaskDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 8),
-                InProgressIndicator(),
+                InProgressIndicator(
+                  progress: task.progress,
+                ),
                 SizedBox(height: 8),
                 SizedBox(height: 20),
                 Text(
@@ -169,30 +170,31 @@ class TaskDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  height: 100,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        task.taskDescription.toString(),
-                        style: AppTextStyle.description
-                            .copyWith(color: AppColors.dateProgressIndicator),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                      if (task.taskDescription.toString().length > 3)
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "...Read More",
-                            style: TextStyle(color: Colors.blue),
-                          ),
+                if (task.taskDescription != null)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 100,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          task.taskDescription ?? '',
+                          style: AppTextStyle.description
+                              .copyWith(color: AppColors.dateProgressIndicator),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
                         ),
-                    ],
+                        // if ((task.taskDescription??'').length > 3)
+                        //   TextButton(
+                        //     onPressed: () {},
+                        //     child: Text(
+                        //       "...Read More",
+                        //       style: TextStyle(color: Colors.blue),
+                        //     ),
+                        //   ),
+                      ],
+                    ),
                   ),
-                ),
                 SizedBox(height: 20),
                 //     Text(
                 //       'Members',

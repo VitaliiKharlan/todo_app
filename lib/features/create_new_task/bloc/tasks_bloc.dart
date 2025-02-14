@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../view/create_new_task_screen.dart';
 
 part 'tasks_event.dart';
-
 part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   TasksBloc() : super(InitialTasksState()) {
-    on<LoadTasksEvent>((event, emit) async {
+    on<AddTaskEvent>((event, emit) async {
       try {
         print('Load Event');
 
@@ -20,15 +19,15 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           taskType: event.taskType,
         );
 
-        if (state is LoadedTasksState) {
-          final currentTasks = (state as LoadedTasksState).tasks;
+        if (state is TasksLoadedState) {
+          final currentTasks = (state as TasksLoadedState).tasks;
           tasks.addAll(currentTasks);
           print('Loaded Tasks State');
         }
         tasks.add(task);
         // tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
 
-        emit(LoadedTasksState(tasks));
+        emit(TasksLoadedState(tasks));
       } catch (e) {
         print('Error adding task: $e');
         emit(DeletingFailureTasksState(e.toString()));
@@ -36,21 +35,15 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     });
 
 //
-    on<DeleteTasksEvent>((event, emit) {
+    on<DeleteTaskEvent>((event, emit) {
       try {
         print('Delete Event');
 
-        if (state is LoadedTasksState) {
-          final currentTasks = (state as LoadedTasksState).tasks;
-
-          final updatedTasks = currentTasks
-              .where((task) => task.taskTitle != event.taskDelete)
-              .toList();
-
-          updatedTasks.remove(event.taskDelete);
-
+        if (state is TasksLoadedState) {
+          final currentTasks = (state as TasksLoadedState).tasks;
+          currentTasks.remove(event.taskDelete);
           print('Task deleted: ${event.taskDelete}');
-          emit(LoadedTasksState(updatedTasks));
+          emit(TasksLoadedState(currentTasks));
         } else {
           print('No tasks to delete.');
           emit(DeletingFailureTasksState('No tasks available to delete.'));

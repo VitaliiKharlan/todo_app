@@ -7,8 +7,8 @@ final class InitialTasksState extends TasksState {}
 
 class AddNewTaskLoadingState extends TasksState {}
 
-class LoadedTasksState extends TasksState {
-  LoadedTasksState(
+class TasksLoadedState extends TasksState {
+  TasksLoadedState(
     this.tasks,
   );
 
@@ -23,18 +23,10 @@ class LoadingFailureTasksState extends TasksState {
   final Object? exception;
 }
 
-class DeletedTasksState extends TasksState {
-  DeletedTasksState(
-      this.tasksDelete,
-      );
-
-  final List<String> tasksDelete;
-}
-
 class DeletingFailureTasksState extends TasksState {
   DeletingFailureTasksState(
-      this.exception,
-      );
+    this.exception,
+  );
 
   final Object? exception;
 }
