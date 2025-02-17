@@ -503,11 +503,37 @@ class Task {
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
 
+  // late final DateTime taskCreatedAt = DateTime.now();
+
   double get progress {
     if (taskDeadline == null) return 100;
     double progress = TaskCurrentTimeProgressIndicator.calculateProgress(
         taskCreatedAt, taskDeadline!);
     return progress;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'taskTitle': taskTitle,
+      'taskDescription': taskDescription,
+      'taskType': taskType,
+      'taskDeadline': taskDeadline?.toIso8601String(),
+      'taskCreatedAt': taskCreatedAt.toIso8601String(),
+    };
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      taskTitle: map['taskTitle'],
+      taskDescription: map['taskDescription'],
+      taskType: map['taskType'],
+      taskDeadline: map['taskDeadline'] != null
+          ? DateTime.parse(map['taskDeadline'])
+          : null,
+      createdAt: map['taskCreatedAt'] != null
+          ? DateTime.parse(map['taskCreatedAt'])
+          : null,
+    );
   }
 
   @override
