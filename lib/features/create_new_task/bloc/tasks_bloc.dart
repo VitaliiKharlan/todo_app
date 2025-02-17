@@ -47,10 +47,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
       tasks.add(newTask);
 
-      await taskRepository.addTask(newTask.toMap());
+
       emit(TasksLoadedState(tasks));
-    } catch (e) {
-      print('Error adding task: $e');
+      await taskRepository.addTask(newTask.toMap());
+    } catch (e,s) {
+      print('Error adding task: $e $s');
       emit(TasksDeletingFailureState(e.toString()));
     }
   }

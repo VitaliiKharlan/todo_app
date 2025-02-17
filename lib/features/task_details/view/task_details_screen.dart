@@ -161,8 +161,8 @@ class TaskDetailsScreen extends StatelessWidget {
                 SizedBox(height: 8),
                 // InProgressIndicator(),
                 InProgressIndicator(
-                    progress: task.progress,
-                    ),
+                  progress: task.progress,
+                ),
                 SizedBox(height: 8),
                 SizedBox(height: 20),
                 Text(

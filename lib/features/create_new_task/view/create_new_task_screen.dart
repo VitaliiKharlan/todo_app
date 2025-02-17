@@ -486,6 +486,10 @@ extension TaskTypeExtension on TaskType {
         return AppSvgImages.iconTaskTypeUrgent;
     }
   }
+
+  static TaskType fromString(String type) {
+    return TaskType.values.firstWhere((e) => e.name == type);
+  }
 }
 
 class Task {
@@ -516,7 +520,7 @@ class Task {
     return {
       'taskTitle': taskTitle,
       'taskDescription': taskDescription,
-      'taskType': taskType,
+      'taskType': taskType?.name,
       'taskDeadline': taskDeadline?.toIso8601String(),
       'taskCreatedAt': taskCreatedAt.toIso8601String(),
     };
@@ -526,7 +530,10 @@ class Task {
     return Task(
       taskTitle: map['taskTitle'],
       taskDescription: map['taskDescription'],
-      taskType: map['taskType'],
+      // taskType: TaskType.work,
+      taskType: map['taskType'] != null
+          ? TaskTypeExtension.fromString(map['taskType'])
+          : null,
       taskDeadline: map['taskDeadline'] != null
           ? DateTime.parse(map['taskDeadline'])
           : null,
