@@ -1,9 +1,8 @@
 part of 'tasks_bloc.dart';
 
-// @immutable
+@immutable
 sealed class TasksEvent {}
 
-//
 class LoadTasksEvent extends TasksEvent {}
 
 class AddTaskEvent extends TasksEvent {

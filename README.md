@@ -23,7 +23,6 @@ flutter pub run flutter_launcher_icons
 # how to run build_runner
 
 flutter packages pub run build_runner watch
-flutter pub run build_runner build --delete-conflicting-outputs // Deprecated
 dart run build_runner build --delete-conflicting-outputs
 
 

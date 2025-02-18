@@ -1,6 +1,6 @@
 part of 'tasks_bloc.dart';
 
-// @immutable
+@immutable
 sealed class TasksState {}
 
 final class InitialTasksState extends TasksState {}

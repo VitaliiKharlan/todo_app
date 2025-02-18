@@ -20,7 +20,6 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -120,7 +119,7 @@ class TaskScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         'Your task list is empty\n'
-                            'Create a new task to get started',
+                        'Create a new task to get started',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.purple),
                       ),
