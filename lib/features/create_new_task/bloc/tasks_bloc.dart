@@ -1,9 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/data/repositories/task_repository.dart';
+import 'package:todo_app/features/create_new_task/data/repositories/task_repository.dart';
 import 'package:todo_app/features/create_new_task/view/create_new_task_screen.dart';
 
 part 'tasks_event.dart';
-
 part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {

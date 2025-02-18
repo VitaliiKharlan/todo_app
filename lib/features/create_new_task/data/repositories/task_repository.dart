@@ -1,4 +1,4 @@
-import 'package:todo_app/data/task_database.dart';
+import 'package:todo_app/features/create_new_task/data/task_database.dart';
 
 class TaskRepository {
   final TaskDatabase _taskDatabase = TaskDatabase();
@@ -11,10 +11,6 @@ class TaskRepository {
     final records = await _taskDatabase.getAllTasks();
     return records.map((snapshot) {
       final task = snapshot.value;
-
-      print('Tasks loaded: ${records.map((record) => record.value)}');
-
-      task['id'] = snapshot.key;
       return task;
     }).toList();
   }
