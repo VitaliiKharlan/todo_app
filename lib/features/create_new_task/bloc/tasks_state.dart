@@ -15,16 +15,16 @@ class TasksLoadedState extends TasksState {
   final List<Task> tasks;
 }
 
-class LoadingFailureTasksState extends TasksState {
-  LoadingFailureTasksState(
+class TasksLoadingFailureState extends TasksState {
+  TasksLoadingFailureState(
     this.exception,
   );
 
   final Object? exception;
 }
 
-class DeletingFailureTasksState extends TasksState {
-  DeletingFailureTasksState(
+class TasksDeletingFailureState extends TasksState {
+  TasksDeletingFailureState(
     this.exception,
   );
 

@@ -1,8 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
@@ -21,18 +22,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       TextEditingController();
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
-
-  //
-  // // hourly time selection
-  // int? _selectedHour;
-  //
-
-  //
-  // // hourly time selection
-  // List<String> hoursList = List.generate(24, (index) {
-  //   return index < 10 ? '0$index' : '$index';
-  // });
-  //
 
   void _clearInputFields() {
     _controllerTaskTitle.clear();
@@ -167,7 +156,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         color: Colors.grey,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        AutoTabsRouter.of(context).setActiveIndex(0);
                       },
                     ),
                   ),
@@ -218,11 +207,16 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.grey.withAlpha(80), width: 2),
+                          color: Colors.grey.withAlpha(80),
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -317,7 +311,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                             backgroundColor:
                                 WidgetStatePropertyAll(Colors.white),
                             foregroundColor: WidgetStatePropertyAll(
-                                Colors.black.withAlpha(60)),
+                              Colors.black.withAlpha(60),
+                            ),
                             side: WidgetStatePropertyAll(
                               BorderSide(
                                 color: Colors.grey.withAlpha(80),
@@ -345,29 +340,14 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                                         .format(_selectedDeadline!),
                                 style: TextStyle(fontSize: 16),
                               ),
-                              //
-                              // // hourly time selection
-                              // DropdownButton<String>(
-                              //   value: _selectedHour == null
-                              //       ? null
-                              //       : _selectedHour.toString().padLeft(2, '0'),
-                              //   hint: Text('Select Hour'),
-                              //   items: hoursList.map((hour) {
-                              //     return DropdownMenuItem<String>(
-                              //       value: hour,
-                              //       child: Text(hour),
-                              //     );
-                              //   }).toList(),
-                              //   onChanged: _selectHour,
-                              // ),
-                              //
                             ],
                           ),
                           style: ButtonStyle(
                             backgroundColor:
                                 WidgetStatePropertyAll(Colors.white),
                             foregroundColor: WidgetStatePropertyAll(
-                                Colors.black.withAlpha(60)),
+                              Colors.black.withAlpha(60),
+                            ),
                             side: WidgetStatePropertyAll(
                               BorderSide(
                                 color: Colors.grey.withAlpha(80),
@@ -379,10 +359,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ],
                   ),
-                  // if (_selectedDeadline != null) ...[
-                  //   const SizedBox(height: 10),
-                  //   Text('Selected Deadline: ${_selectedDeadline!.toLocal()}')
-                  // ],
                   SizedBox(height: 20),
                 ],
               ),
@@ -390,8 +366,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
             SliverFillRemaining(
               hasScrollBody: false,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Description',
@@ -412,11 +388,16 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.grey.withAlpha(80), width: 2),
+                          color: Colors.grey.withAlpha(80),
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red, width: 2),
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
@@ -522,12 +503,59 @@ class Task {
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
 
+  // late final DateTime taskCreatedAt = DateTime.now();
+
   double get progress {
-    return 100;
+    if (taskDeadline == null) return 100;
+    double progress = TaskCurrentTimeProgressIndicator.calculateProgress(
+        taskCreatedAt, taskDeadline!);
+    return progress;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'taskTitle': taskTitle,
+      'taskDescription': taskDescription,
+      'taskType': taskType,
+      'taskDeadline': taskDeadline?.toIso8601String(),
+      'taskCreatedAt': taskCreatedAt.toIso8601String(),
+    };
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      taskTitle: map['taskTitle'],
+      taskDescription: map['taskDescription'],
+      taskType: map['taskType'],
+      taskDeadline: map['taskDeadline'] != null
+          ? DateTime.parse(map['taskDeadline'])
+          : null,
+      createdAt: map['taskCreatedAt'] != null
+          ? DateTime.parse(map['taskCreatedAt'])
+          : null,
+    );
   }
 
   @override
   String toString() {
     return 'Task(title: $taskTitle)';
+  }
+}
+
+class TaskCurrentTimeProgressIndicator {
+  static double calculateProgress(
+      DateTime taskCreatedAt, DateTime taskDeadline) {
+    final DateTime now = DateTime.now();
+
+    if (now.isBefore(taskCreatedAt)) return 0.0;
+    if (now.isAfter(taskDeadline)) return 100.0;
+
+    final Duration totalDuration = taskDeadline.difference(taskCreatedAt);
+    final Duration elapsedDuration = now.difference(taskCreatedAt);
+
+    double progress =
+        (elapsedDuration.inMilliseconds / totalDuration.inMilliseconds) * 100;
+
+    return double.parse(progress.toStringAsFixed(2));
   }
 }

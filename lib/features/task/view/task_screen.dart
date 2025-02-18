@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/task/task.dart';
 import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
@@ -18,11 +20,12 @@ class TaskScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final theme = Theme.of(context);
     return Stack(
       fit: StackFit.expand,
       children: [
         Image.asset(
-          'assets/images/background_image.jpg',
+          AppImages.backgroundImage,
           fit: BoxFit.cover,
         ),
         BackdropFilter(
@@ -65,7 +68,7 @@ class TaskScreen extends StatelessWidget {
                       ),
                     );
                   }
-                  print(state.tasks);
+
                   return SliverList.builder(
                       itemCount: state.tasks.length,
                       itemBuilder: (context, index) {
@@ -73,7 +76,14 @@ class TaskScreen extends StatelessWidget {
                         return Slidable(
                           key: ValueKey(index),
                           endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
+                            motion: Container(
+                              margin: EdgeInsets.only(bottom: 24),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const ScrollMotion(),
+                            ),
+                            extentRatio: 0.25,
                             children: [
                               SlidableAction(
                                 onPressed: (_) {
@@ -94,7 +104,7 @@ class TaskScreen extends StatelessWidget {
                         );
                       });
                 }
-                if (state is DeletingFailureTasksState) {
+                if (state is TasksDeletingFailureState) {
                   return SliverFillRemaining(
                     child: Center(
                       child: Text(
@@ -109,7 +119,8 @@ class TaskScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 400),
                     child: Center(
                       child: Text(
-                        'Your task list is empty\nCreate a new task to get started',
+                        'Your task list is empty\n'
+                            'Create a new task to get started',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.purple),
                       ),
