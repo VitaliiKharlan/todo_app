@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:todo_app/features/create_new_task/data/task_database.dart';
 
 class TaskRepository {
@@ -12,7 +13,7 @@ class TaskRepository {
     return records.map((snapshot) {
       final task = snapshot.value;
 
-      print('Tasks loaded: ${records.map((record) => record.value)}');
+      debugPrint('Tasks loaded: ${records.map((record) => record.value)}');
 
       task['id'] = snapshot.key;
       return task;

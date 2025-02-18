@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/create_new_task/widgets/location_search_autocomplete.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
@@ -128,6 +129,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _controllerLocationSearchAutocomplete = TextEditingController();
     final bloc = BlocProvider.of<TasksBloc>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -403,6 +405,50 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
+                  Text(
+                    'Search Auto Complete',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 12),
+              TextField(
+                controller: _controllerLocationSearchAutocomplete,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 8,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey.withAlpha(80),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  hintText: 'Search place',
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LocationSearchAutocomplete(),
+                    ),
+                  );
+                },
+                onChanged: (value) {},
+              ),
+                  SizedBox(height: 20),
+
                   SizedBox(
                     width: double.infinity,
                     height: 56,
