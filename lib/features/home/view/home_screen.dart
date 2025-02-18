@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/data/repositories/task_repository.dart';
 
+import 'package:todo_app/features/create_new_task/data/repositories/task_repository.dart';
 import 'package:todo_app/router/router.dart';
-
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
 @RoutePage()
@@ -17,7 +16,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
 
     return AutoTabsRouter(
       routes: [
@@ -34,7 +32,6 @@ class HomeScreen extends StatelessWidget {
                   ..add(
                     LoadTasksEvent(),
                   )),
-            // BlocProvider(create: (context) => TasksBloc(ta: taskRepository)..add(LoadTasksEvent()),
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,

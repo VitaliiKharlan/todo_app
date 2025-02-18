@@ -1,4 +1,4 @@
-import 'package:todo_app/data/task_database.dart';
+import 'package:todo_app/features/create_new_task/data/task_database.dart';
 
 class TaskRepository {
   final TaskDatabase _taskDatabase = TaskDatabase();
