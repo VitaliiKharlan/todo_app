@@ -1,4 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+
+import 'package:uuid/uuid.dart';
 
 import 'package:todo_app/ui/theme/app_svg_images.dart';
 
@@ -61,15 +64,17 @@ extension TaskTypeExtension on TaskType {
   }
 }
 
-class Task {
+class Task extends Equatable {
   Task({
     required this.taskTitle,
     this.taskDescription,
     this.taskType,
     DateTime? createdAt,
     this.taskDeadline,
-  }) : taskCreatedAt = createdAt ?? DateTime.now();
+  })  : taskCreatedAt = createdAt ?? DateTime.now(),
+        taskId = Uuid().v4();
 
+  final String taskId;
   final String taskTitle;
   final String? taskDescription;
   final TaskType? taskType;
@@ -87,11 +92,13 @@ class Task {
 
   Map<String, dynamic> toMap() {
     return {
+      'taskId': taskId,
       'taskTitle': taskTitle,
       'taskDescription': taskDescription,
       'taskType': taskType?.name,
-      'taskDeadline': taskDeadline?.toIso8601String(),
       'taskCreatedAt': taskCreatedAt.toIso8601String(),
+      'taskDeadline': taskDeadline?.toIso8601String(),
+
     };
   }
 
@@ -103,14 +110,23 @@ class Task {
       taskType: map['taskType'] != null
           ? TaskTypeExtension.fromString(map['taskType'])
           : null,
-      taskDeadline: map['taskDeadline'] != null
-          ? DateTime.parse(map['taskDeadline'])
-          : null,
       createdAt: map['taskCreatedAt'] != null
           ? DateTime.parse(map['taskCreatedAt'])
           : null,
+      taskDeadline: map['taskDeadline'] != null
+          ? DateTime.parse(map['taskDeadline'])
+          : null,
+
     );
   }
+
+  @override
+  List<Object?> get props => [
+        taskTitle,
+        taskDescription,
+        taskDeadline,
+        taskType,
+      ];
 
   @override
   String toString() {

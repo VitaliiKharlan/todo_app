@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/create_new_task/widgets/location_search_autocomplete.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
@@ -128,6 +129,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final bloc = BlocProvider.of<TasksBloc>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -402,6 +404,95 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ),
                   ),
+                  //
+                  //
+                  SizedBox(height: 20),
+                  Text(
+                    'Search Auto Complete',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 12),
+                  SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                      onPressed: () => {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => LocationSearchAutocomplete(),
+                          ),
+                        ),
+                      },
+                      icon: const Icon(Icons.location_city),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 8),
+                          Text(
+                            'Search Place',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Colors.white),
+                        foregroundColor: WidgetStateProperty.all(
+                          Colors.black.withAlpha(60),
+                        ),
+                        side: WidgetStateProperty.all(
+                          BorderSide(
+                            color: Colors.grey.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        overlayColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        shadowColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        elevation: WidgetStateProperty.all<double>(0.1),
+                      ),
+                    ),
+                  ),
+
+                  // TextField(
+                  //   controller: _controllerLocationSearchAutocomplete,
+                  //   maxLines: null,
+                  //   keyboardType: TextInputType.multiline,
+                  //   decoration: InputDecoration(
+                  //     contentPadding: EdgeInsets.symmetric(
+                  //       vertical: 24,
+                  //       horizontal: 8,
+                  //     ),
+                  //     enabledBorder: OutlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //         color: Colors.grey.withAlpha(80),
+                  //         width: 2,
+                  //       ),
+                  //       borderRadius: BorderRadius.circular(20),
+                  //     ),
+                  //     focusedBorder: OutlineInputBorder(
+                  //       borderSide: BorderSide(
+                  //         color: Colors.red,
+                  //         width: 2,
+                  //       ),
+                  //       borderRadius: BorderRadius.circular(20),
+                  //     ),
+                  //     hintText: 'Search place',
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (context) => LocationSearchAutocomplete(),
+                  //       ),
+                  //     );
+                  //   },
+                  //   onChanged: (value) {},
+                  // ),
+                  //
+                  //
                   SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
