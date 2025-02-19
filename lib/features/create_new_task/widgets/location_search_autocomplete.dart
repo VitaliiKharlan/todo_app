@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:todo_app/features/create_new_task/create_new_task.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_suggestion.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
-import 'package:todo_app/features/create_new_task/widgets/show_the_city.dart';
 
+// @RoutePage()
 class LocationSearchAutocomplete extends StatefulWidget {
   const LocationSearchAutocomplete({
     super.key,
@@ -32,6 +33,10 @@ class _LocationSearchAutocompleteState
   _onChange() async {
     final suggestions = await repository
         .fetchLocationSuggestions(controllerLocationSearchAutocomplete.text);
+
+    await Future.delayed(Duration(seconds: 1));
+    if (!mounted) return;
+
     setState(() {
       listOfLocation = List<LocationSuggestion>.from(suggestions);
     });
@@ -143,13 +148,12 @@ class _LocationSearchAutocompleteState
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
-                        // Передаем выбранный город на экран ShowTheCity
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ShowTheCity(city: listOfLocation[index].description),
-                          ),
-                        );
+                        Navigator.of(context)
+                            .pop(listOfLocation[index].description);
                       },
+                      // context.router
+                      //     .maybePop(listOfLocation[index].description);
+                      // },
                       child: ListTile(
                         title: Text(
                           listOfLocation[index].description,

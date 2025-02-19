@@ -11,12 +11,14 @@ class AddTaskEvent extends TasksEvent {
     this.taskDescription,
     this.taskDeadline,
     this.taskType,
+    this.taskLocation,
   );
 
   final String taskTitle;
   final String? taskDescription;
   final DateTime? taskDeadline;
   final TaskType? taskType;
+  final String? taskLocation;
 }
 
 class DeleteTaskEvent extends TasksEvent {

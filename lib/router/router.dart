@@ -35,10 +35,15 @@ class AppRouter extends RootStackRouter {
           ),
         ],
       ),
+      // AutoRoute(
+      //   page: LocationSearchAutocompleteRoute.page, // Добавлен новый маршрут
+      //   path: '/location_search_autocomplete',
+      // ),
       AutoRoute(
         page: TaskDetailsRoute.page,
         path: '/task',
       ),
+
     ];
   }
 }

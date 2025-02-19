@@ -69,6 +69,7 @@ class Task extends Equatable {
     required this.taskTitle,
     this.taskDescription,
     this.taskType,
+    this.taskLocation,
     DateTime? createdAt,
     this.taskDeadline,
   })  : taskCreatedAt = createdAt ?? DateTime.now(),
@@ -78,6 +79,7 @@ class Task extends Equatable {
   final String taskTitle;
   final String? taskDescription;
   final TaskType? taskType;
+  final String? taskLocation;
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
 
@@ -96,9 +98,9 @@ class Task extends Equatable {
       'taskTitle': taskTitle,
       'taskDescription': taskDescription,
       'taskType': taskType?.name,
+      'taskLocation': taskLocation,
       'taskCreatedAt': taskCreatedAt.toIso8601String(),
       'taskDeadline': taskDeadline?.toIso8601String(),
-
     };
   }
 
@@ -110,13 +112,13 @@ class Task extends Equatable {
       taskType: map['taskType'] != null
           ? TaskTypeExtension.fromString(map['taskType'])
           : null,
+      taskLocation: map['taskLocation'],
       createdAt: map['taskCreatedAt'] != null
           ? DateTime.parse(map['taskCreatedAt'])
           : null,
       taskDeadline: map['taskDeadline'] != null
           ? DateTime.parse(map['taskDeadline'])
           : null,
-
     );
   }
 
@@ -126,6 +128,7 @@ class Task extends Equatable {
         taskDescription,
         taskDeadline,
         taskType,
+        taskLocation,
       ];
 
   @override

@@ -7,11 +7,14 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/widgets/location_search_autocomplete.dart';
+import 'package:todo_app/features/create_new_task/widgets/show_the_city.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
 class CreateNewTaskScreen extends StatefulWidget {
-  const CreateNewTaskScreen({super.key});
+  const CreateNewTaskScreen({
+    super.key,
+  });
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
@@ -21,8 +24,10 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   final TextEditingController _controllerTaskTitle = TextEditingController();
   final TextEditingController _controllerTaskDescription =
       TextEditingController();
+
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
+  String? _taskLocation;
 
   void _clearInputFields() {
     _controllerTaskTitle.clear();
@@ -39,6 +44,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     final taskType = _selectedTaskType;
     final taskDeadline = _selectedDeadline;
     final taskDescription = _controllerTaskDescription.text.trim();
+    final taskLocation = _taskLocation;
 
     final tabsRouter = context.tabsRouter;
 
@@ -72,6 +78,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       taskDescription,
       taskDeadline,
       taskType,
+      taskLocation,
     ));
 
     _clearInputFields();
@@ -129,7 +136,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final bloc = BlocProvider.of<TasksBloc>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -425,6 +431,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                             builder: (context) => LocationSearchAutocomplete(),
                           ),
                         ),
+                      // context.router.push(LocationSearchAutocompleteRoute());
+                        // context.router.pop(ShowTheCity(city: ))
                       },
                       icon: const Icon(Icons.location_city),
                       label: Row(
@@ -432,7 +440,11 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         children: [
                           SizedBox(width: 8),
                           Text(
-                            'Search Place',
+                            // 'Search Place',
+                            // _taskLocation.toString(),
+                            _taskLocation == null
+                                ? 'Search Place'
+                                : _taskLocation.toString(),
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
@@ -456,43 +468,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ),
                   ),
-
-                  // TextField(
-                  //   controller: _controllerLocationSearchAutocomplete,
-                  //   maxLines: null,
-                  //   keyboardType: TextInputType.multiline,
-                  //   decoration: InputDecoration(
-                  //     contentPadding: EdgeInsets.symmetric(
-                  //       vertical: 24,
-                  //       horizontal: 8,
-                  //     ),
-                  //     enabledBorder: OutlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Colors.grey.withAlpha(80),
-                  //         width: 2,
-                  //       ),
-                  //       borderRadius: BorderRadius.circular(20),
-                  //     ),
-                  //     focusedBorder: OutlineInputBorder(
-                  //       borderSide: BorderSide(
-                  //         color: Colors.red,
-                  //         width: 2,
-                  //       ),
-                  //       borderRadius: BorderRadius.circular(20),
-                  //     ),
-                  //     hintText: 'Search place',
-                  //   ),
-                  //   onTap: () {
-                  //     Navigator.of(context).push(
-                  //       MaterialPageRoute(
-                  //         builder: (context) => LocationSearchAutocomplete(),
-                  //       ),
-                  //     );
-                  //   },
-                  //   onChanged: (value) {},
-                  // ),
-                  //
-                  //
                   SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
