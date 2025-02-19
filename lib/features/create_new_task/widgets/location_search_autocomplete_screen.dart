@@ -5,19 +5,19 @@ import 'package:todo_app/features/create_new_task/create_new_task.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_suggestion.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
 
-// @RoutePage()
-class LocationSearchAutocomplete extends StatefulWidget {
-  const LocationSearchAutocomplete({
+@RoutePage()
+class LocationSearchAutocompleteScreen extends StatefulWidget {
+  const LocationSearchAutocompleteScreen({
     super.key,
   });
 
   @override
-  State<LocationSearchAutocomplete> createState() =>
-      _LocationSearchAutocompleteState();
+  State<LocationSearchAutocompleteScreen> createState() =>
+      _LocationSearchAutocompleteScreenState();
 }
 
-class _LocationSearchAutocompleteState
-    extends State<LocationSearchAutocomplete> {
+class _LocationSearchAutocompleteScreenState
+    extends State<LocationSearchAutocompleteScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
   final repository = LocationSearchAutocompleteRepository();
   List<LocationSuggestion> listOfLocation = [];
@@ -44,6 +44,7 @@ class _LocationSearchAutocompleteState
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -148,12 +149,10 @@ class _LocationSearchAutocompleteState
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
-                        Navigator.of(context)
-                            .pop(listOfLocation[index].description);
+                        String taskLocation = listOfLocation[index].description;
+                        context.router
+                            .maybePop(taskLocation);
                       },
-                      // context.router
-                      //     .maybePop(listOfLocation[index].description);
-                      // },
                       child: ListTile(
                         title: Text(
                           listOfLocation[index].description,

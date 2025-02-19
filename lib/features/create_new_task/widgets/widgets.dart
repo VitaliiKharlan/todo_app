@@ -1,1 +1,1 @@
-export 'location_search_autocomplete.dart';
+export 'location_search_autocomplete_screen.dart';

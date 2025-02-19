@@ -6,15 +6,19 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-import 'package:todo_app/features/create_new_task/widgets/location_search_autocomplete.dart';
+import 'package:todo_app/features/create_new_task/widgets/location_search_autocomplete_screen.dart';
 import 'package:todo_app/features/create_new_task/widgets/show_the_city.dart';
+import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
 class CreateNewTaskScreen extends StatefulWidget {
   const CreateNewTaskScreen({
     super.key,
+    // this.taskLocation,
   });
+
+  // final String? taskLocation;
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
@@ -28,6 +32,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
   String? _taskLocation;
+
+  // final _taskLocation = ModalRoute.of(context)!.settings.arguments as String?;
 
   void _clearInputFields() {
     _controllerTaskTitle.clear();
@@ -85,6 +91,18 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
     tabsRouter.setActiveIndex(0);
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //
+  //   final taskLocation = ModalRoute.of(context)?.settings.arguments as String?;
+  //   if (taskLocation != null && _taskLocation == null) {
+  //     setState(() {
+  //       _taskLocation = taskLocation;
+  //     });
+  //   }
+  // }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -426,13 +444,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     height: 40,
                     child: ElevatedButton.icon(
                       onPressed: () => {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => LocationSearchAutocomplete(),
-                          ),
-                        ),
-                      // context.router.push(LocationSearchAutocompleteRoute());
-                        // context.router.pop(ShowTheCity(city: ))
+                        context.router.push(LocationSearchAutocompleteRoute()),
                       },
                       icon: const Icon(Icons.location_city),
                       label: Row(

@@ -61,6 +61,22 @@ class HomeRouteArgs {
 }
 
 /// generated route for
+/// [LocationSearchAutocompleteScreen]
+class LocationSearchAutocompleteRoute extends PageRouteInfo<void> {
+  const LocationSearchAutocompleteRoute({List<PageRouteInfo>? children})
+    : super(LocationSearchAutocompleteRoute.name, initialChildren: children);
+
+  static const String name = 'LocationSearchAutocompleteRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const LocationSearchAutocompleteScreen();
+    },
+  );
+}
+
+/// generated route for
 /// [SettingsScreen]
 class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute({List<PageRouteInfo>? children})
