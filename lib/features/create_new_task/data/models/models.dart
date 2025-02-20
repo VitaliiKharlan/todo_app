@@ -1,2 +1,2 @@
 export 'task_dto.dart';
-export 'location_suggestion.dart';
+export 'location_search_autocomplete.dart';

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 
-import 'package:todo_app/features/create_new_task/data/models/location_suggestion.dart';
+import 'package:todo_app/features/create_new_task/data/models/location_search_autocomplete.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
 
 
@@ -21,7 +21,7 @@ class _LocationSearchAutocompleteScreenState
     extends State<LocationSearchAutocompleteScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
   final repository = LocationSearchAutocompleteRepository();
-  List<LocationSuggestion> listOfLocation = [];
+  List<LocationSearchAutocompleteModel> listOfLocation = [];
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _LocationSearchAutocompleteScreenState
     if (!mounted) return;
 
     setState(() {
-      listOfLocation = List<LocationSuggestion>.from(suggestions);
+      listOfLocation = List<LocationSearchAutocompleteModel>.from(suggestions);
     });
   }
 

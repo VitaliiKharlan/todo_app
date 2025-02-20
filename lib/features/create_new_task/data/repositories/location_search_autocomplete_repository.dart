@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:todo_app/features/create_new_task/data/models/location_suggestion.dart';
+import 'package:todo_app/features/create_new_task/data/models/location_search_autocomplete.dart';
 import 'package:uuid/uuid.dart';
 
 class LocationSearchAutocompleteRepository {
@@ -25,7 +25,7 @@ class LocationSearchAutocompleteRepository {
 
       if (response.statusCode == 200) {
         final predictions = data['predictions'] as List<dynamic>? ?? [];
-        return predictions.map((json) => LocationSuggestion.fromJson(json)).toList();
+        return predictions.map((json) => LocationSearchAutocompleteModel.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load locations');
       }
