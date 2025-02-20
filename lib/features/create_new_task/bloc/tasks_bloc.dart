@@ -42,7 +42,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         taskDescription: event.taskDescription,
         taskDeadline: event.taskDeadline,
         taskType: event.taskType,
-        // taskLocation: event.taskLocation,
+        taskLocation: event.taskLocation,
       );
 
       if (state is TasksLoadedState) {

@@ -1,9 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'package:todo_app/features/create_new_task/create_new_task.dart';
+
 import 'package:todo_app/features/create_new_task/data/models/location_suggestion.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
+
 
 @RoutePage()
 class LocationSearchAutocompleteScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _LocationSearchAutocompleteScreenState
     final suggestions = await repository
         .fetchLocationSuggestions(controllerLocationSearchAutocomplete.text);
 
-    await Future.delayed(Duration(seconds: 1));
+    // await Future.delayed(Duration(seconds: 1));
     if (!mounted) return;
 
     setState(() {
@@ -44,7 +45,6 @@ class _LocationSearchAutocompleteScreenState
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -71,11 +71,7 @@ class _LocationSearchAutocompleteScreenState
                         color: Colors.grey,
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop(
-                          MaterialPageRoute(
-                            builder: (context) => CreateNewTaskScreen(),
-                          ),
-                        );
+                        AutoRouter.of(context).maybePop();
                       },
                     ),
                   ),
@@ -150,8 +146,7 @@ class _LocationSearchAutocompleteScreenState
                     return GestureDetector(
                       onTap: () async {
                         String taskLocation = listOfLocation[index].description;
-                        context.router
-                            .maybePop(taskLocation);
+                        context.router.maybePop<String>(taskLocation);
                       },
                       child: ListTile(
                         title: Text(

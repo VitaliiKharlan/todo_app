@@ -6,8 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-import 'package:todo_app/features/create_new_task/widgets/location_search_autocomplete_screen.dart';
-import 'package:todo_app/features/create_new_task/widgets/show_the_city.dart';
+
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
@@ -15,10 +14,7 @@ import 'package:todo_app/ui/theme/app_text_style.dart';
 class CreateNewTaskScreen extends StatefulWidget {
   const CreateNewTaskScreen({
     super.key,
-    // this.taskLocation,
   });
-
-  // final String? taskLocation;
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
@@ -33,14 +29,24 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   TaskType? _selectedTaskType;
   String? _taskLocation;
 
-  // final _taskLocation = ModalRoute.of(context)!.settings.arguments as String?;
+  _getLocationFromPreviousScreen() async {
+    final result =
+        await context.router.push<String>(LocationSearchAutocompleteRoute());
+    if (result != null) {
+      setState(() {
+        _taskLocation = result;
+      });
+    }
+  }
 
   void _clearInputFields() {
     _controllerTaskTitle.clear();
     _controllerTaskDescription.clear();
+
     setState(() {
       _selectedDeadline = null;
       _selectedTaskType = null;
+      _taskLocation = null;
     });
   }
 
@@ -78,6 +84,12 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
       return;
     }
+    // if (taskLocation == null) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Please enter a city location')),
+    //   );
+    //   return;
+    // }
 
     bloc.add(AddTaskEvent(
       taskTitle,
@@ -91,18 +103,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
     tabsRouter.setActiveIndex(0);
   }
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //
-  //   final taskLocation = ModalRoute.of(context)?.settings.arguments as String?;
-  //   if (taskLocation != null && _taskLocation == null) {
-  //     setState(() {
-  //       _taskLocation = taskLocation;
-  //     });
-  //   }
-  // }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -444,7 +444,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     height: 40,
                     child: ElevatedButton.icon(
                       onPressed: () => {
-                        context.router.push(LocationSearchAutocompleteRoute()),
+                        _getLocationFromPreviousScreen(),
                       },
                       icon: const Icon(Icons.location_city),
                       label: Row(
@@ -452,8 +452,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         children: [
                           SizedBox(width: 8),
                           Text(
-                            // 'Search Place',
-                            // _taskLocation.toString(),
                             _taskLocation == null
                                 ? 'Search Place'
                                 : _taskLocation.toString(),
