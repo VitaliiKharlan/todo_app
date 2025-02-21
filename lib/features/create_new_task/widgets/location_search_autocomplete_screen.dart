@@ -20,12 +20,11 @@ class LocationSearchAutocompleteScreen extends StatefulWidget {
 class _LocationSearchAutocompleteScreenState
     extends State<LocationSearchAutocompleteScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
-  final locationSearchAutocompleteRepository =
-      LocationSearchAutocompleteRepository();
+  final locationSearchAutocompleteRepository = PlaceDetailsRepository();
   List<LocationSearchAutocompleteModel> listOfLocation = [];
 
-  final locationDetailsRepository = LocationDetailsRepository();
-  List<LocationDetailsModel> locationDetails = [];
+  final locationDetailsRepository = PlaceDetailsRepository();
+  LocationDetailsModel? locationDetails;
 
   @override
   void initState() {
@@ -37,19 +36,20 @@ class _LocationSearchAutocompleteScreenState
 
   _onChange() async {
     final suggestions = await locationSearchAutocompleteRepository
-        .fetchLocationSuggestions(controllerLocationSearchAutocomplete.text);
+        .getPlaceDetails(controllerLocationSearchAutocomplete.text) as dynamic;
 
     if (!mounted) return;
     setState(() {
       listOfLocation = List<LocationSearchAutocompleteModel>.from(suggestions);
     });
 
-    final location = await locationDetailsRepository.fetchLocationLatLng();
+    final location = await locationDetailsRepository.getPlaceDetails(
+        controllerLocationSearchAutocomplete.text) as LocationDetailsModel?;
 
     if (suggestions.isNotEmpty) {
       if (!mounted) return;
       setState(() {
-        locationDetails = [location];
+        locationDetails = [location] as LocationDetailsModel?;
       });
     }
   }
