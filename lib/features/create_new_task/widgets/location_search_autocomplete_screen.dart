@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-
+import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 
 import 'package:todo_app/features/create_new_task/data/models/location_search_autocomplete.dart';
+import 'package:todo_app/features/create_new_task/data/repositories/location_details_repository.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
-
 
 @RoutePage()
 class LocationSearchAutocompleteScreen extends StatefulWidget {
@@ -20,8 +20,12 @@ class LocationSearchAutocompleteScreen extends StatefulWidget {
 class _LocationSearchAutocompleteScreenState
     extends State<LocationSearchAutocompleteScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
-  final repository = LocationSearchAutocompleteRepository();
+  final locationSearchAutocompleteRepository =
+      LocationSearchAutocompleteRepository();
   List<LocationSearchAutocompleteModel> listOfLocation = [];
+
+  final locationDetailsRepository = LocationDetailsRepository();
+  List<LocationDetailsModel> locationDetails = [];
 
   @override
   void initState() {
@@ -32,15 +36,22 @@ class _LocationSearchAutocompleteScreenState
   }
 
   _onChange() async {
-    final suggestions = await repository
+    final suggestions = await locationSearchAutocompleteRepository
         .fetchLocationSuggestions(controllerLocationSearchAutocomplete.text);
 
-    // await Future.delayed(Duration(seconds: 1));
     if (!mounted) return;
-
     setState(() {
       listOfLocation = List<LocationSearchAutocompleteModel>.from(suggestions);
     });
+
+    final location = await locationDetailsRepository.fetchLocationLatLng();
+
+    if (suggestions.isNotEmpty) {
+      if (!mounted) return;
+      setState(() {
+        locationDetails = [location];
+      });
+    }
   }
 
   @override

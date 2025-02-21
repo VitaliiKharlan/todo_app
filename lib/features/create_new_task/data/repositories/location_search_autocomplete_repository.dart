@@ -25,12 +25,22 @@ class LocationSearchAutocompleteRepository {
 
       if (response.statusCode == 200) {
         final predictions = data['predictions'] as List<dynamic>? ?? [];
-        return predictions.map((json) => LocationSearchAutocompleteModel.fromJson(json)).toList();
+
+        final placeId = data['placeId'] as List<dynamic>? ?? [];
+
+        print(placeId);
+        print('AAAAAAAAAAAAA');
+        print(predictions);
+
+        return predictions
+            .map((json) => LocationSearchAutocompleteModel.fromJson(json))
+            .toList();
       } else {
         throw Exception('Failed to load locations');
       }
-    } catch (e) {
+    } catch (e,s) {
       debugPrint(e.toString());
+      debugPrint(s.toString());
       return [];
     }
   }

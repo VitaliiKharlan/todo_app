@@ -15,7 +15,8 @@ class LocationSearchAutocompleteModel {
   factory LocationSearchAutocompleteModel.fromJson(Map<String, dynamic> json) =>
       _$LocationSearchAutocompleteModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LocationSearchAutocompleteModelToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$LocationSearchAutocompleteModelToJson(this);
 
   @override
   String toString() {

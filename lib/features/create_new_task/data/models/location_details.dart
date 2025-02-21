@@ -3,17 +3,26 @@ import 'package:json_annotation/json_annotation.dart';
 part 'location_details.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class LocationDetails {
-  LocationDetails();
+class LocationDetailsModel {
+  LocationDetailsModel({
+    required this.lat,
+    required this.lng,
+  });
 
-// factory LocationDetails.fromJson(Map<String, dynamic> json) =>
-//     _$LocationDetailsFromJson(json);
-//
-// Map<String, dynamic> toJson() => _$LocationDetailsToJson(this);
-//
-// @override
-// String toString() {
-//   return 'LocationDetails{'
-//       '}';
-// }
+  final double lat;
+  final double lng;
+
+  factory LocationDetailsModel.fromJson(Map<String, dynamic> json) {
+    return _$LocationDetailsModelFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$LocationDetailsModelToJson(this);
+
+  @override
+  String toString() {
+    return 'LocationDetailsModel{'
+        'lat: $lat, '
+        'lng: $lng,'
+        '}';
+  }
 }
