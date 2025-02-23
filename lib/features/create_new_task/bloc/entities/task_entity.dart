@@ -1,9 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 
+import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
 
 enum TaskType {
@@ -83,8 +83,6 @@ class Task extends Equatable {
   final LocationDetailsModel? taskLocation;
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
-
-  // late final DateTime taskCreatedAt = DateTime.now();
 
   double get progress {
     if (taskDeadline == null) return 100;

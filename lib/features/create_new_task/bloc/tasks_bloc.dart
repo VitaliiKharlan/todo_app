@@ -26,7 +26,6 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       debugPrint('Load Event');
 
       final tasksData = await taskRepository.fetchTasks();
-      print(tasksData.length);
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       emit(TasksLoadedState(tasks));

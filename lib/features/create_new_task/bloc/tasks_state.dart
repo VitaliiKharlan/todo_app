@@ -16,11 +16,9 @@ class AddNewTaskLoadingState extends TasksState {
 class TasksLoadedState extends TasksState {
   TasksLoadedState(
     this.tasks,
-    // this.selectedLocation,
   );
 
   final List<Task> tasks;
-  // final String? selectedLocation;
 
   @override
   List<Object?> get props => [tasks];

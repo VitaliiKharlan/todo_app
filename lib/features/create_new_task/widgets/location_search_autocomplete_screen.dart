@@ -42,14 +42,9 @@ class _LocationSearchAutocompleteScreenState
       listOfLocation = suggestions;
     });
 
-    final location = await locationDetailsRepository
-        .getPlaceDetails(controllerLocationSearchAutocomplete.text);
-
     if (suggestions.isNotEmpty) {
       if (!mounted) return;
-      setState(() {
-        // locationDetails = [location] as LocationDetailsModel;
-      });
+      setState(() {});
     }
   }
 
@@ -161,7 +156,7 @@ class _LocationSearchAutocompleteScreenState
                       child: ListTile(
                         title: Text(
                           listOfLocation[index].description ?? 'no description',
-                          // style: TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     );

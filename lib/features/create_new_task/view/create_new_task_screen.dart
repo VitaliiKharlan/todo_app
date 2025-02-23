@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
@@ -31,8 +30,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   LocationDetailsModel? _taskLocation;
 
   _getLocationFromPreviousScreen() async {
-    final result =
-        await context.router.push<LocationDetailsModel>(LocationSearchAutocompleteRoute());
+    final result = await context.router
+        .push<LocationDetailsModel>(LocationSearchAutocompleteRoute());
     if (result != null) {
       setState(() {
         _taskLocation = result;
@@ -455,7 +454,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                           Text(
                             _taskLocation == null
                                 ? 'Pick a place'
-                                : _taskLocation.toString(),
+                                : _taskLocation?.description ?? '',
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
