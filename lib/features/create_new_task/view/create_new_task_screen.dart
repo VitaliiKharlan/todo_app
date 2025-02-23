@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
+import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
@@ -27,11 +28,11 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
-  String? _taskLocation;
+  LocationDetailsModel? _taskLocation;
 
   _getLocationFromPreviousScreen() async {
     final result =
-        await context.router.push<String>(LocationSearchAutocompleteRoute());
+        await context.router.push<LocationDetailsModel>(LocationSearchAutocompleteRoute());
     if (result != null) {
       setState(() {
         _taskLocation = result;
@@ -432,7 +433,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   //
                   SizedBox(height: 20),
                   Text(
-                    'Search Auto Complete',
+                    'Pick a place',
                     style: AppTextStyle.appBar.copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
@@ -440,7 +441,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   ),
                   SizedBox(height: 12),
                   SizedBox(
-                    width: 200,
+                    width: double.infinity,
                     height: 40,
                     child: ElevatedButton.icon(
                       onPressed: () => {
@@ -453,7 +454,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                           SizedBox(width: 8),
                           Text(
                             _taskLocation == null
-                                ? 'Search Place'
+                                ? 'Pick a place'
                                 : _taskLocation.toString(),
                             style: TextStyle(fontSize: 16),
                           ),

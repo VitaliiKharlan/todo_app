@@ -18,7 +18,7 @@ class AddTaskEvent extends TasksEvent {
   final String? taskDescription;
   final DateTime? taskDeadline;
   final TaskType? taskType;
-  final String? taskLocation;
+  final LocationDetailsModel? taskLocation;
 }
 
 class DeleteTaskEvent extends TasksEvent {
