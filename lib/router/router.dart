@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 
 import 'package:todo_app/features/create_new_task/create_new_task.dart';
 import 'package:todo_app/features/home/home.dart';
@@ -35,8 +36,12 @@ class AppRouter extends RootStackRouter {
         ],
       ),
       AutoRoute(
+        page: LocationSearchAutocompleteRoute.page,
+        path: '/location_search_autocomplete',
+      ),
+      AutoRoute(
         page: TaskDetailsRoute.page,
-        path: '/task',
+        path: '/task_details',
       ),
     ];
   }

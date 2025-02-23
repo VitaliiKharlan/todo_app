@@ -4,13 +4,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-import 'package:todo_app/ui/theme/app_svg_images.dart';
+
+import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
 class CreateNewTaskScreen extends StatefulWidget {
-  const CreateNewTaskScreen({super.key});
+  const CreateNewTaskScreen({
+    super.key,
+  });
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
@@ -20,15 +24,29 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   final TextEditingController _controllerTaskTitle = TextEditingController();
   final TextEditingController _controllerTaskDescription =
       TextEditingController();
+
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
+  String? _taskLocation;
+
+  _getLocationFromPreviousScreen() async {
+    final result =
+        await context.router.push<String>(LocationSearchAutocompleteRoute());
+    if (result != null) {
+      setState(() {
+        _taskLocation = result;
+      });
+    }
+  }
 
   void _clearInputFields() {
     _controllerTaskTitle.clear();
     _controllerTaskDescription.clear();
+
     setState(() {
       _selectedDeadline = null;
       _selectedTaskType = null;
+      _taskLocation = null;
     });
   }
 
@@ -38,6 +56,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     final taskType = _selectedTaskType;
     final taskDeadline = _selectedDeadline;
     final taskDescription = _controllerTaskDescription.text.trim();
+    final taskLocation = _taskLocation;
 
     final tabsRouter = context.tabsRouter;
 
@@ -65,12 +84,19 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
       return;
     }
+    // if (taskLocation == null) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Please enter a city location')),
+    //   );
+    //   return;
+    // }
 
     bloc.add(AddTaskEvent(
       taskTitle,
       taskDescription,
       taskDeadline,
       taskType,
+      taskLocation,
     ));
 
     _clearInputFields();
@@ -122,7 +148,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
         );
       });
     } else {
-      print('super');
+      debugPrint('super');
     }
   }
 
@@ -402,6 +428,56 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ),
                   ),
+                  //
+                  //
+                  SizedBox(height: 20),
+                  Text(
+                    'Search Auto Complete',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 12),
+                  SizedBox(
+                    width: 200,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                      onPressed: () => {
+                        _getLocationFromPreviousScreen(),
+                      },
+                      icon: const Icon(Icons.location_city),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 8),
+                          Text(
+                            _taskLocation == null
+                                ? 'Search Place'
+                                : _taskLocation.toString(),
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Colors.white),
+                        foregroundColor: WidgetStateProperty.all(
+                          Colors.black.withAlpha(60),
+                        ),
+                        side: WidgetStateProperty.all(
+                          BorderSide(
+                            color: Colors.grey.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        overlayColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        shadowColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        elevation: WidgetStateProperty.all<double>(0.1),
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
@@ -430,132 +506,5 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
         ),
       ),
     );
-  }
-}
-
-enum TaskType {
-  work,
-  personal,
-  shopping,
-  sport,
-  urgent,
-}
-
-extension TaskTypeExtension on TaskType {
-  String get name {
-    switch (this) {
-      case TaskType.work:
-        return 'work';
-      case TaskType.personal:
-        return 'personal';
-      case TaskType.shopping:
-        return 'shopping';
-      case TaskType.sport:
-        return 'sport';
-      case TaskType.urgent:
-        return 'urgent';
-    }
-  }
-
-  Color get color {
-    switch (this) {
-      case TaskType.work:
-        return Colors.blue;
-      case TaskType.personal:
-        return Colors.green;
-      case TaskType.shopping:
-        return Colors.orange;
-      case TaskType.sport:
-        return Colors.yellow;
-      case TaskType.urgent:
-        return Colors.red;
-    }
-  }
-
-  String get iconPath {
-    switch (this) {
-      case TaskType.work:
-        return AppSvgImages.iconTaskTypeWork;
-      case TaskType.personal:
-        return AppSvgImages.iconTaskTypePersonal;
-      case TaskType.shopping:
-        return AppSvgImages.iconTaskTypeShopping;
-      case TaskType.sport:
-        return AppSvgImages.iconTaskTypeSport;
-      case TaskType.urgent:
-        return AppSvgImages.iconTaskTypeUrgent;
-    }
-  }
-}
-
-class Task {
-  Task({
-    required this.taskTitle,
-    this.taskDescription,
-    this.taskType,
-    DateTime? createdAt,
-    this.taskDeadline,
-  }) : taskCreatedAt = createdAt ?? DateTime.now();
-
-  final String taskTitle;
-  final String? taskDescription;
-  final TaskType? taskType;
-  final DateTime? taskDeadline;
-  final DateTime taskCreatedAt;
-
-  // late final DateTime taskCreatedAt = DateTime.now();
-
-  double get progress {
-    if (taskDeadline == null) return 100;
-    double progress = TaskCurrentTimeProgressIndicator.calculateProgress(
-        taskCreatedAt, taskDeadline!);
-    return progress;
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'taskTitle': taskTitle,
-      'taskDescription': taskDescription,
-      'taskType': taskType,
-      'taskDeadline': taskDeadline?.toIso8601String(),
-      'taskCreatedAt': taskCreatedAt.toIso8601String(),
-    };
-  }
-
-  factory Task.fromMap(Map<String, dynamic> map) {
-    return Task(
-      taskTitle: map['taskTitle'],
-      taskDescription: map['taskDescription'],
-      taskType: map['taskType'],
-      taskDeadline: map['taskDeadline'] != null
-          ? DateTime.parse(map['taskDeadline'])
-          : null,
-      createdAt: map['taskCreatedAt'] != null
-          ? DateTime.parse(map['taskCreatedAt'])
-          : null,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'Task(title: $taskTitle)';
-  }
-}
-
-class TaskCurrentTimeProgressIndicator {
-  static double calculateProgress(
-      DateTime taskCreatedAt, DateTime taskDeadline) {
-    final DateTime now = DateTime.now();
-
-    if (now.isBefore(taskCreatedAt)) return 0.0;
-    if (now.isAfter(taskDeadline)) return 100.0;
-
-    final Duration totalDuration = taskDeadline.difference(taskCreatedAt);
-    final Duration elapsedDuration = now.difference(taskCreatedAt);
-
-    double progress =
-        (elapsedDuration.inMilliseconds / totalDuration.inMilliseconds) * 100;
-
-    return double.parse(progress.toStringAsFixed(2));
   }
 }

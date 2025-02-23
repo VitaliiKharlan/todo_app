@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
+
 import 'package:todo_app/features/settings/widgets/widgets.dart';
-import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
 class SettingsScreen extends StatelessWidget {
@@ -77,4 +77,3 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
-

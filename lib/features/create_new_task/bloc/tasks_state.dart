@@ -1,18 +1,29 @@
 part of 'tasks_bloc.dart';
 
-// @immutable
-sealed class TasksState {}
+@immutable
+sealed class TasksState extends Equatable {}
 
-final class InitialTasksState extends TasksState {}
+final class InitialTasksState extends TasksState {
+  @override
+  List<Object?> get props => [];
+}
 
-class AddNewTaskLoadingState extends TasksState {}
+class AddNewTaskLoadingState extends TasksState {
+  @override
+  List<Object?> get props => [];
+}
 
 class TasksLoadedState extends TasksState {
   TasksLoadedState(
     this.tasks,
+    // this.selectedLocation,
   );
 
   final List<Task> tasks;
+  // final String? selectedLocation;
+
+  @override
+  List<Object?> get props => [tasks];
 }
 
 class TasksLoadingFailureState extends TasksState {
@@ -21,6 +32,9 @@ class TasksLoadingFailureState extends TasksState {
   );
 
   final Object? exception;
+
+  @override
+  List<Object?> get props => [exception];
 }
 
 class TasksDeletingFailureState extends TasksState {
@@ -29,4 +43,7 @@ class TasksDeletingFailureState extends TasksState {
   );
 
   final Object? exception;
+
+  @override
+  List<Object?> get props => [exception];
 }
