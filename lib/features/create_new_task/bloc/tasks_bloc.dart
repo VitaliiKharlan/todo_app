@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
+import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/task_repository.dart';
 
 part 'tasks_event.dart';
@@ -25,9 +26,13 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       debugPrint('Load Event');
 
       final tasksData = await taskRepository.fetchTasks();
+      print(tasksData.length);
+
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       emit(TasksLoadedState(tasks));
-    } catch (e) {
+    } catch (e, s) {
+      debugPrint('Error fetching tasks: $e $s');
+
       emit(TasksLoadingFailureState(e.toString()));
     }
   }

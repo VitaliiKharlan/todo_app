@@ -15,8 +15,6 @@ class TaskRepository {
       final task = snapshot.value;
 
       debugPrint('Tasks loaded: ${records.map((record) => record.value)}');
-
-      task['id'] = snapshot.key;
       return task;
     }).toList();
   }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -79,7 +80,7 @@ class Task extends Equatable {
   final String taskTitle;
   final String? taskDescription;
   final TaskType? taskType;
-  final String? taskLocation;
+  final LocationDetailsModel? taskLocation;
   final DateTime? taskDeadline;
   final DateTime taskCreatedAt;
 
@@ -98,7 +99,7 @@ class Task extends Equatable {
       'taskTitle': taskTitle,
       'taskDescription': taskDescription,
       'taskType': taskType?.name,
-      'taskLocation': taskLocation,
+      'taskLocation': taskLocation?.toJson(),
       'taskCreatedAt': taskCreatedAt.toIso8601String(),
       'taskDeadline': taskDeadline?.toIso8601String(),
     };
@@ -108,11 +109,12 @@ class Task extends Equatable {
     return Task(
       taskTitle: map['taskTitle'],
       taskDescription: map['taskDescription'],
-      // taskType: TaskType.work,
       taskType: map['taskType'] != null
           ? TaskTypeExtension.fromString(map['taskType'])
           : null,
-      taskLocation: map['taskLocation'],
+      taskLocation: map['taskLocation'] != null
+          ? LocationDetailsModel.fromJson(map['taskLocation'])
+          : null,
       createdAt: map['taskCreatedAt'] != null
           ? DateTime.parse(map['taskCreatedAt'])
           : null,

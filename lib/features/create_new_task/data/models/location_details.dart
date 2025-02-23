@@ -10,9 +10,9 @@ class LocationDetailsModel {
     required this.lng,
   });
 
-  final String description;
-  final double lat;
-  final double lng;
+  final String? description;
+  final double? lat;
+  final double? lng;
 
   factory LocationDetailsModel.fromJson(Map<String, dynamic> json) {
     return _$LocationDetailsModelFromJson(json);
@@ -22,10 +22,6 @@ class LocationDetailsModel {
 
   @override
   String toString() {
-    return 'LocationDetailsModel{'
-        'lat: $description, '
-        'lat: $lat, '
-        'lng: $lng, '
-        '}';
+    return '${description} ${lat} ${lng}';
   }
 }

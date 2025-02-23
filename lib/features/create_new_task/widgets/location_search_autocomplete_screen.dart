@@ -1,9 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-
-import 'package:todo_app/features/create_new_task/data/models/location_search_autocomplete.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/location_details_repository.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
 
 @RoutePage()
@@ -21,7 +18,7 @@ class _LocationSearchAutocompleteScreenState
     extends State<LocationSearchAutocompleteScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
   final locationSearchAutocompleteRepository = PlaceDetailsRepository();
-  List<LocationSearchAutocompleteModel> listOfLocation = [];
+  List<LocationDetailsModel> listOfLocation = [];
 
   final locationDetailsRepository = PlaceDetailsRepository();
   LocationDetailsModel? locationDetails;
@@ -36,20 +33,20 @@ class _LocationSearchAutocompleteScreenState
 
   _onChange() async {
     final suggestions = await locationSearchAutocompleteRepository
-        .getPlaceDetails(controllerLocationSearchAutocomplete.text) as dynamic;
+        .getPlaceDetails(controllerLocationSearchAutocomplete.text);
 
     if (!mounted) return;
     setState(() {
-      listOfLocation = List<LocationSearchAutocompleteModel>.from(suggestions);
+      listOfLocation = suggestions;
     });
 
-    final location = await locationDetailsRepository.getPlaceDetails(
-        controllerLocationSearchAutocomplete.text) as LocationDetailsModel?;
+    final location = await locationDetailsRepository
+        .getPlaceDetails(controllerLocationSearchAutocomplete.text);
 
     if (suggestions.isNotEmpty) {
       if (!mounted) return;
       setState(() {
-        locationDetails = [location] as LocationDetailsModel?;
+        // locationDetails = [location];
       });
     }
   }
@@ -156,12 +153,12 @@ class _LocationSearchAutocompleteScreenState
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () async {
-                        String taskLocation = listOfLocation[index].description;
-                        context.router.maybePop<String>(taskLocation);
+                        final location = listOfLocation[index];
+                        context.router.maybePop<LocationDetailsModel>(location);
                       },
                       child: ListTile(
                         title: Text(
-                          listOfLocation[index].description,
+                          listOfLocation[index].description ?? "no description",
                           // style: TextStyle(color: Colors.black),
                         ),
                       ),

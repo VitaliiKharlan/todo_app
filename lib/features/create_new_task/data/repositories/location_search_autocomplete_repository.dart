@@ -110,9 +110,6 @@ class PlaceDetailsRepository {
       if (response.statusCode == 200) {
         final location = data['result']['geometry']['location'];
 
-        print('BBBBBBBBBB');
-        print(location);
-
         return LocationDetailsModel.fromJson(location);
       } else {
         throw Exception('Failed to load locations');
@@ -130,20 +127,20 @@ class PlaceDetailsRepository {
 
   Future<List<LocationDetailsModel>> getPlaceDetails(String input) async {
     final suggestions = await _fetchLocationSuggestions(input);
-    final places = suggestions.map(
-      (locationObject) async {
-        final locationDetails =
-            await _fetchLocationLatLng(locationObject.placeId);
-        return LocationDetailsModel(
-            description: locationObject.description,
-            lat: locationDetails.lat,
-            lng: locationDetails.lng);
-      },
-    ).toList();
 
     if (suggestions.isEmpty) return [];
 
-    final placeId = suggestions.first.placeId;
+    final places = await Future.wait(
+      suggestions.map((locationObject) async {
+        final locationDetails =
+            await _fetchLocationLatLng(locationObject.placeId);
+        return LocationDetailsModel(
+          description: locationObject.description,
+          lat: locationDetails.lat,
+          lng: locationDetails.lng,
+        );
+      }),
+    );
 
     return places;
   }
