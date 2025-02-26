@@ -72,33 +72,58 @@ class TaskScreen extends StatelessWidget {
                       itemCount: state.tasks.length,
                       itemBuilder: (context, index) {
                         final deleteTask = tasks[index];
-                        return Slidable(
-                          key: ValueKey(index),
-                          endActionPane: ActionPane(
-                            motion: Container(
-                              margin: EdgeInsets.only(bottom: 24),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12), // Закругляем углы
+                            child: Slidable(
+                              key: ValueKey(index),
+                              endActionPane: ActionPane(
+                                motion: Container(
+                                  margin: EdgeInsets.only(bottom: 24),
+                                  // decoration: BoxDecoration(
+                                  //   borderRadius: BorderRadius.circular(12),
+                                  // ),
+                                  child: const ScrollMotion(),
+                                ),
+                                extentRatio: 0.4,
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      context
+                                          .read<TasksBloc>()
+                                          .add(DeleteTaskEvent(deleteTask));
+                                    },
+                                    backgroundColor: Colors.green,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
+                                    spacing: 8,
+                                    padding:
+                                        EdgeInsets.only(left: 4, top: 12, right: 4),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      context
+                                          .read<TasksBloc>()
+                                          .add(DeleteTaskEvent(deleteTask));
+                                    },
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                    spacing: 8,
+                                    padding:
+                                        EdgeInsets.only(left: 4, top: 12, right: 4),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ],
                               ),
-                              child: const ScrollMotion(),
+                              child: TaskListCard(
+                                task: tasks[index],
+                              ),
                             ),
-                            extentRatio: 0.25,
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) {
-                                  context
-                                      .read<TasksBloc>()
-                                      .add(DeleteTaskEvent(deleteTask));
-                                },
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                            ],
-                          ),
-                          child: TaskListCard(
-                            task: tasks[index],
                           ),
                         );
                       });
