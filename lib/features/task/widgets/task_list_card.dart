@@ -68,7 +68,7 @@ class _TaskListCardState extends State<TaskListCard> {
       child: BaseContainer(
         height: 148,
         width: double.infinity,
-        margin: EdgeInsets.only(bottom: 24),
+        // margin: EdgeInsets.only(bottom: 24),
         color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
