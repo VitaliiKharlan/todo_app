@@ -14,10 +14,10 @@ import 'package:todo_app/ui/theme/app_text_style.dart';
 class CreateNewTaskScreen extends StatefulWidget {
   const CreateNewTaskScreen({
     super.key,
-    this.taskEntity,
+    this.editTask,
   });
 
-  final Task? taskEntity;
+  final Task? editTask;
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
@@ -36,13 +36,13 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     super.initState();
 
     _controllerTaskTitle =
-        TextEditingController(text: widget.taskEntity?.taskTitle ?? '');
+        TextEditingController(text: widget.editTask?.taskTitle ?? '');
     _controllerTaskDescription =
-        TextEditingController(text: widget.taskEntity?.taskDescription ?? '');
+        TextEditingController(text: widget.editTask?.taskDescription ?? '');
 
-    _selectedDeadline = widget.taskEntity?.taskDeadline;
-    _selectedTaskType = widget.taskEntity?.taskType;
-    _taskLocation = widget.taskEntity?.taskLocation;
+    _selectedDeadline = widget.editTask?.taskDeadline;
+    _selectedTaskType = widget.editTask?.taskType;
+    _taskLocation = widget.editTask?.taskLocation;
   }
 
   _getLocationFromPreviousScreen() async {
@@ -107,8 +107,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     //   return;
     // }
 
-    if (widget.taskEntity == null) {
-      // Создание новой задачи
+    if (widget.editTask == null) {
+      // Create New Task
       bloc.add(AddTaskEvent(
         taskTitle,
         taskDescription,
@@ -117,7 +117,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
         taskLocation,
       ));
     } else {
-      // Редактирование существующей
+      // Edit Task
       bloc.add(EditTaskEvent(
         Task(
           // taskId: widget.taskEntity!.taskId,
@@ -226,7 +226,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   padding: const EdgeInsets.only(right: 32),
                   child: Text(
                     // 'Create New Task',
-                    widget.taskEntity == null ? 'Create New Task' : 'Edit Task',
+                    widget.editTask == null ? 'Create New Task' : 'Edit Task',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -527,7 +527,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                           ),
                         ),
                       ),
-                      child: Text(widget.taskEntity == null
+                      child: Text(widget.editTask == null
                           ? 'Create Task'
                           : 'Save Changes'),
                     ),

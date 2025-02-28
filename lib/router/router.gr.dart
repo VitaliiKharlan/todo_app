@@ -12,18 +12,38 @@ part of 'router.dart';
 
 /// generated route for
 /// [CreateNewTaskScreen]
-class CreateNewTaskRoute extends PageRouteInfo<void> {
-  const CreateNewTaskRoute({List<PageRouteInfo>? children})
-    : super(CreateNewTaskRoute.name, initialChildren: children);
+class CreateNewTaskRoute extends PageRouteInfo<CreateNewTaskRouteArgs> {
+  CreateNewTaskRoute({Key? key, Task? editTask, List<PageRouteInfo>? children})
+    : super(
+        CreateNewTaskRoute.name,
+        args: CreateNewTaskRouteArgs(key: key, editTask: editTask),
+        initialChildren: children,
+      );
 
   static const String name = 'CreateNewTaskRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const CreateNewTaskScreen();
+      final args = data.argsAs<CreateNewTaskRouteArgs>(
+        orElse: () => const CreateNewTaskRouteArgs(),
+      );
+      return CreateNewTaskScreen(key: args.key, editTask: args.editTask);
     },
   );
+}
+
+class CreateNewTaskRouteArgs {
+  const CreateNewTaskRouteArgs({this.key, this.editTask});
+
+  final Key? key;
+
+  final Task? editTask;
+
+  @override
+  String toString() {
+    return 'CreateNewTaskRouteArgs{key: $key, editTask: $editTask}';
+  }
 }
 
 /// generated route for

@@ -88,7 +88,8 @@ class TaskScreen extends StatelessWidget {
                                 children: [
                                   SlidableAction(
                                     onPressed: (_) {
-                                      context.pushRoute(CreateNewTaskRoute());
+                                      context.pushRoute(CreateNewTaskRoute(
+                                          editTask: deleteTask));
                                     },
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.white,
