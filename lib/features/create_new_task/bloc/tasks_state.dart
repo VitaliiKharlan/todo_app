@@ -45,3 +45,12 @@ class TasksDeletingFailureState extends TasksState {
   @override
   List<Object?> get props => [exception];
 }
+
+class TasksEditingFailureState extends TasksState {
+  final Object? exception;
+
+  TasksEditingFailureState(this.exception);
+
+  @override
+  List<Object?> get props => [exception];
+}

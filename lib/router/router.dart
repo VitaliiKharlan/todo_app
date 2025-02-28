@@ -33,6 +33,10 @@ class AppRouter extends RootStackRouter {
             page: CreateNewTaskRoute.page,
             path: 'create_new_task',
           ),
+          AutoRoute(
+            page: CreateNewTaskRoute.page,
+            path: 'edit_task',
+          ),
         ],
       ),
       AutoRoute(

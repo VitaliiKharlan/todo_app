@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
+import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
@@ -87,9 +88,7 @@ class TaskScreen extends StatelessWidget {
                                 children: [
                                   SlidableAction(
                                     onPressed: (_) {
-                                      context
-                                          .read<TasksBloc>()
-                                          .add(DeleteTaskEvent(deleteTask));
+                                      context.pushRoute(CreateNewTaskRoute());
                                     },
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.white,

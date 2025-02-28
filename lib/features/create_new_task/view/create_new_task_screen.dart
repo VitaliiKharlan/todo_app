@@ -14,20 +14,36 @@ import 'package:todo_app/ui/theme/app_text_style.dart';
 class CreateNewTaskScreen extends StatefulWidget {
   const CreateNewTaskScreen({
     super.key,
+    this.taskEntity,
   });
+
+  final Task? taskEntity;
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
 }
 
 class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
-  final TextEditingController _controllerTaskTitle = TextEditingController();
-  final TextEditingController _controllerTaskDescription =
-      TextEditingController();
+  late TextEditingController _controllerTaskTitle;
+  late TextEditingController _controllerTaskDescription;
 
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
   LocationDetailsModel? _taskLocation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerTaskTitle =
+        TextEditingController(text: widget.taskEntity?.taskTitle ?? '');
+    _controllerTaskDescription =
+        TextEditingController(text: widget.taskEntity?.taskDescription ?? '');
+
+    _selectedDeadline = widget.taskEntity?.taskDeadline;
+    _selectedTaskType = widget.taskEntity?.taskType;
+    _taskLocation = widget.taskEntity?.taskLocation;
+  }
 
   _getLocationFromPreviousScreen() async {
     final result = await context.router
@@ -91,13 +107,28 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     //   return;
     // }
 
-    bloc.add(AddTaskEvent(
-      taskTitle,
-      taskDescription,
-      taskDeadline,
-      taskType,
-      taskLocation,
-    ));
+    if (widget.taskEntity == null) {
+      // Создание новой задачи
+      bloc.add(AddTaskEvent(
+        taskTitle,
+        taskDescription,
+        taskDeadline,
+        taskType,
+        taskLocation,
+      ));
+    } else {
+      // Редактирование существующей
+      bloc.add(EditTaskEvent(
+        Task(
+          // taskId: widget.taskEntity!.taskId,
+          taskTitle: _controllerTaskTitle.text.trim(),
+          taskDescription: _controllerTaskDescription.text.trim(),
+          taskDeadline: _selectedDeadline,
+          taskType: _selectedTaskType,
+          taskLocation: _taskLocation,
+        ),
+      ));
+    }
 
     _clearInputFields();
 
@@ -194,7 +225,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 32),
                   child: Text(
-                    'Create New Task',
+                    // 'Create New Task',
+                    widget.taskEntity == null ? 'Create New Task' : 'Edit Task',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -495,7 +527,9 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                           ),
                         ),
                       ),
-                      child: Text('Create Task'),
+                      child: Text(widget.taskEntity == null
+                          ? 'Create Task'
+                          : 'Save Changes'),
                     ),
                   ),
                   SizedBox(height: 20),

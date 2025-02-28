@@ -18,6 +18,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<LoadTasksEvent>(_onLoadTasks);
     on<AddTaskEvent>(_onAddTask);
     on<DeleteTaskEvent>(_onDeleteTask);
+    on<EditTaskEvent>(_onEditTask);
   }
 
   Future<void> _onLoadTasks(
@@ -84,6 +85,31 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     } catch (e, s) {
       debugPrint('Error deleting task: $e $s');
       emit(TasksDeletingFailureState(e.toString()));
+    }
+  }
+
+  Future<void> _onEditTask(
+      EditTaskEvent event, Emitter<TasksState> emit) async {
+    try {
+      debugPrint('Edit Event');
+
+      if (state is TasksLoadedState) {
+        final currentTasks = (state as TasksLoadedState).tasks;
+        final updatedTasks = currentTasks.map((task) {
+          return task.taskTitle == event.editTask.taskTitle
+              ? event.editTask
+              : task;
+        }).toList();
+
+        emit(TasksLoadedState(updatedTasks));
+        await taskRepository.updateTask(
+          event.editTask.taskId,
+          event.editTask.toMap(),
+        );
+      }
+    } catch (e, s) {
+      debugPrint('Error editing task: $e $s');
+      emit(TasksEditingFailureState(e.toString()));
     }
   }
 }
