@@ -28,6 +28,12 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
       final tasksData = await taskRepository.fetchTasks();
 
+      if (tasksData.isEmpty) {
+        debugPrint('No tasks found in the repository');
+      } else {
+        debugPrint('Fetched ${tasksData.length} tasks');
+      }
+
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
@@ -94,18 +100,28 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       debugPrint('Edit Event');
 
       if (state is TasksLoadedState) {
-        final currentTasks = (state as TasksLoadedState).tasks;
-        final updatedTasks = currentTasks.map((task) {
-          return task.taskTitle == event.editTask.taskTitle
-              ? event.editTask
-              : task;
-        }).toList();
+        final currentState = state as TasksLoadedState;
+
+        final updatedTask = event.oldTask.copyWith(
+          taskTitle: event.taskTitle,
+          taskDescription: event.taskDescription,
+          taskType: event.taskType,
+          taskDeadline: event.taskDeadline,
+          taskLocation: event.taskLocation,
+        );
+
+
+          await taskRepository.updateTask(
+            updatedTask.taskId,
+            updatedTask.toMap(),
+          );
+
+          final updatedTasks = currentState.tasks.map((task) {
+            return task.taskId == event.oldTask.taskId ? updatedTask : task;
+          }).toList();
 
         emit(TasksLoadedState(updatedTasks));
-        await taskRepository.updateTask(
-          event.editTask.taskId,
-          event.editTask.toMap(),
-        );
+
       }
     } catch (e, s) {
       debugPrint('Error editing task: $e $s');

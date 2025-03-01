@@ -30,9 +30,19 @@ class DeleteTaskEvent extends TasksEvent {
 }
 
 class EditTaskEvent extends TasksEvent {
-  final Task editTask;
+  final Task oldTask;
+  final String taskTitle;
+  final String? taskDescription;
+  final TaskType? taskType;
+  final DateTime? taskDeadline;
+  final LocationDetailsModel? taskLocation;
 
-  EditTaskEvent(
-    this.editTask,
-  );
+  EditTaskEvent({
+    required this.oldTask,
+    required this.taskTitle,
+    this.taskDescription,
+    this.taskType,
+    this.taskDeadline,
+    this.taskLocation,
+  });
 }

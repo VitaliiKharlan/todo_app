@@ -67,14 +67,16 @@ extension TaskTypeExtension on TaskType {
 
 class Task extends Equatable {
   Task({
+    String? taskId,
     required this.taskTitle,
     this.taskDescription,
     this.taskType,
     this.taskLocation,
     DateTime? createdAt,
     this.taskDeadline,
+
   })  : taskCreatedAt = createdAt ?? DateTime.now(),
-        taskId = Uuid().v4();
+        taskId = taskId ?? Uuid().v4();
 
   final String taskId;
   final String taskTitle;
@@ -131,6 +133,28 @@ class Task extends Equatable {
         taskType,
         taskLocation,
       ];
+
+  Task copyWith({
+    String? taskId,
+    String? taskTitle,
+    String? taskDescription,
+    TaskType? taskType,
+    LocationDetailsModel? taskLocation,
+    DateTime? taskDeadline,
+    DateTime? taskCreatedAt,
+}) {
+    return Task(
+      taskId: taskId ?? this.taskId,
+      taskTitle: taskTitle ?? this.taskTitle,
+      taskDescription: taskDescription ?? this.taskDescription,
+      taskType: taskType ?? this.taskType,
+      taskLocation: taskLocation ?? this.taskLocation,
+      taskDeadline: taskDeadline ?? this.taskDeadline,
+      createdAt: taskCreatedAt ?? this.taskCreatedAt,
+    );
+  }
+
+
 
   @override
   String toString() {

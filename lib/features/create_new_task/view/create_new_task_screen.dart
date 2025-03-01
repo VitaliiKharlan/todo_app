@@ -119,16 +119,15 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     } else {
       // Edit Task
       bloc.add(EditTaskEvent(
-        Task(
-          // taskId: widget.taskEntity!.taskId,
-          taskTitle: _controllerTaskTitle.text.trim(),
-          taskDescription: _controllerTaskDescription.text.trim(),
-          taskDeadline: _selectedDeadline,
-          taskType: _selectedTaskType,
-          taskLocation: _taskLocation,
-        ),
+        oldTask: widget.editTask!,
+        taskTitle: _controllerTaskTitle.text.trim(),
+        taskDescription: _controllerTaskDescription.text.trim(),
+        taskDeadline: _selectedDeadline,
+        taskType: _selectedTaskType,
+        taskLocation: _taskLocation,
       ));
     }
+
 
     _clearInputFields();
 
