@@ -1,34 +1,61 @@
-import 'package:flutter/material.dart';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
+
+@RoutePage()
+class EditTaskScreen extends StatelessWidget {
+  final Task? editTask;
+
+  const EditTaskScreen({super.key, this.editTask});
+
+  @override
+  Widget build(BuildContext context) {
+    return CreateNewTaskScreen(
+      editTask: editTask,
+    );
+  }
+}
 
 @RoutePage()
 class CreateNewTaskScreen extends StatefulWidget {
   const CreateNewTaskScreen({
     super.key,
+    this.editTask,
   });
+
+  final Task? editTask;
 
   @override
   _CreateNewTaskScreenState createState() => _CreateNewTaskScreenState();
 }
 
 class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
-  final TextEditingController _controllerTaskTitle = TextEditingController();
-  final TextEditingController _controllerTaskDescription =
-      TextEditingController();
+  late TextEditingController _controllerTaskTitle;
+  late TextEditingController _controllerTaskDescription;
 
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
   LocationDetailsModel? _taskLocation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerTaskTitle =
+        TextEditingController(text: widget.editTask?.taskTitle ?? '');
+    _controllerTaskDescription =
+        TextEditingController(text: widget.editTask?.taskDescription ?? '');
+
+    _selectedDeadline = widget.editTask?.taskDeadline;
+    _selectedTaskType = widget.editTask?.taskType;
+    _taskLocation = widget.editTask?.taskLocation;
+  }
 
   _getLocationFromPreviousScreen() async {
     final result = await context.router
@@ -92,13 +119,27 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     //   return;
     // }
 
-    bloc.add(AddTaskEvent(
-      taskTitle,
-      taskDescription,
-      taskDeadline,
-      taskType,
-      taskLocation,
-    ));
+    if (widget.editTask == null) {
+      // Create New Task
+      bloc.add(AddTaskEvent(
+        taskTitle,
+        taskDescription,
+        taskDeadline,
+        taskType,
+        taskLocation,
+      ));
+    } else {
+      // Edit Task
+      bloc.add(EditTaskEvent(
+        (widget.editTask!).copyWith(
+          taskTitle: _controllerTaskTitle.text.trim(),
+          taskDescription: _controllerTaskDescription.text.trim(),
+          taskDeadline: _selectedDeadline,
+          taskType: _selectedTaskType,
+          taskLocation: _taskLocation,
+        ),
+      ));
+    }
 
     _clearInputFields();
 
@@ -195,7 +236,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 32),
                   child: Text(
-                    'Create New Task',
+                    // 'Create New Task',
+                    widget.editTask == null ? 'Create New Task' : 'Edit Task',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -441,7 +483,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   ),
                   SizedBox(height: 12),
                   SizedBox(
-                    width: 200,
+                    width: double.infinity,
                     height: 40,
                     child: ElevatedButton.icon(
                       onPressed: () => {
@@ -454,8 +496,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                           SizedBox(width: 8),
                           Text(
                             _taskLocation == null
-                                ? 'Search Place'
-                                : _taskLocation.toString(),
+                                ? 'Pick a place'
+                                : _taskLocation?.description ?? '',
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
@@ -496,7 +538,9 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                           ),
                         ),
                       ),
-                      child: Text('Create Task'),
+                      child: Text(widget.editTask == null
+                          ? 'Create Task'
+                          : 'Save Changes'),
                     ),
                   ),
                   SizedBox(height: 20),

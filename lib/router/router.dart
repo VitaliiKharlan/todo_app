@@ -23,25 +23,21 @@ class AppRouter extends RootStackRouter {
         children: [
           AutoRoute(
             page: TaskRoute.page,
-            path: 'task',
           ),
           AutoRoute(
             page: SettingsRoute.page,
-            path: 'settings',
           ),
           AutoRoute(
             page: CreateNewTaskRoute.page,
-            path: 'create_new_task',
+          ),
+          AutoRoute(
+            page: EditTaskRoute.page,
           ),
         ],
       ),
+
       AutoRoute(
         page: LocationSearchAutocompleteRoute.page,
-        path: '/location_search_autocomplete',
-      ),
-      AutoRoute(
-        page: TaskDetailsRoute.page,
-        path: '/task_details',
       ),
     ];
   }

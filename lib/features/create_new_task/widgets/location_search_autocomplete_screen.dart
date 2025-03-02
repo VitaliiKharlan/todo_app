@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
 
@@ -18,9 +19,10 @@ class _LocationSearchAutocompleteScreenState
     extends State<LocationSearchAutocompleteScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
   final locationSearchAutocompleteRepository = PlaceDetailsRepository();
-  List<LocationDetailsModel> listOfLocation = [];
 
+  List<LocationDetailsModel> listOfLocation = [];
   final locationDetailsRepository = PlaceDetailsRepository();
+
   LocationDetailsModel? locationDetails;
 
   @override
@@ -40,14 +42,9 @@ class _LocationSearchAutocompleteScreenState
       listOfLocation = suggestions;
     });
 
-    final location = await locationDetailsRepository
-        .getPlaceDetails(controllerLocationSearchAutocomplete.text);
-
     if (suggestions.isNotEmpty) {
       if (!mounted) return;
-      setState(() {
-        // locationDetails = [location];
-      });
+      setState(() {});
     }
   }
 
@@ -158,8 +155,8 @@ class _LocationSearchAutocompleteScreenState
                       },
                       child: ListTile(
                         title: Text(
-                          listOfLocation[index].description ?? "no description",
-                          // style: TextStyle(color: Colors.black),
+                          listOfLocation[index].description ?? 'no description',
+                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     );

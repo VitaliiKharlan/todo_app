@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/task_repository.dart';
+import 'package:uuid/uuid.dart';
 
 part 'tasks_event.dart';
 
@@ -18,6 +19,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<LoadTasksEvent>(_onLoadTasks);
     on<AddTaskEvent>(_onAddTask);
     on<DeleteTaskEvent>(_onDeleteTask);
+    on<EditTaskEvent>(_onEditTask);
   }
 
   Future<void> _onLoadTasks(
@@ -26,13 +28,11 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       debugPrint('Load Event');
 
       final tasksData = await taskRepository.fetchTasks();
-      print(tasksData.length);
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
       debugPrint('Error fetching tasks: $e $s');
-
       emit(TasksLoadingFailureState(e.toString()));
     }
   }
@@ -48,6 +48,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         taskDeadline: event.taskDeadline,
         taskType: event.taskType,
         taskLocation: event.taskLocation,
+        id: Uuid().v4(),
       );
 
       if (state is TasksLoadedState) {
@@ -69,7 +70,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       DeleteTaskEvent event, Emitter<TasksState> emit) async {
     try {
       debugPrint('Delete Event');
-      await taskRepository.deleteTask(event.taskDelete.taskTitle as int);
+      await taskRepository.deleteTask(event.taskDelete.taskTitle);
 
       if (state is TasksLoadedState) {
         final currentTasks = (state as TasksLoadedState).tasks;
@@ -86,6 +87,29 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     } catch (e, s) {
       debugPrint('Error deleting task: $e $s');
       emit(TasksDeletingFailureState(e.toString()));
+    }
+  }
+
+  Future<void> _onEditTask(
+      EditTaskEvent event, Emitter<TasksState> emit) async {
+    try {
+      debugPrint('Edit Event');
+
+      if (state is TasksLoadedState) {
+        final currentTasks = [...(state as TasksLoadedState).tasks];
+        final taskIndex =
+            currentTasks.indexWhere((e) => e.taskId == event.editTask.taskId);
+        currentTasks.removeAt(taskIndex);
+        currentTasks.insert(taskIndex, event.editTask);
+        emit(TasksLoadedState(currentTasks));
+        await taskRepository.updateTask(
+          event.editTask.taskId,
+          event.editTask.toMap(),
+        );
+      }
+    } catch (e, s) {
+      debugPrint('Error editing task: $e $s');
+      emit(TasksEditingFailureState(e.toString()));
     }
   }
 }

@@ -22,7 +22,17 @@ class AddTaskEvent extends TasksEvent {
 }
 
 class DeleteTaskEvent extends TasksEvent {
-  DeleteTaskEvent(this.taskDelete);
+  DeleteTaskEvent(
+    this.taskDelete,
+  );
 
   final Task taskDelete;
+}
+
+class EditTaskEvent extends TasksEvent {
+  final Task editTask;
+
+  EditTaskEvent(
+    this.editTask,
+  );
 }

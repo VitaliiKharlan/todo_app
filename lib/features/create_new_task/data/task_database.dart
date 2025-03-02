@@ -8,7 +8,7 @@ class TaskDatabase {
   factory TaskDatabase() => _instance;
 
   Database? _database;
-  final _taskStore = intMapStoreFactory.store('tasks');
+  final _taskStore = stringMapStoreFactory.store('tasks');
 
   Future<Database> get database async {
     if (_database == null) {
@@ -20,19 +20,19 @@ class TaskDatabase {
     return _database!;
   }
 
-  Future<int> insertTask(Map<String, dynamic> task) async {
+  Future<String> insertTask(Map<String, dynamic> task) async {
     return await _taskStore.add(await database, task);
   }
 
-  Future<List<RecordSnapshot<int, Map<String, dynamic>>>> getAllTasks() async {
+  Future<List<RecordSnapshot<String, Map<String, dynamic>>>> getAllTasks() async {
     return await _taskStore.find(await database);
   }
 
-  Future<void> updateTask(int id, Map<String, dynamic> task) async {
+  Future<void> updateTask(String id, Map<String, dynamic> task) async {
     await _taskStore.record(id).update(await database, task);
   }
 
-  Future<void> deleteTask(int id) async {
+  Future<void> deleteTask(String id) async {
     await _taskStore.record(id).delete(await database);
   }
 }

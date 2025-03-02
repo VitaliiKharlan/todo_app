@@ -5,7 +5,7 @@ import 'package:todo_app/features/create_new_task/data/task_database.dart';
 class TaskRepository {
   final TaskDatabase _taskDatabase = TaskDatabase();
 
-  Future<int> addTask(Map<String, dynamic> task) {
+  Future<String> addTask(Map<String, dynamic> task) {
     return _taskDatabase.insertTask(task);
   }
 
@@ -15,15 +15,16 @@ class TaskRepository {
       final task = snapshot.value;
 
       debugPrint('Tasks loaded: ${records.map((record) => record.value)}');
+
       return task;
     }).toList();
   }
 
-  Future<void> updateTask(int id, Map<String, dynamic> task) {
+  Future<void> updateTask(String id, Map<String, dynamic> task) {
     return _taskDatabase.updateTask(id, task);
   }
 
-  Future<void> deleteTask(int id) {
+  Future<void> deleteTask(String id) {
     return _taskDatabase.deleteTask(id);
   }
 }

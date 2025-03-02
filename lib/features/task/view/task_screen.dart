@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
+import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
 
 @RoutePage()
@@ -72,33 +73,54 @@ class TaskScreen extends StatelessWidget {
                       itemCount: state.tasks.length,
                       itemBuilder: (context, index) {
                         final deleteTask = tasks[index];
-                        return Slidable(
-                          key: ValueKey(index),
-                          endActionPane: ActionPane(
-                            motion: Container(
-                              margin: EdgeInsets.only(bottom: 24),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const ScrollMotion(),
-                            ),
-                            extentRatio: 0.25,
-                            children: [
-                              SlidableAction(
-                                onPressed: (_) {
-                                  context
-                                      .read<TasksBloc>()
-                                      .add(DeleteTaskEvent(deleteTask));
-                                },
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                            ],
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 12,
                           ),
-                          child: TaskListCard(
-                            task: tasks[index],
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Slidable(
+                              key: ValueKey(index),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                extentRatio: 0.4,
+                                children: [
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      context.pushRoute(CreateNewTaskRoute(
+                                          editTask: deleteTask));
+                                    },
+                                    backgroundColor: Colors.green,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.edit,
+                                    label: 'Edit',
+                                    spacing: 8,
+                                    padding: EdgeInsets.only(
+                                        left: 4, top: 12, right: 4),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  SlidableAction(
+                                    onPressed: (_) {
+                                      context
+                                          .read<TasksBloc>()
+                                          .add(DeleteTaskEvent(deleteTask));
+                                    },
+                                    backgroundColor: Colors.red,
+                                    foregroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                    spacing: 8,
+                                    padding: EdgeInsets.only(
+                                        left: 4, top: 12, right: 4),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ],
+                              ),
+                              child: TaskListCard(
+                                task: tasks[index],
+                              ),
+                            ),
                           ),
                         );
                       });

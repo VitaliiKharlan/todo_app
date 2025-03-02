@@ -1,17 +1,15 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:async';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
-
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-
 import 'package:todo_app/router/router.dart';
-import '../../../ui/widgets/base_container.dart';
+import 'package:todo_app/ui/widgets/base_container.dart';
 
 class TaskListCard extends StatefulWidget {
   const TaskListCard({
@@ -70,7 +68,7 @@ class _TaskListCardState extends State<TaskListCard> {
       child: BaseContainer(
         height: 148,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(horizontal: 20).copyWith(bottom: 24),
+        // margin: EdgeInsets.only(bottom: 24),
         color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +106,6 @@ class _TaskListCardState extends State<TaskListCard> {
                   width: 72,
                   child: Center(
                     child: Column(
-
                       children: [
                         SizedBox(height: 4),
                         Text(
@@ -159,7 +156,6 @@ class _TaskListCardState extends State<TaskListCard> {
                             ),
                           ),
                         ],
-
                       ],
                     ),
                   ),
@@ -167,15 +163,15 @@ class _TaskListCardState extends State<TaskListCard> {
               ],
             ),
             if (widget.task.taskLocation != null)
-            Text(
-              widget.task.taskLocation.toString(),
-              style: theme.textTheme.bodyLarge?.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.purple,
+              Text(
+                widget.task.taskLocation.toString(),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.purple,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
-              overflow: TextOverflow.ellipsis,
-            ),
           ],
         ),
       ),

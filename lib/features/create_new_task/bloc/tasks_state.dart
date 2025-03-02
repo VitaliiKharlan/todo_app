@@ -16,11 +16,9 @@ class AddNewTaskLoadingState extends TasksState {
 class TasksLoadedState extends TasksState {
   TasksLoadedState(
     this.tasks,
-    // this.selectedLocation,
   );
 
   final List<Task> tasks;
-  // final String? selectedLocation;
 
   @override
   List<Object?> get props => [tasks];
@@ -43,6 +41,15 @@ class TasksDeletingFailureState extends TasksState {
   );
 
   final Object? exception;
+
+  @override
+  List<Object?> get props => [exception];
+}
+
+class TasksEditingFailureState extends TasksState {
+  final Object? exception;
+
+  TasksEditingFailureState(this.exception);
 
   @override
   List<Object?> get props => [exception];

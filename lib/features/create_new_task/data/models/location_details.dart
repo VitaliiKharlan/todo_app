@@ -22,6 +22,14 @@ class LocationDetailsModel {
 
   @override
   String toString() {
-    return '${description} ${lat} ${lng}';
+    return '$description, \nlat: $lat, lng: $lng';
+
+    // stupid output of data
+    //
+    // return 'LocationDetailsModel {'
+    //     'description: $description, '
+    //     'lat: $lat, '
+    //     'lng: $lng, '
+    //     '}';
   }
 }
