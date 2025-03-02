@@ -1,14 +1,26 @@
-import 'package:flutter/material.dart';
-
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
+
+@RoutePage()
+class EditTaskScreen extends StatelessWidget {
+  final Task? editTask;
+
+  const EditTaskScreen({super.key, this.editTask});
+
+  @override
+  Widget build(BuildContext context) {
+    return CreateNewTaskScreen(
+      editTask: editTask,
+    );
+  }
+}
 
 @RoutePage()
 class CreateNewTaskScreen extends StatefulWidget {
@@ -119,8 +131,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     } else {
       // Edit Task
       bloc.add(EditTaskEvent(
-        Task(
-          // taskId: widget.taskEntity!.taskId,
+        (widget.editTask!).copyWith(
           taskTitle: _controllerTaskTitle.text.trim(),
           taskDescription: _controllerTaskDescription.text.trim(),
           taskDeadline: _selectedDeadline,

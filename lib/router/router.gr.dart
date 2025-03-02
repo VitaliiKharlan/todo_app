@@ -47,6 +47,42 @@ class CreateNewTaskRouteArgs {
 }
 
 /// generated route for
+/// [EditTaskScreen]
+class EditTaskRoute extends PageRouteInfo<EditTaskRouteArgs> {
+  EditTaskRoute({Key? key, Task? editTask, List<PageRouteInfo>? children})
+    : super(
+        EditTaskRoute.name,
+        args: EditTaskRouteArgs(key: key, editTask: editTask),
+        initialChildren: children,
+      );
+
+  static const String name = 'EditTaskRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<EditTaskRouteArgs>(
+        orElse: () => const EditTaskRouteArgs(),
+      );
+      return EditTaskScreen(key: args.key, editTask: args.editTask);
+    },
+  );
+}
+
+class EditTaskRouteArgs {
+  const EditTaskRouteArgs({this.key, this.editTask});
+
+  final Key? key;
+
+  final Task? editTask;
+
+  @override
+  String toString() {
+    return 'EditTaskRouteArgs{key: $key, editTask: $editTask}';
+  }
+}
+
+/// generated route for
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
   HomeRoute({Key? key, List<PageRouteInfo>? children})

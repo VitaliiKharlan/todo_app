@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:equatable/equatable.dart';
-import 'package:uuid/uuid.dart';
-
+import 'package:flutter/material.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
+import 'package:uuid/uuid.dart';
 
 enum TaskType {
   work,
@@ -69,12 +67,13 @@ class Task extends Equatable {
   Task({
     required this.taskTitle,
     this.taskDescription,
+    required String id,
     this.taskType,
     this.taskLocation,
     DateTime? createdAt,
     this.taskDeadline,
   })  : taskCreatedAt = createdAt ?? DateTime.now(),
-        taskId = Uuid().v4();
+        taskId = id ?? Uuid().v4();
 
   final String taskId;
   final String taskTitle;
@@ -103,6 +102,26 @@ class Task extends Equatable {
     };
   }
 
+  Task copyWith({
+    String? taskId,
+    String? taskTitle,
+    String? taskDescription,
+    TaskType? taskType,
+    LocationDetailsModel? taskLocation,
+    DateTime? taskDeadline,
+    DateTime? taskCreatedAt,
+  }) {
+    return Task(
+      id: taskId ?? this.taskId,
+      taskTitle: taskTitle ?? this.taskTitle,
+      taskDescription: taskDescription ?? this.taskDescription,
+      taskType: taskType ?? this.taskType,
+      taskLocation: taskLocation ?? this.taskLocation,
+      taskDeadline: taskDeadline ?? this.taskDeadline,
+      createdAt: taskCreatedAt ?? this.taskCreatedAt,
+    );
+  }
+
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
       taskTitle: map['taskTitle'],
@@ -120,6 +139,7 @@ class Task extends Equatable {
       taskDeadline: map['taskDeadline'] != null
           ? DateTime.parse(map['taskDeadline'])
           : null,
+      id: map['taskId'],
     );
   }
 
