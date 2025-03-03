@@ -24,6 +24,7 @@ class LocationDetailsModel {
   String toString() {
     return '$description, \nlat: $lat, lng: $lng';
 
+    //
     // stupid output of data
     //
     // return 'LocationDetailsModel {'
@@ -31,5 +32,6 @@ class LocationDetailsModel {
     //     'lat: $lat, '
     //     'lng: $lng, '
     //     '}';
+    //
   }
 }

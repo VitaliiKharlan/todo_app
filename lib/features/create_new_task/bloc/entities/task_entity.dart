@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
 
-
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
 
@@ -74,9 +73,9 @@ class Task extends Equatable {
     this.taskLocation,
     DateTime? createdAt,
     this.taskDeadline,
+  }) : taskCreatedAt = createdAt ?? DateTime.now();
 
-  })  : taskCreatedAt = createdAt ?? DateTime.now();
-        // taskId = taskId ?? Uuid().v4();
+  // taskId = taskId ?? Uuid().v4();
 
   final String taskId;
   final String taskTitle;
@@ -143,7 +142,7 @@ class Task extends Equatable {
     LocationDetailsModel? taskLocation,
     DateTime? taskDeadline,
     DateTime? taskCreatedAt,
-}) {
+  }) {
     return Task(
       taskId: taskId ?? this.taskId,
       taskTitle: taskTitle ?? this.taskTitle,
@@ -154,8 +153,6 @@ class Task extends Equatable {
       createdAt: taskCreatedAt ?? this.taskCreatedAt,
     );
   }
-
-
 
   @override
   String toString() {

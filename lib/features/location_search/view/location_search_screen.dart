@@ -1,22 +1,21 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import 'package:auto_route/auto_route.dart';
+
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/location_search_autocomplete_repository.dart';
+import 'package:todo_app/features/create_new_task/data/repositories/place_details_repository.dart';
 
 @RoutePage()
-class LocationSearchAutocompleteScreen extends StatefulWidget {
-  const LocationSearchAutocompleteScreen({
+class LocationSearchScreen extends StatefulWidget {
+  const LocationSearchScreen({
     super.key,
   });
 
   @override
-  State<LocationSearchAutocompleteScreen> createState() =>
-      _LocationSearchAutocompleteScreenState();
+  State<LocationSearchScreen> createState() => _LocationSearchScreenState();
 }
 
-class _LocationSearchAutocompleteScreenState
-    extends State<LocationSearchAutocompleteScreen> {
+class _LocationSearchScreenState extends State<LocationSearchScreen> {
   final controllerLocationSearchAutocomplete = TextEditingController();
   final locationSearchAutocompleteRepository = PlaceDetailsRepository();
 

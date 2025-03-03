@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/features/location_search/view/location_search_screen.dart';
 
-import 'package:todo_app/features/create_new_task/create_new_task.dart';
+
 
 class ShowTheCity extends StatelessWidget {
   const ShowTheCity({
@@ -40,7 +41,7 @@ class ShowTheCity extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pop(
                           MaterialPageRoute(
-                            builder: (context) => LocationSearchAutocompleteScreen(),
+                            builder: (context) => LocationSearchScreen(),
                           ),
                         );
                       },

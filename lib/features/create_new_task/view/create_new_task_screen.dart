@@ -47,7 +47,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   _getLocationFromPreviousScreen() async {
     final result = await context.router
-        .push<LocationDetailsModel>(LocationSearchAutocompleteRoute());
+        .push<LocationDetailsModel>(LocationSearchRoute());
     if (result != null) {
       setState(() {
         _taskLocation = result;

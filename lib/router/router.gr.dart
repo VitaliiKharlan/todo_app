@@ -81,17 +81,17 @@ class HomeRouteArgs {
 }
 
 /// generated route for
-/// [LocationSearchAutocompleteScreen]
-class LocationSearchAutocompleteRoute extends PageRouteInfo<void> {
-  const LocationSearchAutocompleteRoute({List<PageRouteInfo>? children})
-    : super(LocationSearchAutocompleteRoute.name, initialChildren: children);
+/// [LocationSearchScreen]
+class LocationSearchRoute extends PageRouteInfo<void> {
+  const LocationSearchRoute({List<PageRouteInfo>? children})
+    : super(LocationSearchRoute.name, initialChildren: children);
 
-  static const String name = 'LocationSearchAutocompleteRoute';
+  static const String name = 'LocationSearchRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LocationSearchAutocompleteScreen();
+      return const LocationSearchScreen();
     },
   );
 }
