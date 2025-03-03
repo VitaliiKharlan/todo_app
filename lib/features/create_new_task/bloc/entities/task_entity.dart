@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:uuid/uuid.dart';
+
 
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/ui/theme/app_svg_images.dart';
@@ -67,7 +67,7 @@ extension TaskTypeExtension on TaskType {
 
 class Task extends Equatable {
   Task({
-    String? taskId,
+    required this.taskId,
     required this.taskTitle,
     this.taskDescription,
     this.taskType,
@@ -75,8 +75,8 @@ class Task extends Equatable {
     DateTime? createdAt,
     this.taskDeadline,
 
-  })  : taskCreatedAt = createdAt ?? DateTime.now(),
-        taskId = taskId ?? Uuid().v4();
+  })  : taskCreatedAt = createdAt ?? DateTime.now();
+        // taskId = taskId ?? Uuid().v4();
 
   final String taskId;
   final String taskTitle;
@@ -122,6 +122,7 @@ class Task extends Equatable {
       taskDeadline: map['taskDeadline'] != null
           ? DateTime.parse(map['taskDeadline'])
           : null,
+      taskId: map['taskId'],
     );
   }
 

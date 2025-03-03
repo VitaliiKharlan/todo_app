@@ -60,6 +60,10 @@ class _TaskListCardState extends State<TaskListCard> {
             task: widget.task,
             onDelete: (task) {
               context.read<TasksBloc>().add(DeleteTaskEvent(task));
+              // context.read<TasksBloc>().add(EditTaskEvent(
+              //       oldTask: task,
+              //       taskTitle: task.taskTitle,
+              //     ));
               context.router.maybePop();
             },
           ),
@@ -68,7 +72,6 @@ class _TaskListCardState extends State<TaskListCard> {
       child: BaseContainer(
         height: 148,
         width: double.infinity,
-
         color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -38,13 +38,9 @@ class PlaceDetailsRepository {
       } else {
         throw Exception('Failed to load locations');
       }
-      // } catch (e, s) {
-      //   debugPrint(e.toString());
-      //   debugPrint(s.toString());
-      //   return [];
-      // }
-    } catch (e) {
+    } catch (e, s) {
       debugPrint(e.toString());
+      debugPrint(s.toString());
       return [];
     }
   }
