@@ -163,7 +163,32 @@ class TaskDetailsScreen extends StatelessWidget {
                 InProgressIndicator(
                   progress: task.progress,
                 ),
-                SizedBox(height: 8),
+
+                SizedBox(height: 32),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Project Milestone',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    if (task.taskRemindTime != null) ...[
+                      SizedBox(height: 12),
+                      Text(
+                        DateFormat("dd MMMM, 'at' hh:mm a")
+                            .format(task.taskRemindTime!),
+                        style: AppTextStyle.dateProgressIndicator.copyWith(
+                            fontSize: 12,
+                            color: AppColors.dateProgressIndicator),
+                      ),
+                    ]
+                  ],
+                ),
+
                 SizedBox(height: 20),
                 Text(
                   'Overview',

@@ -614,7 +614,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                       const SizedBox(height: 12),
                       SizedBox(
-                        width: 320,
+                        width: 240,
                         height: 40,
                         child: ElevatedButton.icon(
                           onPressed: () => _selectRemindTime(context),
