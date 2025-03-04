@@ -82,24 +82,24 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
       return;
     }
-    if (taskType == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a task type')),
-      );
-      return;
-    }
-    if (taskDeadline == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a task deadline')),
-      );
-      return;
-    }
-    if (taskDescription.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a task description')),
-      );
-      return;
-    }
+    // if (taskType == null) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Please enter a task type')),
+    //   );
+    //   return;
+    // }
+    // if (taskDeadline == null) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Please enter a task deadline')),
+    //   );
+    //   return;
+    // }
+    // if (taskDescription.isEmpty) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('Please enter a task description')),
+    //   );
+    //   return;
+    // }
     // if (taskLocation == null) {
     //   ScaffoldMessenger.of(context).showSnackBar(
     //     const SnackBar(content: Text('Please enter a city location')),

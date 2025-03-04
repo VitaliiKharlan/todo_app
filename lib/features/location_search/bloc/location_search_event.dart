@@ -4,9 +4,17 @@ part of 'location_search_bloc.dart';
 sealed class LocationSearchEvent {}
 
 class LocationSearchTextChangeEvent extends LocationSearchEvent {
-  LocationSearchTextChangeEvent();
+  LocationSearchTextChangeEvent(
+    this.query,
+  );
+
+  final String query;
 }
 
 class LocationSearchSelectEvent extends LocationSearchEvent {
-  LocationSearchSelectEvent();
+  LocationSearchSelectEvent(
+    this.location,
+  );
+
+  final List<LocationDetailsModel> location;
 }

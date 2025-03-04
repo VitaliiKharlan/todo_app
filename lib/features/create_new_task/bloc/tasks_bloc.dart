@@ -25,7 +25,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onLoadTasks(
       LoadTasksEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Load Event');
+      debugPrint('Load Tasks Event');
 
       final tasksData = await taskRepository.fetchTasks();
 
@@ -38,14 +38,15 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
-      debugPrint('Error fetching tasks: $e $s');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       emit(TasksLoadingFailureState(e.toString()));
     }
   }
 
   Future<void> _onAddTask(AddTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Add Event');
+      debugPrint('Add Tasks Event');
 
       List<Task> tasks = [];
       final newTask = Task(
@@ -67,7 +68,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       emit(TasksLoadedState(tasks));
       await taskRepository.addTask(newTask.toMap());
     } catch (e, s) {
-      debugPrint('Error adding task: $e $s');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       emit(TasksDeletingFailureState(e.toString()));
     }
   }
@@ -75,7 +77,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onDeleteTask(
       DeleteTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Delete Event');
+      debugPrint('Delete Tasks Event');
       await taskRepository.deleteTask(event.taskDelete.taskTitle);
 
       if (state is TasksLoadedState) {
@@ -99,7 +101,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onEditTask(
       EditTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Edit Event');
+      debugPrint('Edit Tasks Event');
 
       if (state is TasksLoadedState) {
         final currentState = state as TasksLoadedState;
@@ -126,7 +128,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
       }
     } catch (e, s) {
-      debugPrint('Error editing task: $e $s');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       emit(TasksEditingFailureState(e.toString()));
     }
   }

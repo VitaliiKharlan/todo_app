@@ -82,18 +82,36 @@ class HomeRouteArgs {
 
 /// generated route for
 /// [LocationSearchScreen]
-class LocationSearchRoute extends PageRouteInfo<void> {
-  const LocationSearchRoute({List<PageRouteInfo>? children})
-    : super(LocationSearchRoute.name, initialChildren: children);
+class LocationSearchRoute extends PageRouteInfo<LocationSearchRouteArgs> {
+  LocationSearchRoute({Key? key, List<PageRouteInfo>? children})
+    : super(
+        LocationSearchRoute.name,
+        args: LocationSearchRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'LocationSearchRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LocationSearchScreen();
+      final args = data.argsAs<LocationSearchRouteArgs>(
+        orElse: () => const LocationSearchRouteArgs(),
+      );
+      return LocationSearchScreen(key: args.key);
     },
   );
+}
+
+class LocationSearchRouteArgs {
+  const LocationSearchRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LocationSearchRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

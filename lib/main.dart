@@ -4,6 +4,7 @@ import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const TodoApp());
 }
 

@@ -60,10 +60,6 @@ class _TaskListCardState extends State<TaskListCard> {
             task: widget.task,
             onDelete: (task) {
               context.read<TasksBloc>().add(DeleteTaskEvent(task));
-              // context.read<TasksBloc>().add(EditTaskEvent(
-              //       oldTask: task,
-              //       taskTitle: task.taskTitle,
-              //     ));
               context.router.maybePop();
             },
           ),

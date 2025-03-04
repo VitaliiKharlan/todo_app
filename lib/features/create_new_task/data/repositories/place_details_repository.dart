@@ -25,10 +25,6 @@ class PlaceDetailsRepository {
       final response = await http.get(Uri.parse(requestUrl));
       final data = json.decode(response.body);
 
-      if (kDebugMode) {
-        print(data);
-      }
-
       if (response.statusCode == 200) {
         final predictions = data['predictions'] as List<dynamic>? ?? [];
 
@@ -39,8 +35,8 @@ class PlaceDetailsRepository {
         throw Exception('Failed to load locations');
       }
     } catch (e, s) {
-      debugPrint(e.toString());
-      debugPrint(s.toString());
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       return [];
     }
   }
@@ -53,10 +49,6 @@ class PlaceDetailsRepository {
       final response = await http.get(Uri.parse(requestUrl));
       final data = json.decode(response.body);
 
-      if (kDebugMode) {
-        print(data);
-      }
-
       if (response.statusCode == 200) {
         final location = data['result']['geometry']['location'];
 
@@ -65,8 +57,8 @@ class PlaceDetailsRepository {
         throw Exception('Failed to load locations');
       }
     } catch (e, s) {
-      debugPrint(e.toString());
-      debugPrint(s.toString());
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       rethrow;
     }
   }

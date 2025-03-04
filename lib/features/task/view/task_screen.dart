@@ -91,12 +91,7 @@ class TaskScreen extends StatelessWidget {
                                     onPressed: (_) {
                                       context.pushRoute(CreateNewTaskRoute(
                                           editTask: editTask));
-                                      // context
-                                      //     .read<TasksBloc>()
-                                      //     .add(EditTaskEvent(
-                                      //       oldTask: editTask,
-                                      //       taskTitle: editTask.taskTitle,
-                                      //     ));
+
                                     },
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.white,
