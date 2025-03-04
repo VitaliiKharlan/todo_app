@@ -56,6 +56,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         taskDeadline: event.taskDeadline,
         taskType: event.taskType,
         taskLocation: event.taskLocation,
+        taskRemindTime: event.taskRemindTime,
       );
 
       if (state is TasksLoadedState) {
@@ -112,6 +113,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           taskType: event.taskType,
           taskDeadline: event.taskDeadline,
           taskLocation: event.taskLocation,
+          taskRemindTime: event.taskRemindTime,
         );
 
 

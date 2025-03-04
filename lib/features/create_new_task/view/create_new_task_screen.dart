@@ -30,6 +30,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
   LocationDetailsModel? _taskLocation;
+  DateTime? _selectedRemindTime;
 
   @override
   void initState() {
@@ -41,13 +42,14 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
         TextEditingController(text: widget.editTask?.taskDescription ?? '');
 
     _selectedDeadline = widget.editTask?.taskDeadline;
+    _selectedRemindTime = widget.editTask?.taskRemindTime;
     _selectedTaskType = widget.editTask?.taskType;
     _taskLocation = widget.editTask?.taskLocation;
   }
 
   _getLocationFromPreviousScreen() async {
-    final result = await context.router
-        .push<LocationDetailsModel>(LocationSearchRoute());
+    final result =
+        await context.router.push<LocationDetailsModel>(LocationSearchRoute());
     if (result != null) {
       setState(() {
         _taskLocation = result;
@@ -61,6 +63,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
     setState(() {
       _selectedDeadline = null;
+      _selectedRemindTime = null;
       _selectedTaskType = null;
       _taskLocation = null;
     });
@@ -73,6 +76,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     final taskDeadline = _selectedDeadline;
     final taskDescription = _controllerTaskDescription.text.trim();
     final taskLocation = _taskLocation;
+    final taskRemindTime = _selectedRemindTime;
 
     final tabsRouter = context.tabsRouter;
 
@@ -82,24 +86,24 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
       return;
     }
-    // if (taskType == null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a task type')),
-    //   );
-    //   return;
-    // }
-    // if (taskDeadline == null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a task deadline')),
-    //   );
-    //   return;
-    // }
-    // if (taskDescription.isEmpty) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a task description')),
-    //   );
-    //   return;
-    // }
+    if (taskType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task type')),
+      );
+      return;
+    }
+    if (taskDeadline == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task deadline')),
+      );
+      return;
+    }
+    if (taskDescription.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a task description')),
+      );
+      return;
+    }
     // if (taskLocation == null) {
     //   ScaffoldMessenger.of(context).showSnackBar(
     //     const SnackBar(content: Text('Please enter a city location')),
@@ -115,6 +119,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
         taskDeadline,
         taskType,
         taskLocation,
+        taskRemindTime,
       ));
     } else {
       // Edit Task
@@ -125,9 +130,9 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
         taskDeadline: _selectedDeadline,
         taskType: _selectedTaskType,
         taskLocation: _taskLocation,
+        taskRemindTime: _selectedRemindTime,
       ));
     }
-
 
     _clearInputFields();
 
@@ -179,6 +184,55 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       });
     } else {
       debugPrint('super');
+    }
+  }
+
+
+  Future<void> _selectRemindDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedRemindTime ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != _selectedRemindTime) {
+      setState(() {
+        _selectedRemindTime = picked.copyWith(
+            hour: _selectedRemindTime?.hour, minute: _selectedRemindTime?.minute);
+      });
+    }
+  }
+
+  Future<void> _selectRemindTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedRemindTime != null
+          ? TimeOfDay.fromDateTime(_selectedRemindTime!)
+          : TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _selectedRemindTime = DateTime(
+          _selectedRemindTime!.year,
+          _selectedRemindTime!.month,
+          _selectedRemindTime!.day,
+          picked.hour,
+          picked.minute,
+        );
+      });
+    } else if (picked != null && _selectedRemindTime != null) {
+      final DateTime now = DateTime.now();
+      setState(() {
+        _selectedRemindTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          picked.hour,
+          picked.minute,
+        );
+      });
+    } else {
+      debugPrint('super Remind Time');
     }
   }
 
@@ -509,6 +563,94 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ),
                   ),
+                  //
+                  //
+                  SizedBox(height: 20),
+                  Text(
+                    'Remind me',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 12),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 40,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _selectRemindDate(context),
+                          icon: const Icon(Icons.calendar_today),
+                          label: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(width: 8),
+                              Text(
+                                _selectedRemindTime == null
+                                    ? 'Pick Remind Date'
+                                    : DateFormat('dd MMMM, EEEE')
+                                        .format(_selectedRemindTime!),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.white),
+                            foregroundColor: WidgetStatePropertyAll(
+                              Colors.black.withAlpha(60),
+                            ),
+                            side: WidgetStatePropertyAll(
+                              BorderSide(
+                                color: Colors.grey.withAlpha(80),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: 320,
+                        height: 40,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _selectRemindTime(context),
+                          icon: const Icon(Icons.access_time),
+                          label: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: 8),
+                              Text(
+                                _selectedRemindTime == null
+                                    ? 'Pick Remind Time'
+                                    : DateFormat('HH:mm')
+                                        .format(_selectedRemindTime!),
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Colors.white),
+                            foregroundColor: WidgetStatePropertyAll(
+                              Colors.black.withAlpha(60),
+                            ),
+                            side: WidgetStatePropertyAll(
+                              BorderSide(
+                                color: Colors.grey.withAlpha(80),
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  //
+                  //
                   SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,

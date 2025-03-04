@@ -73,6 +73,7 @@ class Task extends Equatable {
     this.taskLocation,
     DateTime? createdAt,
     this.taskDeadline,
+    this.taskRemindTime,
   }) : taskCreatedAt = createdAt ?? DateTime.now();
 
   // taskId = taskId ?? Uuid().v4();
@@ -83,6 +84,7 @@ class Task extends Equatable {
   final TaskType? taskType;
   final LocationDetailsModel? taskLocation;
   final DateTime? taskDeadline;
+  final DateTime? taskRemindTime;
   final DateTime taskCreatedAt;
 
   double get progress {
@@ -101,6 +103,7 @@ class Task extends Equatable {
       'taskLocation': taskLocation?.toJson(),
       'taskCreatedAt': taskCreatedAt.toIso8601String(),
       'taskDeadline': taskDeadline?.toIso8601String(),
+      'taskRemindTime': taskRemindTime?.toIso8601String(),
     };
   }
 
@@ -120,6 +123,9 @@ class Task extends Equatable {
           : null,
       taskDeadline: map['taskDeadline'] != null
           ? DateTime.parse(map['taskDeadline'])
+          : null,
+      taskRemindTime: map['taskRemindTime'] != null
+          ? DateTime.parse(map['taskRemindTime'])
           : null,
       taskId: map['taskId'],
     );
@@ -141,6 +147,7 @@ class Task extends Equatable {
     TaskType? taskType,
     LocationDetailsModel? taskLocation,
     DateTime? taskDeadline,
+    DateTime? taskRemindTime,
     DateTime? taskCreatedAt,
   }) {
     return Task(
@@ -150,6 +157,7 @@ class Task extends Equatable {
       taskType: taskType ?? this.taskType,
       taskLocation: taskLocation ?? this.taskLocation,
       taskDeadline: taskDeadline ?? this.taskDeadline,
+      taskRemindTime: taskRemindTime ?? this.taskRemindTime,
       createdAt: taskCreatedAt ?? this.taskCreatedAt,
     );
   }

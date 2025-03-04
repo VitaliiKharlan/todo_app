@@ -8,16 +8,21 @@ import 'package:todo_app/features/create_new_task/data/repositories/place_detail
 import 'package:todo_app/features/location_search/bloc/location_search_bloc.dart';
 
 @RoutePage()
-class LocationSearchScreen extends StatelessWidget {
+class LocationSearchScreen extends StatefulWidget {
   LocationSearchScreen({
     super.key,
   });
 
+  @override
+  State<LocationSearchScreen> createState() => _LocationSearchScreenState();
+}
+
+class _LocationSearchScreenState extends State<LocationSearchScreen> {
   final placeDetailsRepository = PlaceDetailsRepository();
+  TextEditingController controllerLocationSearch = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final controllerLocationSearch = TextEditingController();
     return BlocProvider<LocationSearchBloc>(
       create: (context) => LocationSearchBloc(placeDetailsRepository),
       child: Builder(builder: (context) {
