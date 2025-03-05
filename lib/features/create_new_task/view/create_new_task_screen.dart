@@ -187,7 +187,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     }
   }
 
-
   Future<void> _selectRemindDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -198,7 +197,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     if (picked != null && picked != _selectedRemindTime) {
       setState(() {
         _selectedRemindTime = picked.copyWith(
-            hour: _selectedRemindTime?.hour, minute: _selectedRemindTime?.minute);
+            hour: _selectedRemindTime?.hour,
+            minute: _selectedRemindTime?.minute);
       });
     }
   }
