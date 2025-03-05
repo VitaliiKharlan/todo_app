@@ -33,7 +33,9 @@ class NotificationService {
 
     const platformDetails = NotificationDetails(android: androidDetails);
 
-    debugPrint('Scheduling notification for task "$title" at $reminderTime');
+    debugPrint(
+        'Schedule a task notification one hour in advance '
+            '"$title" at $reminderTime');
 
     await _notificationsPlugin.zonedSchedule(
       id.hashCode,
@@ -46,7 +48,9 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
     );
 
-    debugPrint('Scheduling notification for task "$title" at $deadlineTZ');
+    debugPrint(
+        'Schedule a task notification upon completion '
+            '"$title" at $deadlineTZ');
 
     await _notificationsPlugin.zonedSchedule(
       id.hashCode + 1,
