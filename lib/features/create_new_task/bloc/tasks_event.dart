@@ -20,7 +20,7 @@ class AddTaskEvent extends TasksEvent {
   final DateTime? taskDeadline;
   final TaskType? taskType;
   final LocationDetailsModel? taskLocation;
-  final DateTime? taskRemindTime;
+  final List<DateTime>? taskRemindTime;
 }
 
 class DeleteTaskEvent extends TasksEvent {
@@ -48,5 +48,5 @@ class EditTaskEvent extends TasksEvent {
   final TaskType? taskType;
   final DateTime? taskDeadline;
   final LocationDetailsModel? taskLocation;
-  final DateTime? taskRemindTime;
+  final List<DateTime>? taskRemindTime;
 }

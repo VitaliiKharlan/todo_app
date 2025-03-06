@@ -30,7 +30,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
   LocationDetailsModel? _taskLocation;
-  DateTime? _selectedRemindTime;
+  List<DateTime>? _selectedRemindTime;
 
   @override
   void initState() {
@@ -104,12 +104,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
       return;
     }
-    // if (taskLocation == null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a city location')),
-    //   );
-    //   return;
-    // }
 
     if (widget.editTask == null) {
       // Create New Task
@@ -190,15 +184,25 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   Future<void> _selectRemindDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedRemindTime ?? DateTime.now(),
+      // initialDate: _selectedRemindTime ?? DateTime.now(),
+      initialDate: _selectedRemindTime?.isNotEmpty ?? false
+          ? _selectedRemindTime!.first
+          : DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedRemindTime) {
+
+    if (picked != null) {
       setState(() {
-        _selectedRemindTime = picked.copyWith(
-            hour: _selectedRemindTime?.hour,
-            minute: _selectedRemindTime?.minute);
+        _selectedRemindTime ??= [];
+        _selectedRemindTime!.add(picked.copyWith(
+          hour: _selectedRemindTime?.isNotEmpty == true
+              ? _selectedRemindTime!.last.hour
+              : DateTime.now().hour,
+          minute: _selectedRemindTime?.isNotEmpty == true
+              ? _selectedRemindTime!.last.minute
+              : DateTime.now().minute,
+        ));
       });
     }
   }
@@ -206,30 +210,34 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   Future<void> _selectRemindTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: _selectedRemindTime != null
-          ? TimeOfDay.fromDateTime(_selectedRemindTime!)
-          : TimeOfDay.now(),
+      initialTime:
+          _selectedRemindTime != null && _selectedRemindTime!.isNotEmpty
+              ? TimeOfDay.fromDateTime(_selectedRemindTime!.last)
+              : TimeOfDay.now(),
     );
     if (picked != null) {
       setState(() {
-        _selectedRemindTime = DateTime(
-          _selectedRemindTime!.year,
-          _selectedRemindTime!.month,
-          _selectedRemindTime!.day,
-          picked.hour,
-          picked.minute,
-        );
-      });
-    } else if (picked != null && _selectedRemindTime != null) {
-      final DateTime now = DateTime.now();
-      setState(() {
-        _selectedRemindTime = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          picked.hour,
-          picked.minute,
-        );
+        _selectedRemindTime ??= [];
+        if (_selectedRemindTime!.isNotEmpty) {
+          _selectedRemindTime!.last = DateTime(
+            _selectedRemindTime!.last.year,
+            _selectedRemindTime!.last.month,
+            _selectedRemindTime!.last.day,
+            picked.hour,
+            picked.minute,
+          );
+        } else if (_selectedRemindTime != null) {
+          final DateTime now = DateTime.now();
+          setState(() {
+            _selectedRemindTime!.add(DateTime(
+              DateTime.now().year,
+              DateTime.now().month,
+              DateTime.now().day,
+              picked.hour,
+              picked.minute,
+            ));
+          });
+        }
       });
     } else {
       debugPrint('super Remind Time');
@@ -346,38 +354,42 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     children: TaskType.values.take(5).map((TaskType type) {
                       return Expanded(
                         child: Row(
+                          // mainAxisSize: MainAxisSize.min,
                           children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: _selectedTaskType == type
-                                    ? Colors.blue
-                                    : Colors.blue[100],
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                              ).copyWith(
-                                shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _selectedTaskType = type;
-                                });
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    type.name,
-                                    style: TextStyle(
-                                      color: _selectedTaskType == type
-                                          ? Colors.white
-                                          : Colors.black,
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: _selectedTaskType == type
+                                      ? Colors.blue
+                                      : Colors.blue[100],
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                ).copyWith(
+                                  shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                ],
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _selectedTaskType = type;
+                                  });
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      type.name,
+                                      style: TextStyle(
+                                        color: _selectedTaskType == type
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 8,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(width: 4),
@@ -589,10 +601,11 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                             children: [
                               const SizedBox(width: 8),
                               Text(
-                                _selectedRemindTime == null
+                                _selectedRemindTime == null ||
+                                        _selectedRemindTime!.isEmpty
                                     ? 'Pick Remind Date'
                                     : DateFormat('dd MMMM, EEEE')
-                                        .format(_selectedRemindTime!),
+                                        .format(_selectedRemindTime!.last),
                                 style: TextStyle(fontSize: 16),
                               ),
                             ],
@@ -624,10 +637,11 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                             children: [
                               SizedBox(width: 8),
                               Text(
-                                _selectedRemindTime == null
+                                _selectedRemindTime == null ||
+                                        _selectedRemindTime!.isEmpty
                                     ? 'Pick Remind Time'
                                     : DateFormat('HH:mm')
-                                        .format(_selectedRemindTime!),
+                                        .format(_selectedRemindTime!.last),
                                 style: TextStyle(fontSize: 16),
                               ),
                             ],
