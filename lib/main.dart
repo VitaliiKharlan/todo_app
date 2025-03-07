@@ -1,29 +1,51 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo_app/router/router.dart';
-import 'package:todo_app/ui/ui.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+import 'package:todo_app/todo_app.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> initNotifications() async {
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  final InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+}
+
+Future<void> _showNotification() async {
+  const androidDetails = AndroidNotificationDetails(
+    'task_channel',
+    'Task Notifications',
+    channelDescription: 'Task reminders',
+    importance: Importance.high,
+    priority: Priority.high,
+  );
+
+  const platformDetails = NotificationDetails(android: androidDetails);
+
+  debugPrint('Scheduling notification');
+
+  await flutterLocalNotificationsPlugin.show(
+    0, // unique identifier
+    'Hello!',
+    'This notification appeared when the application todo_app was launched.',
+    platformDetails,
+  );
+}
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  tz.initializeTimeZones();
+  await initNotifications();
+
+  await _showNotification();
+
   runApp(const TodoApp());
-}
-
-class TodoApp extends StatefulWidget {
-  const TodoApp({super.key});
-
-  @override
-  State<TodoApp> createState() => _TodoAppState();
-}
-
-class _TodoAppState extends State<TodoApp> {
-  final _router = AppRouter();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Todo App',
-      theme: themeData,
-      routerConfig: _router.config(),
-    );
-  }
 }

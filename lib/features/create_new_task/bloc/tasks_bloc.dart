@@ -25,30 +25,38 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onLoadTasks(
       LoadTasksEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Load Event');
+      debugPrint('Load Tasks Event');
 
       final tasksData = await taskRepository.fetchTasks();
+
+      if (tasksData.isEmpty) {
+        debugPrint('No tasks found in the repository');
+      } else {
+        debugPrint('Fetched ${tasksData.length} tasks');
+      }
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
-      debugPrint('Error fetching tasks: $e $s');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       emit(TasksLoadingFailureState(e.toString()));
     }
   }
 
   Future<void> _onAddTask(AddTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Add Event');
+      debugPrint('Add Tasks Event');
 
       List<Task> tasks = [];
       final newTask = Task(
+        taskId: Uuid().v4(),
         taskTitle: event.taskTitle,
         taskDescription: event.taskDescription,
         taskDeadline: event.taskDeadline,
         taskType: event.taskType,
         taskLocation: event.taskLocation,
-        id: Uuid().v4(),
+        taskRemindTime: event.taskRemindTime,
       );
 
       if (state is TasksLoadedState) {
@@ -61,7 +69,8 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       emit(TasksLoadedState(tasks));
       await taskRepository.addTask(newTask.toMap());
     } catch (e, s) {
-      debugPrint('Error adding task: $e $s');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       emit(TasksDeletingFailureState(e.toString()));
     }
   }
@@ -69,7 +78,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onDeleteTask(
       DeleteTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Delete Event');
+      debugPrint('Delete Tasks Event');
       await taskRepository.deleteTask(event.taskDelete.taskTitle);
 
       if (state is TasksLoadedState) {
@@ -93,22 +102,36 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onEditTask(
       EditTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Edit Event');
+      debugPrint('Edit Tasks Event');
 
       if (state is TasksLoadedState) {
-        final currentTasks = [...(state as TasksLoadedState).tasks];
-        final taskIndex =
-            currentTasks.indexWhere((e) => e.taskId == event.editTask.taskId);
-        currentTasks.removeAt(taskIndex);
-        currentTasks.insert(taskIndex, event.editTask);
-        emit(TasksLoadedState(currentTasks));
-        await taskRepository.updateTask(
-          event.editTask.taskId,
-          event.editTask.toMap(),
+        final currentState = state as TasksLoadedState;
+
+        final updatedTask = event.oldTask.copyWith(
+          taskTitle: event.taskTitle,
+          taskDescription: event.taskDescription,
+          taskType: event.taskType,
+          taskDeadline: event.taskDeadline,
+          taskLocation: event.taskLocation,
+          taskRemindTime: event.taskRemindTime,
         );
+
+
+          await taskRepository.updateTask(
+            updatedTask.taskId,
+            updatedTask.toMap(),
+          );
+
+          final updatedTasks = currentState.tasks.map((task) {
+            return task.taskId == event.oldTask.taskId ? updatedTask : task;
+          }).toList();
+
+        emit(TasksLoadedState(updatedTasks));
+
       }
     } catch (e, s) {
-      debugPrint('Error editing task: $e $s');
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
       emit(TasksEditingFailureState(e.toString()));
     }
   }

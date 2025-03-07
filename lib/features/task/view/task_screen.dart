@@ -73,6 +73,7 @@ class TaskScreen extends StatelessWidget {
                       itemCount: state.tasks.length,
                       itemBuilder: (context, index) {
                         final deleteTask = tasks[index];
+                        final editTask = tasks[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
@@ -89,7 +90,8 @@ class TaskScreen extends StatelessWidget {
                                   SlidableAction(
                                     onPressed: (_) {
                                       context.pushRoute(CreateNewTaskRoute(
-                                          editTask: deleteTask));
+                                          editTask: editTask));
+
                                     },
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.white,

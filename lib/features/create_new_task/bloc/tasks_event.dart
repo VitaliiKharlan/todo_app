@@ -12,6 +12,7 @@ class AddTaskEvent extends TasksEvent {
     this.taskDeadline,
     this.taskType,
     this.taskLocation,
+    this.taskRemindTime,
   );
 
   final String taskTitle;
@@ -19,6 +20,7 @@ class AddTaskEvent extends TasksEvent {
   final DateTime? taskDeadline;
   final TaskType? taskType;
   final LocationDetailsModel? taskLocation;
+  final List<DateTime>? taskRemindTime;
 }
 
 class DeleteTaskEvent extends TasksEvent {
@@ -30,9 +32,21 @@ class DeleteTaskEvent extends TasksEvent {
 }
 
 class EditTaskEvent extends TasksEvent {
-  final Task editTask;
+  EditTaskEvent({
+    required this.oldTask,
+    required this.taskTitle,
+    this.taskDescription,
+    this.taskType,
+    this.taskDeadline,
+    this.taskLocation,
+    this.taskRemindTime,
+  });
 
-  EditTaskEvent(
-    this.editTask,
-  );
+  final Task oldTask;
+  final String taskTitle;
+  final String? taskDescription;
+  final TaskType? taskType;
+  final DateTime? taskDeadline;
+  final LocationDetailsModel? taskLocation;
+  final List<DateTime>? taskRemindTime;
 }

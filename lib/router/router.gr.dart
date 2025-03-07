@@ -117,19 +117,37 @@ class HomeRouteArgs {
 }
 
 /// generated route for
-/// [LocationSearchAutocompleteScreen]
-class LocationSearchAutocompleteRoute extends PageRouteInfo<void> {
-  const LocationSearchAutocompleteRoute({List<PageRouteInfo>? children})
-    : super(LocationSearchAutocompleteRoute.name, initialChildren: children);
+/// [LocationSearchScreen]
+class LocationSearchRoute extends PageRouteInfo<LocationSearchRouteArgs> {
+  LocationSearchRoute({Key? key, List<PageRouteInfo>? children})
+    : super(
+        LocationSearchRoute.name,
+        args: LocationSearchRouteArgs(key: key),
+        initialChildren: children,
+      );
 
-  static const String name = 'LocationSearchAutocompleteRoute';
+  static const String name = 'LocationSearchRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const LocationSearchAutocompleteScreen();
+      final args = data.argsAs<LocationSearchRouteArgs>(
+        orElse: () => const LocationSearchRouteArgs(),
+      );
+      return LocationSearchScreen(key: args.key);
     },
   );
+}
+
+class LocationSearchRouteArgs {
+  const LocationSearchRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LocationSearchRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for

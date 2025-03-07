@@ -163,7 +163,54 @@ class TaskDetailsScreen extends StatelessWidget {
                 InProgressIndicator(
                   progress: task.progress,
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 32),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Project Milestone',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    if (task.taskRemindTime != null &&
+                        task.taskRemindTime!.isNotEmpty) ...[
+                      SizedBox(height: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: task.taskRemindTime!
+                            .map((milestone) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: Text(
+                                    DateFormat("dd MMMM, 'at' hh:mm a")
+                                        .format(milestone),
+                                    style: AppTextStyle.dateProgressIndicator
+                                        .copyWith(
+                                      fontSize: 12,
+                                      color: AppColors.dateProgressIndicator,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    ],
+                    if (task.taskRemindTime != null &&
+                        task.taskRemindTime!.isEmpty) ...[
+                      SizedBox(height: 12),
+                      Text(
+                        DateFormat("dd MMMM, 'at' hh:mm a")
+                            .format(task.taskRemindTime!.first),
+                        style: AppTextStyle.dateProgressIndicator.copyWith(
+                          fontSize: 12,
+                          color: AppColors.dateProgressIndicator,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+
                 SizedBox(height: 20),
                 Text(
                   'Overview',
