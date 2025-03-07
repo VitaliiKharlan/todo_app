@@ -1,3 +1,6 @@
+import 'dart:ui' as ui;
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
@@ -10,7 +13,7 @@ import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
-class TaskDetailsScreen extends StatelessWidget {
+class TaskDetailsScreen extends StatefulWidget {
   const TaskDetailsScreen({
     super.key,
     required this.task,
@@ -20,6 +23,32 @@ class TaskDetailsScreen extends StatelessWidget {
   final Task task;
 
   final void Function(Task) onDelete;
+
+  @override
+  State<TaskDetailsScreen> createState() => _TaskDetailsScreenState();
+}
+
+class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
+  bool _isExpanded = false;
+
+  String _getTrimmedText(String text, TextStyle style, double maxWidth) {
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 3,
+      textDirection: ui.TextDirection.ltr,
+    )..layout(maxWidth: maxWidth);
+
+    if (!textPainter.didExceedMaxLines) return text;
+
+    String trimmedText = text;
+    while (textPainter.didExceedMaxLines) {
+      trimmedText = trimmedText.substring(0, trimmedText.length - 1);
+      textPainter.text = TextSpan(text: trimmedText, style: style);
+      textPainter.layout(maxWidth: maxWidth);
+    }
+
+    return trimmedText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,26 +107,26 @@ class TaskDetailsScreen extends StatelessWidget {
                 color: Colors.red,
               ),
               onPressed: () {
-                onDelete(task);
+                widget.onDelete(widget.task);
               },
             ),
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          top: 20,
-          right: 20,
-        ),
-        child: Stack(
-          children: [
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 20,
+            top: 20,
+            right: 20,
+          ),
+          child: Stack(children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  task.taskTitle,
+                  widget.task.taskTitle,
                   style: AppTextStyle.appBar.copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
@@ -107,28 +136,28 @@ class TaskDetailsScreen extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(width: 8),
-                    if (task.taskType != null)
+                    if (widget.task.taskType != null)
                       ClipOval(
                         child: Container(
                           color: Colors.lightBlueAccent.withAlpha(40),
                           padding: EdgeInsets.all(12),
                           child: SvgPicture.asset(
-                            'assets/svg/${task.taskType!.name}.svg',
+                            'assets/svg/${widget.task.taskType!.name}.svg',
                             width: 24,
                             height: 24,
                             colorFilter: ColorFilter.mode(
-                              task.taskType!.color,
+                              widget.task.taskType!.color,
                               BlendMode.srcIn,
                             ),
                           ),
                         ),
                       ),
                     SizedBox(width: 24),
-                    if (task.taskDeadline != null) ...[
+                    if (widget.task.taskDeadline != null) ...[
                       SizedBox(height: 12),
                       Text(
                         DateFormat("dd MMMM, 'at' hh:mm a")
-                            .format(task.taskDeadline!),
+                            .format(widget.task.taskDeadline!),
                         style: AppTextStyle.dateProgressIndicator
                             .copyWith(color: AppColors.dateProgressIndicator),
                       ),
@@ -149,7 +178,7 @@ class TaskDetailsScreen extends StatelessWidget {
                     ),
                     Text(
                       // '60%',
-                      '${task.progress}%',
+                      '${widget.task.progress}%',
                       style: theme.textTheme.bodySmall?.copyWith(
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
@@ -161,7 +190,7 @@ class TaskDetailsScreen extends StatelessWidget {
                 SizedBox(height: 8),
                 // InProgressIndicator(),
                 InProgressIndicator(
-                  progress: task.progress,
+                  progress: widget.task.progress,
                 ),
                 SizedBox(height: 32),
                 Column(
@@ -175,12 +204,12 @@ class TaskDetailsScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    if (task.taskRemindTime != null &&
-                        task.taskRemindTime!.isNotEmpty) ...[
+                    if (widget.task.taskRemindTime != null &&
+                        widget.task.taskRemindTime!.isNotEmpty) ...[
                       SizedBox(height: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: task.taskRemindTime!
+                        children: widget.task.taskRemindTime!
                             .map((milestone) => Padding(
                                   padding: const EdgeInsets.only(bottom: 8),
                                   child: Text(
@@ -196,12 +225,12 @@ class TaskDetailsScreen extends StatelessWidget {
                             .toList(),
                       ),
                     ],
-                    if (task.taskRemindTime != null &&
-                        task.taskRemindTime!.isEmpty) ...[
+                    if (widget.task.taskRemindTime != null &&
+                        widget.task.taskRemindTime!.isEmpty) ...[
                       SizedBox(height: 12),
                       Text(
                         DateFormat("dd MMMM, 'at' hh:mm a")
-                            .format(task.taskRemindTime!.first),
+                            .format(widget.task.taskRemindTime!.first),
                         style: AppTextStyle.dateProgressIndicator.copyWith(
                           fontSize: 12,
                           color: AppColors.dateProgressIndicator,
@@ -221,109 +250,136 @@ class TaskDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8),
-                if (task.taskDescription != null)
-                  SizedBox(
-                    width: double.infinity,
-                    height: 100,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          task.taskDescription.toString(),
-                          style: AppTextStyle.description
-                              .copyWith(color: AppColors.dateProgressIndicator),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                        ),
-                        if (task.taskDescription.toString().length > 3)
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              "...Read More",
-                              style: TextStyle(color: Colors.blue),
+                if (widget.task.taskDescription != null)
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final textStyle = AppTextStyle.description.copyWith(
+                        color: AppColors.dateProgressIndicator,
+                        height: 1.5,
+                      );
+
+                      final fullText = widget.task.taskDescription ?? '';
+                      final textPainter = TextPainter(
+                        text: TextSpan(text: fullText, style: textStyle),
+                        maxLines: 3,
+                        textDirection: ui.TextDirection.ltr,
+                      )..layout(maxWidth: constraints.maxWidth);
+
+                      final bool isOverflowing = textPainter.didExceedMaxLines;
+
+                      String trimmedText = fullText;
+
+                      if (isOverflowing) {
+                        trimmedText = _getTrimmedText(
+                            fullText, textStyle, constraints.maxWidth);
+                        trimmedText = '${trimmedText.trimRight()} ...';
+                      }
+
+                      return RichText(
+                        textAlign: TextAlign.justify,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: _isExpanded ? fullText : trimmedText,
+                              style: textStyle,
                             ),
-                          ),
-                      ],
-                    ),
+                            if (isOverflowing)
+                              TextSpan(
+                                text: _isExpanded ? ' Read Less' : ' Read More',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    setState(() {
+                                      _isExpanded = !_isExpanded;
+                                    });
+                                  },
+                              ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                SizedBox(height: 20),
-                //     Text(
-                //       'Members',
-                //       style: theme.textTheme.bodySmall?.copyWith(
-                //         fontSize: 24,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //     ),
-                //     SizedBox(height: 56),
-                //     Text(
-                //       'Tasks',
-                //       style: theme.textTheme.bodySmall?.copyWith(
-                //         fontSize: 24,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black,
-                //       ),
-                //     ),
-                //     SizedBox(height: 20),
-                //     Expanded(
-                //       child: CustomScrollView(
-                //         slivers: [
-                //           SliverList(
-                //             delegate: SliverChildBuilderDelegate(
-                //               (context, index) {
-                //                 return Container(
-                //                   margin: const EdgeInsets.symmetric(
-                //                     vertical: 12,
-                //                     horizontal: 16,
-                //                   ),
-                //                   padding: const EdgeInsets.all(16),
-                //                   decoration: BoxDecoration(
-                //                     color: Colors.blueAccent,
-                //                     borderRadius: BorderRadius.circular(12),
-                //                   ),
-                //                   child: Text(
-                //                     'Item ${index + 1}',
-                //                     style: const TextStyle(
-                //                       color: Colors.white,
-                //                       fontSize: 18,
-                //                     ),
-                //                   ),
-                //                 );
-                //               },
-                //               childCount: 4,
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Positioned(
-                //   bottom: 0,
-                //   left: 0,
-                //   right: 0,
-                //   child: Container(
-                //     height: 96,
-                //     decoration: BoxDecoration(
-                //       gradient: LinearGradient(
-                //         begin: Alignment.topCenter,
-                //         end: Alignment.bottomCenter,
-                //         colors: [
-                //           Colors.white.withAlpha(80),
-                //           Colors.white.withAlpha(20),
-                //           Colors.white,
-                //         ],
-                //       ),
-                //     ),
-                //     child: ImageFiltered(
-                //       imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                //     ),
-                //   ),
               ],
             ),
-          ],
+          ]),
         ),
       ),
     );
   }
 }
+
+//     Text(
+//       'Members',
+//       style: theme.textTheme.bodySmall?.copyWith(
+//         fontSize: 24,
+//         fontWeight: FontWeight.w500,
+//         color: Colors.black,
+//       ),
+//     ),
+//     SizedBox(height: 56),
+//     Text(
+//       'Tasks',
+//       style: theme.textTheme.bodySmall?.copyWith(
+//         fontSize: 24,
+//         fontWeight: FontWeight.w500,
+//         color: Colors.black,
+//       ),
+//     ),
+//     SizedBox(height: 20),
+//     Expanded(
+//       child: CustomScrollView(
+//         slivers: [
+//           SliverList(
+//             delegate: SliverChildBuilderDelegate(
+//               (context, index) {
+//                 return Container(
+//                   margin: const EdgeInsets.symmetric(
+//                     vertical: 12,
+//                     horizontal: 16,
+//                   ),
+//                   padding: const EdgeInsets.all(16),
+//                   decoration: BoxDecoration(
+//                     color: Colors.blueAccent,
+//                     borderRadius: BorderRadius.circular(12),
+//                   ),
+//                   child: Text(
+//                     'Item ${index + 1}',
+//                     style: const TextStyle(
+//                       color: Colors.white,
+//                       fontSize: 18,
+//                     ),
+//                   ),
+//                 );
+//               },
+//               childCount: 4,
+//             ),
+//           ),
+//         ],
+//       ),
+//     ),
+//   ],
+// ),
+// Positioned(
+//   bottom: 0,
+//   left: 0,
+//   right: 0,
+//   child: Container(
+//     height: 96,
+//     decoration: BoxDecoration(
+//       gradient: LinearGradient(
+//         begin: Alignment.topCenter,
+//         end: Alignment.bottomCenter,
+//         colors: [
+//           Colors.white.withAlpha(80),
+//           Colors.white.withAlpha(20),
+//           Colors.white,
+//         ],
+//       ),
+//     ),
+//     child: ImageFiltered(
+//       imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+//     ),
+//   ),
