@@ -1,5 +1,6 @@
+import 'package:flutter/material.dart';
+
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/create_new_task/data/data.dart';
@@ -15,6 +16,7 @@ class LocationSearchBloc
   final PlaceDetailsRepository placeDetailsRepository;
   final GeoPositionSearchForWeatherRepository
       geoPositionSearchForWeatherRepository;
+
 
   LocationSearchBloc(
     this.placeDetailsRepository,
@@ -61,6 +63,7 @@ class LocationSearchBloc
       );
 
       emit(LocationSelectedState(localizedNameForWeatherData.localizedName));
+
     } catch (e, s) {
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: s);

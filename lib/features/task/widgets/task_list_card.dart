@@ -15,12 +15,12 @@ class TaskListCard extends StatefulWidget {
   const TaskListCard({
     super.key,
     required this.task,
-    // required this.geoPositionSearchForWeather,
+    // required this.localizedName,
   });
 
   final Task task;
 
-  // final String geoPositionSearchForWeather;
+  // final String localizedName;
 
   @override
   State<TaskListCard> createState() => _TaskListCardState();
@@ -61,7 +61,7 @@ class _TaskListCardState extends State<TaskListCard> {
         context.router.push(
           TaskDetailsRoute(
             task: widget.task,
-            // geoPositionSearchForWeather: widget.geoPositionSearchForWeather,
+            // localizedName: widget.localizedName,
             onDelete: (task) {
               context.read<TasksBloc>().add(DeleteTaskEvent(task));
               context.router.maybePop();
