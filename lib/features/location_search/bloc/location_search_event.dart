@@ -18,3 +18,11 @@ class LocationSearchSelectEvent extends LocationSearchEvent {
 
   final List<LocationDetailsModel> location;
 }
+
+class LocationSelectEvent extends LocationSearchEvent {
+  LocationSelectEvent(
+    this.locationDetailsModel,
+  );
+
+  final LocationDetailsModel locationDetailsModel;
+}

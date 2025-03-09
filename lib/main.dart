@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
+
 import 'package:todo_app/todo_app.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -47,5 +48,10 @@ void main() async {
 
   await _showNotification();
 
+  // final repository = GeoPositionSearchForWeatherRepository();
+  // final geoData = await repository.fetchLocalizedName();
+  // print(geoData.localizedName);
+
   runApp(const TodoApp());
 }
+

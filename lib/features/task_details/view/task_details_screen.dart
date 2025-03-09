@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
+import 'package:todo_app/features/create_new_task/data/repositories/geo_position_search_for_weather_repository.dart';
 import 'package:todo_app/features/task_details/task_details.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
@@ -17,10 +18,13 @@ class TaskDetailsScreen extends StatefulWidget {
   const TaskDetailsScreen({
     super.key,
     required this.task,
+    // required this.geoPositionSearchForWeather,
     required this.onDelete,
   });
 
   final Task task;
+
+  // final String geoPositionSearchForWeather;
 
   final void Function(Task) onDelete;
 
@@ -49,6 +53,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
     return trimmedText;
   }
+
+  final geoPositionSearchForWeatherRepository = GeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -302,6 +308,16 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                       );
                     },
                   ),
+                SizedBox(height: 20),
+                Text(
+                  // widget.geoPositionSearchForWeather.length.toString(),
+                  'localizedName',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
           ]),
