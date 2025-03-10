@@ -30,7 +30,7 @@ class GeoPositionSearchForWeatherRepository {
 
       debugPrint('Response from AccuWeather: $data');
 
-      final localizedName = data['LocalizedName'];
+      final localizedName = data;
 
       debugPrint('Localized name extracted: $localizedName');
 

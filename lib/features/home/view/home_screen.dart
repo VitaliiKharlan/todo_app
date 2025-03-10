@@ -4,6 +4,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/create_new_task/data/data.dart';
+import 'package:todo_app/features/create_new_task/data/repositories/geo_position_search_for_weather_repository.dart';
+import 'package:todo_app/features/location_search/bloc/location_search_bloc.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
@@ -13,6 +15,8 @@ class HomeScreen extends StatelessWidget {
 
   final taskRepository = TaskRepository();
   final placeDetailsRepository = PlaceDetailsRepository();
+  final geoPositionSearchForWeatherRepository =
+      GeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +33,23 @@ class HomeScreen extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-                create: (context) => TasksBloc(taskRepository: taskRepository)
-                  ..add(
-                    LoadTasksEvent(),
-                  )),
+              create: (context) => TasksBloc(taskRepository: taskRepository)
+                ..add(
+                  LoadTasksEvent(),
+                ),
+            ),
+            BlocProvider(
+              create: (context) => LocationSearchBloc(
+                placeDetailsRepository,
+                geoPositionSearchForWeatherRepository,
+              ),
+            ),
+            // RepositoryProvider <PlaceDetailsRepository>(
+            //   create: (context) => placeDetailsRepository,
+            // ),
+            // RepositoryProvider <GeoPositionSearchForWeatherRepository>(
+            //   create: (context) => geoPositionSearchForWeatherRepository,
+            // ),
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
