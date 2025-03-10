@@ -34,3 +34,22 @@ class LocationSearchFailureState extends LocationSearchState {
   @override
   List<Object?> get props => [exception];
 }
+
+class LocationSelectedState extends LocationSearchState {
+  final String localizedName;
+  LocationSelectedState(this.localizedName);
+
+  @override
+  List<Object> get props => [localizedName];
+}
+
+class LocationSelectedFailureState extends LocationSearchState {
+  LocationSelectedFailureState(
+      this.exception,
+      );
+
+  final Object? exception;
+
+  @override
+  List<Object?> get props => [exception];
+}

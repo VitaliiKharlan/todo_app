@@ -121,6 +121,7 @@ class TaskScreen extends StatelessWidget {
                               ),
                               child: TaskListCard(
                                 task: tasks[index],
+
                               ),
                             ),
                           ),

@@ -15,9 +15,12 @@ class TaskListCard extends StatefulWidget {
   const TaskListCard({
     super.key,
     required this.task,
+    // required this.localizedName,
   });
 
   final Task task;
+
+  // final String localizedName;
 
   @override
   State<TaskListCard> createState() => _TaskListCardState();
@@ -58,6 +61,7 @@ class _TaskListCardState extends State<TaskListCard> {
         context.router.push(
           TaskDetailsRoute(
             task: widget.task,
+            // localizedName: widget.localizedName,
             onDelete: (task) {
               context.read<TasksBloc>().add(DeleteTaskEvent(task));
               context.router.maybePop();
@@ -78,15 +82,17 @@ class _TaskListCardState extends State<TaskListCard> {
                 SizedBox(
                   width: 32,
                   height: 32,
-                  child: SvgPicture.asset(
-                    'assets/svg/${widget.task.taskType!.name}.svg',
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(
-                      widget.task.taskType!.color,
-                      BlendMode.srcIn,
-                    ),
-                  ),
+                  child: widget.task.taskType?.name != null
+                      ? SvgPicture.asset(
+                          'assets/svg/${widget.task.taskType!.name}.svg',
+                          width: 24,
+                          height: 24,
+                          colorFilter: ColorFilter.mode(
+                            widget.task.taskType!.color,
+                            BlendMode.srcIn,
+                          ),
+                        )
+                      : SizedBox.shrink(),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
