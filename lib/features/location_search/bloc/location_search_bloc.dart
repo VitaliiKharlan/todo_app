@@ -62,6 +62,7 @@ class LocationSearchBloc
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
 
+      debugPrint('This Is Success: ${localizedNameForWeatherData.localizedName}');
       emit(LocationSelectedState(localizedNameForWeatherData.localizedName));
 
     } catch (e, s) {
