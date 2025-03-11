@@ -14,11 +14,11 @@ part of 'router.dart';
 /// [CreateNewTaskScreen]
 class CreateNewTaskRoute extends PageRouteInfo<CreateNewTaskRouteArgs> {
   CreateNewTaskRoute({Key? key, Task? editTask, List<PageRouteInfo>? children})
-    : super(
-        CreateNewTaskRoute.name,
-        args: CreateNewTaskRouteArgs(key: key, editTask: editTask),
-        initialChildren: children,
-      );
+      : super(
+          CreateNewTaskRoute.name,
+          args: CreateNewTaskRouteArgs(key: key, editTask: editTask),
+          initialChildren: children,
+        );
 
   static const String name = 'CreateNewTaskRoute';
 
@@ -47,50 +47,14 @@ class CreateNewTaskRouteArgs {
 }
 
 /// generated route for
-/// [EditTaskScreen]
-class EditTaskRoute extends PageRouteInfo<EditTaskRouteArgs> {
-  EditTaskRoute({Key? key, Task? editTask, List<PageRouteInfo>? children})
-    : super(
-        EditTaskRoute.name,
-        args: EditTaskRouteArgs(key: key, editTask: editTask),
-        initialChildren: children,
-      );
-
-  static const String name = 'EditTaskRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<EditTaskRouteArgs>(
-        orElse: () => const EditTaskRouteArgs(),
-      );
-      return EditTaskScreen(key: args.key, editTask: args.editTask);
-    },
-  );
-}
-
-class EditTaskRouteArgs {
-  const EditTaskRouteArgs({this.key, this.editTask});
-
-  final Key? key;
-
-  final Task? editTask;
-
-  @override
-  String toString() {
-    return 'EditTaskRouteArgs{key: $key, editTask: $editTask}';
-  }
-}
-
-/// generated route for
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
   HomeRoute({Key? key, List<PageRouteInfo>? children})
-    : super(
-        HomeRoute.name,
-        args: HomeRouteArgs(key: key),
-        initialChildren: children,
-      );
+      : super(
+          HomeRoute.name,
+          args: HomeRouteArgs(key: key),
+          initialChildren: children,
+        );
 
   static const String name = 'HomeRoute';
 
@@ -120,11 +84,11 @@ class HomeRouteArgs {
 /// [LocationSearchScreen]
 class LocationSearchRoute extends PageRouteInfo<LocationSearchRouteArgs> {
   LocationSearchRoute({Key? key, List<PageRouteInfo>? children})
-    : super(
-        LocationSearchRoute.name,
-        args: LocationSearchRouteArgs(key: key),
-        initialChildren: children,
-      );
+      : super(
+          LocationSearchRoute.name,
+          args: LocationSearchRouteArgs(key: key),
+          initialChildren: children,
+        );
 
   static const String name = 'LocationSearchRoute';
 
@@ -154,7 +118,7 @@ class LocationSearchRouteArgs {
 /// [SettingsScreen]
 class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute({List<PageRouteInfo>? children})
-    : super(SettingsRoute.name, initialChildren: children);
+      : super(SettingsRoute.name, initialChildren: children);
 
   static const String name = 'SettingsRoute';
 
@@ -175,10 +139,10 @@ class TaskDetailsRoute extends PageRouteInfo<TaskDetailsRouteArgs> {
     required void Function(Task) onDelete,
     List<PageRouteInfo>? children,
   }) : super(
-         TaskDetailsRoute.name,
-         args: TaskDetailsRouteArgs(key: key, task: task, onDelete: onDelete),
-         initialChildren: children,
-       );
+          TaskDetailsRoute.name,
+          args: TaskDetailsRouteArgs(key: key, task: task, onDelete: onDelete),
+          initialChildren: children,
+        );
 
   static const String name = 'TaskDetailsRoute';
 
@@ -218,11 +182,11 @@ class TaskDetailsRouteArgs {
 /// [TaskScreen]
 class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
   TaskRoute({Key? key, required ThemeData theme, List<PageRouteInfo>? children})
-    : super(
-        TaskRoute.name,
-        args: TaskRouteArgs(key: key, theme: theme),
-        initialChildren: children,
-      );
+      : super(
+          TaskRoute.name,
+          args: TaskRouteArgs(key: key, theme: theme),
+          initialChildren: children,
+        );
 
   static const String name = 'TaskRoute';
 

@@ -62,30 +62,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   final geoPositionSearchForWeatherRepository =
       GeoPositionSearchForWeatherRepository();
 
-  late LocationDetailsModel locationDetailsModel;
-
-
-
-  @override
-  void initState() {
-    super.initState();
-
-
-    locationDetailsModel = LocationDetailsModel(
-      description: 'Sample Location',
-      lat: 37.7749,
-      lng: -122.4194,
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      debugPrint('Adding LocationSelectEvent');
-      BlocProvider.of<LocationSearchBloc>(context).add(
-        LocationSelectEvent(locationDetailsModel),
-      );
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -96,9 +72,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           placeDetailsRepository,
           geoPositionSearchForWeatherRepository,
         );
-
-
-        locationSearchBloc.add(LocationSelectEvent(locationDetailsModel));
+        if (widget.task.taskLocation != null) {
+          locationSearchBloc
+              .add(LocationSelectEvent(widget.task.taskLocation!));
+        }
 
         return locationSearchBloc;
       },
@@ -280,7 +257,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           ),
                         ],
                         if (widget.task.taskRemindTime != null &&
-                            widget.task.taskRemindTime!.isEmpty) ...[
+                            widget.task.taskRemindTime!.isNotEmpty) ...[
                           SizedBox(height: 12),
                           Text(
                             DateFormat("dd MMMM, 'at' hh:mm a")
@@ -365,7 +342,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     BlocBuilder<LocationSearchBloc, LocationSearchState>(
                       builder: (context, state) {
                         if (state is LocationSearchLoadingState) {
-                          debugPrint('TaskDetailsScreen: LocationSearchLoadingState');
+                          debugPrint(
+                              'TaskDetailsScreen: LocationSearchLoadingState');
                           return Center(child: CircularProgressIndicator());
                         } else if (state is LocationSearchFailureState) {
                           return Text(
@@ -376,9 +354,9 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             ),
                           );
                         } else if (state is LocationSelectedState) {
-                          debugPrint('TaskDetailsScreen: ${state.localizedName}');
+                          debugPrint(
+                              'TaskDetailsScreen: ${state.localizedName}');
                           return Text(
-
                             'Location: ${state.localizedName}',
                             style: TextStyle(
                               color: Colors.blue,
@@ -405,7 +383,8 @@ class TaskDetailsScreenWrapper extends StatelessWidget {
   final Task task;
   final void Function(Task) onDelete;
   final PlaceDetailsRepository placeDetailsRepository;
-  final GeoPositionSearchForWeatherRepository geoPositionSearchForWeatherRepository;
+  final GeoPositionSearchForWeatherRepository
+      geoPositionSearchForWeatherRepository;
 
   TaskDetailsScreenWrapper({
     required this.task,
