@@ -24,6 +24,7 @@ class TaskDetailsScreen extends StatefulWidget {
     required this.task,
     // required this.localizedName,
     required this.onDelete,
+
   });
 
   final Task task;
