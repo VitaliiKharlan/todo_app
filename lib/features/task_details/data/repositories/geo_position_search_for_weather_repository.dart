@@ -14,6 +14,8 @@ class GeoPositionSearchForWeatherRepository {
     required double lat,
     required double lng,
   }) async {
+    // mocking a database call
+    //
     // await Future.delayed(Duration(seconds: 1));
     // return GeoPositionSearchForWeatherModel(
     //   localizedName: 'Lviv',
@@ -32,9 +34,7 @@ class GeoPositionSearchForWeatherRepository {
     debugPrint('Response status: ${response.statusCode}');
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      final localizedName = data;
+      final localizedName = json.decode(response.body);
 
       debugPrint('Localized name extracted: $localizedName');
 
@@ -68,9 +68,7 @@ class GeoPositionSearchForWeatherRepository {
     debugPrint('Response status: ${response.statusCode}');
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      final locationCityName = data;
+      final locationCityName = json.decode(response.body);
 
       debugPrint('Location city key: $locationCityName');
 
@@ -80,3 +78,5 @@ class GeoPositionSearchForWeatherRepository {
     }
   }
 }
+
+// https://api.accuweather.com/currentconditions/v1/{locationKey}?apikey={yourApiKey}

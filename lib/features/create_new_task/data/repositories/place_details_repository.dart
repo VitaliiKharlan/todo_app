@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
+
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/geo_position_search_for_weather_repository.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,10 +15,6 @@ class PlaceDetailsRepository {
       'https://maps.googleapis.com/maps/api/place/details/json';
 
   var uuid = Uuid();
-
-  // final GeoPositionSearchForWeatherRepository
-  //     _geoPositionSearchForWeatherRepository =
-  //     GeoPositionSearchForWeatherRepository();
 
   Future<List<LocationSearchAutocompleteModel>> _fetchLocationSuggestions(
       String input) async {

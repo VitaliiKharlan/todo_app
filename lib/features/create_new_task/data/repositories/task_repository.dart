@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:todo_app/features/create_new_task/data/task_database.dart';
 import 'package:todo_app/services/notification_service.dart';
 
@@ -22,8 +20,6 @@ class TaskRepository {
     final records = await _taskDatabase.getAllTasks();
     return records.map((snapshot) {
       final task = snapshot.value;
-
-      // debugPrint('Tasks loaded: ${records.map((record) => record.value)}');
 
       return task;
     }).toList();

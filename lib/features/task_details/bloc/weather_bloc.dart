@@ -12,13 +12,11 @@ part 'weather_event.dart';
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
-  final PlaceDetailsRepository placeDetailsRepository;
   final GeoPositionSearchForWeatherRepository
-      geoPositionSearchForWeatherRepository;
+      _geoPositionSearchForWeatherRepository;
 
   WeatherBloc(
-    this.placeDetailsRepository,
-    this.geoPositionSearchForWeatherRepository,
+    this._geoPositionSearchForWeatherRepository,
   ) : super(WeatherInitialState()) {
     on<WeatherSelectEvent>(_onLocationForWeatherSelect);
   }
@@ -30,12 +28,12 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
     try {
       final localizedNameForWeatherData =
-          await geoPositionSearchForWeatherRepository.fetchLocalizedName(
+          await _geoPositionSearchForWeatherRepository.fetchLocalizedName(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
       final locationCityKeyForWeatherData =
-          await geoPositionSearchForWeatherRepository.fetchLocationCityKey(
+          await _geoPositionSearchForWeatherRepository.fetchLocationCityKey(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
@@ -46,7 +44,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           'This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
       emit(WeatherSelectedState(
         localizedNameForWeatherData.localizedName,
-          int.tryParse(locationCityKeyForWeatherData.locationCityKey) ?? 0,
+        int.tryParse(locationCityKeyForWeatherData.locationCityKey) ?? 0,
       ));
     } catch (e, s) {
       debugPrint('Error: $e');
