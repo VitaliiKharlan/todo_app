@@ -14,46 +14,10 @@ class GeoPositionSearchForWeatherRepository {
     required double lat,
     required double lng,
   }) async {
-    await Future.delayed(Duration(seconds: 1));
-    return GeoPositionSearchForWeatherModel(
-      localizedName: 'Lviv',
-      locationCityKey: '324505',
-    );
-
-    debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
-
-    final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
-        'apikey=$_apiKey&q=$lat%2C$lng';
-
-    debugPrint('Sending request to AccuWeather API: $requestUrl');
-
-    final response = await http.get(Uri.parse(requestUrl));
-
-    debugPrint('Response status: ${response.statusCode}');
-    // debugPrint('Response body: ${response.body}');
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      // debugPrint('Response from AccuWeather: $data');
-
-      final localizedName = data;
-
-      debugPrint('Localized name extracted: $localizedName');
-
-      return GeoPositionSearchForWeatherModel.fromJson(localizedName);
-    } else {
-      throw Exception('Failed to load localized name');
-    }
-  }
-  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey({
-    required double lat,
-    required double lng,
-  }) async {
     // await Future.delayed(Duration(seconds: 1));
     // return GeoPositionSearchForWeatherModel(
-    //   localizedName: 'Poland',
-    //   locationCityKey: 324505,
+    //   localizedName: 'Lviv',
+    //   locationCityKey: '324505',
     // );
 
     debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
@@ -66,12 +30,45 @@ class GeoPositionSearchForWeatherRepository {
     final response = await http.get(Uri.parse(requestUrl));
 
     debugPrint('Response status: ${response.statusCode}');
-    // debugPrint('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
-      // debugPrint('Response from AccuWeather: $data');
+      final localizedName = data;
+
+      debugPrint('Localized name extracted: $localizedName');
+
+      return GeoPositionSearchForWeatherModel.fromJson(localizedName);
+    } else {
+      throw Exception('Failed to load localized name');
+    }
+  }
+
+  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey({
+    required double lat,
+    required double lng,
+  }) async {
+    // mocking a database call
+    //
+    // await Future.delayed(Duration(seconds: 1));
+    // return GeoPositionSearchForWeatherModel(
+    //   localizedName: 'Poland',
+    //   locationCityKey: 324505,
+    // );
+
+    debugPrint('fetchLocationCityKey called with lat: $lat, lng: $lng');
+
+    final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
+        'apikey=$_apiKey&q=$lat%2C$lng';
+
+    debugPrint('Sending request to AccuWeather API: $requestUrl');
+
+    final response = await http.get(Uri.parse(requestUrl));
+
+    debugPrint('Response status: ${response.statusCode}');
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
 
       final locationCityName = data;
 
@@ -83,6 +80,3 @@ class GeoPositionSearchForWeatherRepository {
     }
   }
 }
-
-
-
