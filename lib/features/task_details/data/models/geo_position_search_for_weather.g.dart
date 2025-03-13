@@ -10,10 +10,12 @@ GeoPositionSearchForWeatherModel _$GeoPositionSearchForWeatherModelFromJson(
         Map<String, dynamic> json) =>
     GeoPositionSearchForWeatherModel(
       localizedName: json['LocalizedName'] as String,
+      locationCityKey: json['Key'] as String,
     );
 
 Map<String, dynamic> _$GeoPositionSearchForWeatherModelToJson(
         GeoPositionSearchForWeatherModel instance) =>
     <String, dynamic>{
       'LocalizedName': instance.localizedName,
+      'Key': instance.locationCityKey,
     };

@@ -340,12 +340,24 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             ),
                           );
                         } else if (state is WeatherSelectedState) {
-                          return Text(
-                            state.localizedName,
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          return Column(
+                            children: [
+                              Text(
+                                state.localizedName,
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                state.locationCityKey.toString(),
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           );
                         } else {
                           return SizedBox.shrink();

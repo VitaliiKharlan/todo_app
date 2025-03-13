@@ -2,14 +2,18 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'geo_position_search_for_weather.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(explicitToJson: true)
 class GeoPositionSearchForWeatherModel {
   GeoPositionSearchForWeatherModel({
     required this.localizedName,
+    required this.locationCityKey,
   });
 
   @JsonKey(name: 'LocalizedName')
   final String localizedName;
+
+  @JsonKey(name: 'Key')
+  final String locationCityKey;
 
   factory GeoPositionSearchForWeatherModel.fromJson(Map<String, dynamic> json) {
     return _$GeoPositionSearchForWeatherModelFromJson(json);
@@ -22,6 +26,7 @@ class GeoPositionSearchForWeatherModel {
   String toString() {
     return 'GeoPositionSearchForWeatherModel {'
         'name: $localizedName, '
+        'key: $locationCityKey, '
         '}';
   }
 }
