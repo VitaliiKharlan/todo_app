@@ -27,12 +27,12 @@ class GeoPositionSearchForWeatherRepository {
     final response = await http.get(Uri.parse(requestUrl));
 
     debugPrint('Response status: ${response.statusCode}');
-    debugPrint('Response body: ${response.body}');
+    // debugPrint('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
-      debugPrint('Response from AccuWeather: $data');
+      // debugPrint('Response from AccuWeather: $data');
 
       final localizedName = data;
 

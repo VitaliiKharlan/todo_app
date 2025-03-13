@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
 
 import 'package:todo_app/features/create_new_task/data/data.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
@@ -20,10 +20,10 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     this.placeDetailsRepository,
     this.geoPositionSearchForWeatherRepository,
   ) : super(WeatherInitialState()) {
-    on<WeatherSelectEvent>(_onLocationSelect);
+    on<WeatherSelectEvent>(_onLocationForWeatherSelect);
   }
 
-  Future<void> _onLocationSelect(
+  Future<void> _onLocationForWeatherSelect(
       WeatherSelectEvent event, Emitter<WeatherState> emit) async {
     debugPrint('Weather Select Event');
     emit(WeatherLoadingState());
