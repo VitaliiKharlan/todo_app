@@ -15,7 +15,7 @@ class TaskRepository {
           taskId, task['taskTitle'], deadline);
     }
 
-    return _taskDatabase.insertTask(task);
+    return taskId;
   }
 
   Future<List<Map<String, dynamic>>> fetchTasks() async {
@@ -23,7 +23,7 @@ class TaskRepository {
     return records.map((snapshot) {
       final task = snapshot.value;
 
-      debugPrint('Tasks loaded: ${records.map((record) => record.value)}');
+      // debugPrint('Tasks loaded: ${records.map((record) => record.value)}');
 
       return task;
     }).toList();

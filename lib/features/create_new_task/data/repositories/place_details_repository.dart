@@ -57,7 +57,6 @@ class PlaceDetailsRepository {
       if (response.statusCode == 200) {
         final location = data['result']['geometry']['location'];
 
-
         return LocationDetailsModel.fromJson(location);
       } else {
         throw Exception('Failed to load locations');
@@ -78,8 +77,6 @@ class PlaceDetailsRepository {
       (locationObject) async {
         final locationDetails =
             await _fetchLocationLatLng(locationObject.placeId);
-
-
 
         return LocationDetailsModel(
             description: locationObject.description,

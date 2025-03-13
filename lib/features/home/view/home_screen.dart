@@ -15,8 +15,8 @@ class HomeScreen extends StatelessWidget {
 
   final taskRepository = TaskRepository();
   final placeDetailsRepository = PlaceDetailsRepository();
-  final geoPositionSearchForWeatherRepository =
-      GeoPositionSearchForWeatherRepository();
+  // final geoPositionSearchForWeatherRepository =
+  //     GeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +38,7 @@ class HomeScreen extends StatelessWidget {
                   LoadTasksEvent(),
                 ),
             ),
-            BlocProvider(
-              create: (context) => LocationSearchBloc(
-                placeDetailsRepository,
-                geoPositionSearchForWeatherRepository,
-              ),
-            ),
-            // RepositoryProvider <PlaceDetailsRepository>(
-            //   create: (context) => placeDetailsRepository,
-            // ),
-            // RepositoryProvider <GeoPositionSearchForWeatherRepository>(
-            //   create: (context) => geoPositionSearchForWeatherRepository,
-            // ),
+
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,

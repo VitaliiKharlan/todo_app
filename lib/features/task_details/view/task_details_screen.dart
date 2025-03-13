@@ -79,10 +79,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
 
         return locationSearchBloc;
       },
-      // create: (context) => LocationSearchBloc(
-      //   placeDetailsRepository,
-      //   geoPositionSearchForWeatherRepository,
-      // ),
+
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(

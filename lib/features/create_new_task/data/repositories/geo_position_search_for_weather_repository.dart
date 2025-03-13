@@ -13,6 +13,9 @@ class GeoPositionSearchForWeatherRepository {
     required double lat,
     required double lng,
   }) async {
+    await Future.delayed(Duration(seconds: 1));
+    return GeoPositionSearchForWeatherModel(localizedName: 'Kyiv');
+
     debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
 
     final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
