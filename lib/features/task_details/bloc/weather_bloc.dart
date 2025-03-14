@@ -27,8 +27,13 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     emit(WeatherLoadingState());
 
     try {
-      final localizedNameForWeatherData =
+      final localizedNameForWeatherData  =
           await _geoPositionSearchForWeatherRepository.fetchLocalizedName(
+        lat: event.locationDetailsModel.lat ?? 0.0,
+        lng: event.locationDetailsModel.lng ?? 0.0,
+      );
+      final countryNameForWeatherData =
+          await _geoPositionSearchForWeatherRepository.fetchCountryName(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
@@ -38,12 +43,13 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
 
-      debugPrint(
-          'This Is Success: ${localizedNameForWeatherData.localizedName}');
-      debugPrint(
-          'This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
+      debugPrint('This Is Success: ${localizedNameForWeatherData.localizedName}');
+      debugPrint('This Is Success: ${countryNameForWeatherData.countryName}');
+      debugPrint('This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
+
       emit(WeatherSelectedState(
         localizedNameForWeatherData.localizedName,
+        countryNameForWeatherData.countryName,
         int.tryParse(locationCityKeyForWeatherData.locationCityKey) ?? 0,
       ));
     } catch (e, s) {

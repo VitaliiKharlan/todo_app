@@ -3,12 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
+import 'package:todo_app/ui/theme/app_colors.dart';
+import 'package:todo_app/ui/theme/app_images.dart';
+import 'package:todo_app/ui/theme/app_text_style.dart';
 
-class WeatherWidget extends StatelessWidget {
+class WeatherWidget extends StatefulWidget {
   const WeatherWidget({
     super.key,
   });
 
+  @override
+  State<WeatherWidget> createState() => _WeatherWidgetState();
+}
+
+class _WeatherWidgetState extends State<WeatherWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherBloc, WeatherState>(
@@ -24,29 +32,185 @@ class WeatherWidget extends StatelessWidget {
             ),
           );
         } else if (state is WeatherSelectedState) {
-          return Column(
-            children: [
-              Text(
-                state.localizedName,
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  spreadRadius: 2,
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                state.locationCityKey.toString(),
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Transform.scale(
+                        scale: 1.5,
+                        child: Image(
+                          image: AssetImage(AppImages.smallIconSun),
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${state.localizedName}, ${state.countryName}',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "Rainy morning",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            "08:16",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "18°",
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 8),
+                _HourlyForecastWidget(),
+                SizedBox(height: 16),
+              ],
+            ),
           );
         } else {
           return SizedBox.shrink();
         }
       },
+    );
+  }
+}
+
+class _HourlyForecastWidget extends StatelessWidget {
+  const _HourlyForecastWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: SizedBox(
+        height: 120,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: 24,
+          itemExtent: 60,
+          itemBuilder: (BuildContext context, int index) {
+            return _HourlyForecastItemWidget();
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _HourlyForecastItemWidget extends StatelessWidget {
+  const _HourlyForecastItemWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 4,
+        vertical: 4,
+      ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.description,
+          border: Border.all(color: Colors.black.withAlpha(50)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withAlpha(50),
+              blurRadius: 8,
+              offset: const Offset(4, 2),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+          clipBehavior: Clip.hardEdge,
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              const Image(
+                image: AssetImage(AppImages.smallIconSun),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 4),
+                      RichText(
+                        softWrap: false,
+                        text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                            children: [
+                              TextSpan(text: '18 '),
+                              TextSpan(
+                                text: '\u00B0C',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ]),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '09:00',
+                        style: AppTextStyle.description.copyWith(
+                          color: Colors.red,
+                          fontSize: 10,
+                        ),
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
