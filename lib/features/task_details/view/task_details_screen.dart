@@ -52,7 +52,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return trimmedText;
   }
 
-  // final placeDetailsRepository = PlaceDetailsRepository();
   final geoPositionSearchForWeatherRepository =
       GeoPositionSearchForWeatherRepository();
 
@@ -62,7 +61,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return BlocProvider(
       create: (context) {
         final weatherBloc = WeatherBloc(
-          // placeDetailsRepository,
           geoPositionSearchForWeatherRepository,
         );
         if (widget.task.taskLocation != null) {
@@ -204,7 +202,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                       ],
                     ),
                     SizedBox(height: 8),
-                    // InProgressIndicator(),
                     InProgressIndicator(
                       progress: widget.task.progress,
                     ),
@@ -226,7 +223,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: widget.task.taskRemindTime!
-                                .map((milestone) => Padding(
+                                .map((milestone) {
+                                  return Padding(
                                       padding: const EdgeInsets.only(bottom: 8),
                                       child: Text(
                                         DateFormat("dd MMMM, 'at' hh:mm a")
@@ -239,7 +237,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                               AppColors.dateProgressIndicator,
                                         ),
                                       ),
-                                    ))
+                                    );
+                                })
                                 .toList(),
                           ),
                         ],
@@ -325,43 +324,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         },
                       ),
                     SizedBox(height: 20),
-                    BlocBuilder<WeatherBloc, WeatherState>(
-                      builder: (context, state) {
-                        if (state is WeatherLoadingState) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (state is WeatherSelectedFailureState) {
-                          return Text(
-                            'Error: ${state.exception}',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        } else if (state is WeatherSelectedState) {
-                          return Column(
-                            children: [
-                              Text(
-                                state.localizedName,
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                state.locationCityKey.toString(),
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
-                    ),
+                    WeatherWidget(),
                     SizedBox(height: 20),
                     Text(
                       '15 \u00B0C',
