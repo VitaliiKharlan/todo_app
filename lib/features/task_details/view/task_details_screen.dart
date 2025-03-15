@@ -9,10 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
-import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/geo_position_search_for_weather_repository.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/place_details_repository.dart';
-import 'package:todo_app/features/location_search/bloc/location_search_bloc.dart';
+import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/task_details.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
@@ -22,13 +19,10 @@ class TaskDetailsScreen extends StatefulWidget {
   const TaskDetailsScreen({
     super.key,
     required this.task,
-    // required this.localizedName,
     required this.onDelete,
   });
 
   final Task task;
-
-  // final String localizedName;
 
   final void Function(Task) onDelete;
 
@@ -58,31 +52,22 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return trimmedText;
   }
 
-  final placeDetailsRepository = PlaceDetailsRepository();
   final geoPositionSearchForWeatherRepository =
       GeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return BlocProvider(
       create: (context) {
-        final locationSearchBloc = LocationSearchBloc(
-          placeDetailsRepository,
+        final weatherBloc = WeatherBloc(
           geoPositionSearchForWeatherRepository,
         );
         if (widget.task.taskLocation != null) {
-          locationSearchBloc
-              .add(LocationSelectEvent(widget.task.taskLocation!));
+          weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!));
         }
-
-        return locationSearchBloc;
+        return weatherBloc;
       },
-      // create: (context) => LocationSearchBloc(
-      //   placeDetailsRepository,
-      //   geoPositionSearchForWeatherRepository,
-      // ),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -217,7 +202,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                       ],
                     ),
                     SizedBox(height: 8),
-                    // InProgressIndicator(),
                     InProgressIndicator(
                       progress: widget.task.progress,
                     ),
@@ -239,7 +223,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: widget.task.taskRemindTime!
-                                .map((milestone) => Padding(
+                                .map((milestone) {
+                                  return Padding(
                                       padding: const EdgeInsets.only(bottom: 8),
                                       child: Text(
                                         DateFormat("dd MMMM, 'at' hh:mm a")
@@ -252,7 +237,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                                               AppColors.dateProgressIndicator,
                                         ),
                                       ),
-                                    ))
+                                    );
+                                })
                                 .toList(),
                           ),
                         ],
@@ -270,7 +256,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ],
                       ],
                     ),
-
                     SizedBox(height: 20),
                     Text(
                       'Overview',
@@ -339,70 +324,38 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         },
                       ),
                     SizedBox(height: 20),
-                    BlocBuilder<LocationSearchBloc, LocationSearchState>(
-                      builder: (context, state) {
-                        if (state is LocationSearchLoadingState) {
-                          debugPrint(
-                              'TaskDetailsScreen: LocationSearchLoadingState');
-                          return Center(child: CircularProgressIndicator());
-                        } else if (state is LocationSearchFailureState) {
-                          return Text(
-                            'Error: ${state.exception}',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        } else if (state is LocationSelectedState) {
-                          debugPrint(
-                              'TaskDetailsScreen: ${state.localizedName}');
-                          return Text(
-                            'Location: ${state.localizedName}',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        } else {
-                          return SizedBox.shrink();
-                        }
-                      },
+                    WeatherWidget(),
+                    SizedBox(height: 20),
+                    Text(
+                      '15 \u00B0C',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    SizedBox(height: 20),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                        children: [
+                          TextSpan(text: '15 '),
+                          TextSpan(
+                            text: '°C',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class TaskDetailsScreenWrapper extends StatelessWidget {
-  final Task task;
-  final void Function(Task) onDelete;
-  final PlaceDetailsRepository placeDetailsRepository;
-  final GeoPositionSearchForWeatherRepository
-      geoPositionSearchForWeatherRepository;
-
-  TaskDetailsScreenWrapper({
-    required this.task,
-    required this.onDelete,
-    required this.placeDetailsRepository,
-    required this.geoPositionSearchForWeatherRepository,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<LocationSearchBloc>(
-      create: (context) => LocationSearchBloc(
-        placeDetailsRepository,
-        geoPositionSearchForWeatherRepository,
-      ),
-      child: TaskDetailsScreen(
-        task: task,
-        onDelete: onDelete,
       ),
     );
   }

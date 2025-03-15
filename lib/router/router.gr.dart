@@ -14,11 +14,11 @@ part of 'router.dart';
 /// [CreateNewTaskScreen]
 class CreateNewTaskRoute extends PageRouteInfo<CreateNewTaskRouteArgs> {
   CreateNewTaskRoute({Key? key, Task? editTask, List<PageRouteInfo>? children})
-      : super(
-          CreateNewTaskRoute.name,
-          args: CreateNewTaskRouteArgs(key: key, editTask: editTask),
-          initialChildren: children,
-        );
+    : super(
+        CreateNewTaskRoute.name,
+        args: CreateNewTaskRouteArgs(key: key, editTask: editTask),
+        initialChildren: children,
+      );
 
   static const String name = 'CreateNewTaskRoute';
 
@@ -50,11 +50,11 @@ class CreateNewTaskRouteArgs {
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<HomeRouteArgs> {
   HomeRoute({Key? key, List<PageRouteInfo>? children})
-      : super(
-          HomeRoute.name,
-          args: HomeRouteArgs(key: key),
-          initialChildren: children,
-        );
+    : super(
+        HomeRoute.name,
+        args: HomeRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'HomeRoute';
 
@@ -84,11 +84,11 @@ class HomeRouteArgs {
 /// [LocationSearchScreen]
 class LocationSearchRoute extends PageRouteInfo<LocationSearchRouteArgs> {
   LocationSearchRoute({Key? key, List<PageRouteInfo>? children})
-      : super(
-          LocationSearchRoute.name,
-          args: LocationSearchRouteArgs(key: key),
-          initialChildren: children,
-        );
+    : super(
+        LocationSearchRoute.name,
+        args: LocationSearchRouteArgs(key: key),
+        initialChildren: children,
+      );
 
   static const String name = 'LocationSearchRoute';
 
@@ -118,7 +118,7 @@ class LocationSearchRouteArgs {
 /// [SettingsScreen]
 class SettingsRoute extends PageRouteInfo<void> {
   const SettingsRoute({List<PageRouteInfo>? children})
-      : super(SettingsRoute.name, initialChildren: children);
+    : super(SettingsRoute.name, initialChildren: children);
 
   static const String name = 'SettingsRoute';
 
@@ -139,10 +139,10 @@ class TaskDetailsRoute extends PageRouteInfo<TaskDetailsRouteArgs> {
     required void Function(Task) onDelete,
     List<PageRouteInfo>? children,
   }) : super(
-          TaskDetailsRoute.name,
-          args: TaskDetailsRouteArgs(key: key, task: task, onDelete: onDelete),
-          initialChildren: children,
-        );
+         TaskDetailsRoute.name,
+         args: TaskDetailsRouteArgs(key: key, task: task, onDelete: onDelete),
+         initialChildren: children,
+       );
 
   static const String name = 'TaskDetailsRoute';
 
@@ -182,11 +182,11 @@ class TaskDetailsRouteArgs {
 /// [TaskScreen]
 class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
   TaskRoute({Key? key, required ThemeData theme, List<PageRouteInfo>? children})
-      : super(
-          TaskRoute.name,
-          args: TaskRouteArgs(key: key, theme: theme),
-          initialChildren: children,
-        );
+    : super(
+        TaskRoute.name,
+        args: TaskRouteArgs(key: key, theme: theme),
+        initialChildren: children,
+      );
 
   static const String name = 'TaskRoute';
 

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/create_new_task/data/data.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/geo_position_search_for_weather_repository.dart';
+import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
 
 part 'location_search_event.dart';
 
@@ -16,7 +16,6 @@ class LocationSearchBloc
   final PlaceDetailsRepository placeDetailsRepository;
   final GeoPositionSearchForWeatherRepository
       geoPositionSearchForWeatherRepository;
-
 
   LocationSearchBloc(
     this.placeDetailsRepository,
@@ -37,7 +36,6 @@ class LocationSearchBloc
     emit(LocationSearchLoadingState());
 
     try {
-
       final suggestions =
           await placeDetailsRepository.getPlaceDetails(event.query);
 
@@ -62,9 +60,9 @@ class LocationSearchBloc
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
 
-      debugPrint('This Is Success: ${localizedNameForWeatherData.localizedName}');
+      debugPrint(
+          'This Is Success: ${localizedNameForWeatherData.localizedName}');
       emit(LocationSelectedState(localizedNameForWeatherData.localizedName));
-
     } catch (e, s) {
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: s);

@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-import 'package:todo_app/features/location_search/bloc/location_search_bloc.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/widgets/base_container.dart';
 
@@ -16,12 +15,9 @@ class TaskListCard extends StatefulWidget {
   const TaskListCard({
     super.key,
     required this.task,
-    // required this.localizedName,
   });
 
   final Task task;
-
-  // final String localizedName;
 
   @override
   State<TaskListCard> createState() => _TaskListCardState();
@@ -59,19 +55,6 @@ class _TaskListCardState extends State<TaskListCard> {
 
     return GestureDetector(
       onTap: () {
-        final locationDetails = widget.task.taskLocation;
-        debugPrint(
-            'Clicking on the task ${widget.task.taskTitle} '
-                'to get detailed information about the task');
-
-        if (locationDetails != null) {
-          context.read<LocationSearchBloc>().add(
-                LocationSelectEvent(locationDetails),
-              );
-        } else {
-          debugPrint(
-              'LocationSelectEvent not sent because taskLocation = null');
-        }
         context.router.push(
           TaskDetailsRoute(
             task: widget.task,
@@ -80,9 +63,6 @@ class _TaskListCardState extends State<TaskListCard> {
               context.read<TasksBloc>().add(DeleteTaskEvent(task));
               context.router.maybePop();
             },
-            // context
-            //     .read<TasksBloc>()
-            //     .add(DeleteTaskEvent(deleteTask));
           ),
         );
       },
