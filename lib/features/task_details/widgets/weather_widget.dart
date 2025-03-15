@@ -1,115 +1,135 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
+import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class WeatherWidget extends StatefulWidget {
   const WeatherWidget({
-    super.key,
+    super.key, required this.task,
   });
+
+  final Task task;
 
   @override
   State<WeatherWidget> createState() => _WeatherWidgetState();
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
+
+  final geoPositionSearchForWeatherRepository =
+  GeoPositionSearchForWeatherRepository();
+
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherBloc, WeatherState>(
-      builder: (context, state) {
-        if (state is WeatherLoadingState) {
-          return Center(child: CircularProgressIndicator());
-        } else if (state is WeatherSelectedFailureState) {
-          return Text(
-            'Error: ${state.exception}',
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-        } else if (state is WeatherSelectedState) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Transform.scale(
-                        scale: 1.5,
-                        child: Image(
-                          image: AssetImage(AppImages.smallIconSun),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${state.localizedName}, ${state.countryName}',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            "Rainy morning",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "08:16",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "18°",
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 8),
-                _HourlyForecastWidget(),
-                SizedBox(height: 16),
-              ],
-            ),
-          );
-        } else {
-          return SizedBox.shrink();
+    return BlocProvider(
+      create: (context) {
+        final weatherBloc = WeatherBloc(
+          geoPositionSearchForWeatherRepository,
+        );
+        if (widget.task.taskLocation != null) {
+          weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!));
         }
+        return weatherBloc;
       },
+      child: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) {
+          if (state is WeatherLoadingState) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is WeatherSelectedFailureState) {
+            return Text(
+              'Error: ${state.exception}',
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          } else if (state is WeatherSelectedState) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Transform.scale(
+                          scale: 1.5,
+                          child: Image(
+                            image: AssetImage(AppImages.smallIconSun),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${state.localizedName}, ${state.countryName}',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              "Rainy morning",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              "08:16",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "18°",
+                          style: TextStyle(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  _HourlyForecastWidget(),
+                  SizedBox(height: 16),
+                ],
+              ),
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        },
+      ),
     );
   }
 }

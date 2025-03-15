@@ -69,4 +69,30 @@ class LocationSearchBloc
       emit(LocationSearchFailureState(e.toString()));
     }
   }
+
+// // alternative way
+// //
+// Future<void> _onLocationSelect(
+//     LocationSelectEvent event, Emitter<LocationSearchState> emit) async {
+//   debugPrint('Location Select Event');
+//   emit(LocationSearchLoadingState());
+//
+//
+//
+//   try {
+//     final lat = event.locationDetailsModel.lat ?? 0.0;
+//     final lng = event.locationDetailsModel.lng ?? 0.0;
+//
+//     final localizedName = await geoPositionSearchForWeatherRepository
+//         .fetchLocalizedName(lat: lat, lng: lng);
+//     debugPrint('Localized Name: $localizedName');
+//
+//     emit(LocationSelectedState(localizedName));
+//   } catch (e, s) {
+//     debugPrint('Error: $e');
+//     debugPrintStack(stackTrace: s);
+//     emit(LocationSearchFailureState(e.toString()));
+//   }
+// }
+// //
 }

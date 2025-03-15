@@ -27,7 +27,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     emit(WeatherLoadingState());
 
     try {
-      final localizedNameForWeatherData  =
+      final localizedNameForWeatherData =
           await _geoPositionSearchForWeatherRepository.fetchLocalizedName(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
@@ -43,9 +43,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
 
-      debugPrint('This Is Success: ${localizedNameForWeatherData.localizedName}');
+      debugPrint(
+          'This Is Success: ${localizedNameForWeatherData.localizedName}');
       debugPrint('This Is Success: ${countryNameForWeatherData.countryName}');
-      debugPrint('This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
+      debugPrint(
+          'This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
 
       emit(WeatherSelectedState(
         localizedNameForWeatherData.localizedName,
@@ -58,4 +60,36 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       emit(WeatherSelectedFailureState(e.toString()));
     }
   }
+
+// // alternative way
+// //
+// Future<void> _onLocationForWeatherSelect(
+//     WeatherSelectEvent event, Emitter<WeatherState> emit) async {
+//   debugPrint('Weather Select Event');
+//   emit(WeatherLoadingState());
+//
+//   try {
+//     final lat = event.locationDetailsModel.lat ?? 0.0;
+//     final lng = event.locationDetailsModel.lng ?? 0.0;
+//
+//     final localizedName = await _geoPositionSearchForWeatherRepository
+//         .fetchLocalizedName(lat: lat, lng: lng);
+//     final countryName = await _geoPositionSearchForWeatherRepository
+//         .fetchCountryName(lat: lat, lng: lng);
+//     final cityKey = await _geoPositionSearchForWeatherRepository
+//         .fetchLocationCityKey(lat: lat, lng: lng);
+//
+//     debugPrint('Localized Name: $localizedName');
+//     debugPrint('Country Name: $countryName');
+//     debugPrint('City Key: $cityKey');
+//
+//     emit(WeatherSelectedState(
+//         localizedName, countryName, int.tryParse(cityKey) ?? 0));
+//   } catch (e, s) {
+//     debugPrint('Error: $e');
+//     debugPrintStack(stackTrace: s);
+//     emit(WeatherSelectedFailureState(e.toString()));
+//   }
+// }
+// //
 }
