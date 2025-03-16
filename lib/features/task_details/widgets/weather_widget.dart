@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
-import 'package:todo_app/main.dart';
+import 'package:todo_app/main_prod.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';

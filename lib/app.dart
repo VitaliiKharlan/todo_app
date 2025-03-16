@@ -7,12 +7,29 @@ import 'package:todo_app/features/task_details/data/repositories/geo_position_se
 
 import 'package:todo_app/todo_app.dart';
 
+import 'main_prod.dart';
+
+void appRunner() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  tz.initializeTimeZones();
+  await initNotifications();
+
+  await setupLocator();
+
+  if (getIt.isRegistered<GeoPositionSearchForWeatherRepository>()) {
+    debugPrint('GeoPositionSearchForWeatherRepository is registered');
+  } else {
+    debugPrint('GeoPositionSearchForWeatherRepository is NOT registered');
+  }
+
+  await _showNotification();
+
+  runApp(const TodoApp());
+}
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-
-final getIt = GetIt.instance;
-// bool _useMock = true;
-final ValueNotifier<bool> useMockData = ValueNotifier<bool>(false);
 
 Future<void> initNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
@@ -44,34 +61,4 @@ Future<void> _showNotification() async {
     'This notification appeared when the application todo_app was launched.',
     platformDetails,
   );
-}
-
-Future<void> setupLocator() async {
-  // getIt.reset();
-  if (useMockData.value) {
-    getIt.registerLazySingleton<GeoPositionSearchForWeatherRepository>(
-        () => MockGeoPositionSearchForWeatherRepository());
-  } else {
-    getIt.registerLazySingleton<GeoPositionSearchForWeatherRepository>(
-        () => ImplGeoPositionSearchForWeatherRepository());
-  }
-}
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  tz.initializeTimeZones();
-  await initNotifications();
-
-  await setupLocator();
-
-  if (getIt.isRegistered<GeoPositionSearchForWeatherRepository>()) {
-    debugPrint('GeoPositionSearchForWeatherRepository is registered');
-  } else {
-    debugPrint('GeoPositionSearchForWeatherRepository is NOT registered');
-  }
-
-  await _showNotification();
-
-  runApp(const TodoApp());
 }

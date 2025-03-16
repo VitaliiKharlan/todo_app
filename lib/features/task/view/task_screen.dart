@@ -12,7 +12,7 @@ import 'package:todo_app/features/task_details/data/repositories/geo_position_se
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
 
-export 'package:todo_app/main.dart' show useMockData;
+export 'package:todo_app/main_prod.dart' show useMockData;
 
 @RoutePage()
 class TaskScreen extends StatelessWidget {
@@ -161,75 +161,6 @@ class TaskScreen extends StatelessWidget {
                     },
                   ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 12,
-              ),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 16,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(100),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: useMockData,
-                  builder: (context, isMock, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'API',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple,
-                          ),
-                        ),
-                        Switch(
-                          value: isMock,
-                          onChanged: (newValue) {
-                            useMockData.value = newValue;
-                            GetIt.I.unregister<
-                                GeoPositionSearchForWeatherRepository>();
-                            GetIt.I.registerSingleton<
-                                GeoPositionSearchForWeatherRepository>(
-                              newValue
-                                  ? MockGeoPositionSearchForWeatherRepository()
-                                  : ImplGeoPositionSearchForWeatherRepository(),
-                            );
-                          },
-                          activeColor: Colors.blue.withAlpha(100),
-                          inactiveThumbColor: Colors.grey[400],
-                          inactiveTrackColor: Colors.grey[300],
-                        ),
-                        Text(
-                          'mock',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.purple,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
               ),
             ),
           ],
