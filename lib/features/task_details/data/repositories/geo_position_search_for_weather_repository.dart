@@ -16,6 +16,9 @@ abstract class GeoPositionSearchForWeatherRepository {
 
   Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
       {required double lat, required double lng});
+
+  Future<int> getCurrentWeather(
+      {required double lat, required double lng});
 }
 
 class ImplGeoPositionSearchForWeatherRepository
@@ -108,6 +111,11 @@ class ImplGeoPositionSearchForWeatherRepository
       throw Exception('Failed to load location city key');
     }
   }
+
+  @override
+  Future<int> getCurrentWeather({required double lat, required double lng}) {
+    throw UnimplementedError();
+  }
 }
 
 class MockGeoPositionSearchForWeatherRepository
@@ -140,5 +148,40 @@ class MockGeoPositionSearchForWeatherRepository
         localizedName: 'London',
         countryName: 'UK',
         locationCityKey: '2532685');
+  }
+
+  @override
+  Future<int> getCurrentWeather({required double lat, required double lng})async {
+    final cityId=await fetchLocationCityKey(lat: lat,lng: lng);
+    String mockData = '''
+[
+  {
+    "LocalObservationDateTime": "2025-03-16T18:21:00+02:00",
+    "EpochTime": 1742142060,
+    "WeatherText": "Clear",
+    "WeatherIcon": 33,
+    "HasPrecipitation": false,
+    "PrecipitationType": null,
+    "IsDayTime": false,
+    "Temperature": {
+      "Metric": {
+        "Value": 4.4,
+        "Unit": "C",
+        "UnitType": 17
+      },
+      "Imperial": {
+        "Value": 40,
+        "Unit": "F",
+        "UnitType": 18
+      }
+    },
+    "MobileLink": "http://www.accuweather.com/en/ua/kyiv/324505/current-weather/324505?lang=en-us",
+    "Link": "http://www.accuweather.com/en/ua/kyiv/324505/current-weather/324505?lang=en-us"
+  }
+]
+''';    ///Make forecats request
+    ///parse
+    ///return model
+    return 15;
   }
 }
