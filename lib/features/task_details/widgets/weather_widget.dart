@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
+import 'package:todo_app/features/task_details/data/models/weather_current_conditions.dart';
 import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
 import 'package:todo_app/main_prod.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
@@ -35,8 +36,17 @@ class _WeatherWidgetState extends State<WeatherWidget> {
       create: (context) {
         final weatherBloc =
             WeatherBloc(getIt<GeoPositionSearchForWeatherRepository>());
+
+        final weatherData = WeatherCurrentConditionsModel(
+          weatherCurrentDescription: 'j',
+          weatherCurrentIcon: 10,
+          weatherCurrentTemperature: Temperature(
+            metric: Metric(value: 1.5),
+          ),
+        );
+
         if (widget.task.taskLocation != null) {
-          weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!));
+          weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!, weatherData));
         }
         return weatherBloc;
       },
@@ -94,7 +104,10 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                               ),
                             ),
                             Text(
-                              "Rainy morning",
+                              state.weatherCurrentTemperature != null
+                                  ? '${state.weatherCurrentTemperature}°'
+                                  : 'Temperature not available',
+                              // "Rainy morning",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[600],

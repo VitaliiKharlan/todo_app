@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:todo_app/features/task_details/data/data.dart';
 
 import 'package:todo_app/features/task_details/data/models/geo_position_search_for_weather.dart';
 
@@ -17,7 +18,7 @@ abstract class GeoPositionSearchForWeatherRepository {
   Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
       {required double lat, required double lng});
 
-  Future<int> getCurrentWeather(
+  Future<WeatherCurrentConditionsModel> getCurrentWeather(
       {required double lat, required double lng});
 }
 
@@ -32,8 +33,6 @@ class ImplGeoPositionSearchForWeatherRepository
     required double lat,
     required double lng,
   }) async {
-
-
     debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
 
     final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
@@ -61,7 +60,6 @@ class ImplGeoPositionSearchForWeatherRepository
     required double lat,
     required double lng,
   }) async {
-
     debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
 
     final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
@@ -89,7 +87,6 @@ class ImplGeoPositionSearchForWeatherRepository
     required double lat,
     required double lng,
   }) async {
-
     debugPrint('fetchLocationCityKey called with lat: $lat, lng: $lng');
 
     final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
@@ -113,7 +110,8 @@ class ImplGeoPositionSearchForWeatherRepository
   }
 
   @override
-  Future<int> getCurrentWeather({required double lat, required double lng}) {
+  Future<WeatherCurrentConditionsModel> getCurrentWeather(
+      {required double lat, required double lng}) {
     throw UnimplementedError();
   }
 }
@@ -145,14 +143,14 @@ class MockGeoPositionSearchForWeatherRepository
       {required double lat, required double lng}) async {
     await Future.delayed(Duration(seconds: 1));
     return GeoPositionSearchForWeatherModel(
-        localizedName: 'London',
-        countryName: 'UK',
-        locationCityKey: '2532685');
+        localizedName: 'London', countryName: 'UK', locationCityKey: '2532685');
   }
 
   @override
-  Future<int> getCurrentWeather({required double lat, required double lng})async {
-    final cityId=await fetchLocationCityKey(lat: lat,lng: lng);
+  Future<WeatherCurrentConditionsModel> getCurrentWeather(
+      {required double lat, required double lng}) async {
+    await Future.delayed(Duration(seconds: 1));
+    // final cityId = await fetchLocationCityKey(lat: lat, lng: lng);
     String mockData = '''
 [
   {
@@ -179,9 +177,22 @@ class MockGeoPositionSearchForWeatherRepository
     "Link": "http://www.accuweather.com/en/ua/kyiv/324505/current-weather/324505?lang=en-us"
   }
 ]
-''';    ///Make forecats request
+''';
+
+    ///Make forecats request
     ///parse
     ///return model
-    return 15;
+    final data = json.decode(mockData)[0];
+    final weatherCurrentDescription = data['WeatherText'];
+    final weatherCurrentIcon = data['WeatherIcon'];
+
+    final weatherCurrentTemperature = Temperature(
+
+      metric: Metric(value: data['Temperature']['Metric']['Value']),
+    );
+    return WeatherCurrentConditionsModel(
+        weatherCurrentDescription: weatherCurrentDescription,
+        weatherCurrentIcon: weatherCurrentIcon,
+        weatherCurrentTemperature: weatherCurrentTemperature);
   }
 }

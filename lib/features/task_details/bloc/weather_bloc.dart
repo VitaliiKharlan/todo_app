@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:todo_app/features/create_new_task/data/data.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
+import 'package:todo_app/features/task_details/data/data.dart';
 import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
 
 part 'weather_event.dart';
@@ -14,6 +15,7 @@ part 'weather_state.dart';
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final GeoPositionSearchForWeatherRepository
       _geoPositionSearchForWeatherRepository;
+
 
   WeatherBloc(
     this._geoPositionSearchForWeatherRepository,
@@ -42,6 +44,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
+      final weatherData = event.weatherCurrentConditionsModel;
 
       debugPrint(
           'This Is Success: ${localizedNameForWeatherData.localizedName}');
@@ -53,7 +56,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         localizedNameForWeatherData.localizedName,
         countryNameForWeatherData.countryName,
         int.tryParse(locationCityKeyForWeatherData.locationCityKey) ?? 0,
+        weatherData.weatherCurrentTemperature.metric.value,
       ));
+      // emit(WeatherSelectedState(weatherData));
     } catch (e, s) {
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: s);

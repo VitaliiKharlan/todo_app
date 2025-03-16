@@ -17,15 +17,22 @@ class WeatherSelectedState extends WeatherState {
   final String localizedName;
   final String countryName;
   final int locationCityKey;
+  final double weatherCurrentTemperature;
 
   WeatherSelectedState(
     this.localizedName,
     this.countryName,
     this.locationCityKey,
+    this.weatherCurrentTemperature,
   );
 
   @override
-  List<Object> get props => [localizedName, countryName, locationCityKey];
+  List<Object> get props => [
+        localizedName,
+        countryName,
+        locationCityKey,
+        weatherCurrentTemperature,
+      ];
 }
 
 class WeatherSelectedFailureState extends WeatherState {
