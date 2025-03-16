@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 
+import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
+import 'package:todo_app/main.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class WeatherWidget extends StatefulWidget {
   const WeatherWidget({
-    super.key, required this.task,
+    super.key,
+    required this.task,
   });
 
   final Task task;
@@ -21,18 +23,18 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
+  // final geoPositionSearchForWeatherRepository =
+  // ImplGeoPositionSearchForWeatherRepository();
 
   final geoPositionSearchForWeatherRepository =
-  GeoPositionSearchForWeatherRepository();
-
+      getIt<GeoPositionSearchForWeatherRepository>();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final weatherBloc = WeatherBloc(
-          geoPositionSearchForWeatherRepository,
-        );
+        final weatherBloc =
+            WeatherBloc(getIt<GeoPositionSearchForWeatherRepository>());
         if (widget.task.taskLocation != null) {
           weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!));
         }

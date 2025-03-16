@@ -22,7 +22,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
   final placeDetailsRepository = PlaceDetailsRepository();
   TextEditingController controllerLocationSearch = TextEditingController();
   final geoPositionSearchForWeatherRepository =
-      GeoPositionSearchForWeatherRepository();
+      ImplGeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {

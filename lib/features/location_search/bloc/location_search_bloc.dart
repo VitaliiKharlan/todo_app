@@ -14,7 +14,7 @@ part 'location_search_state.dart';
 class LocationSearchBloc
     extends Bloc<LocationSearchEvent, LocationSearchState> {
   final PlaceDetailsRepository placeDetailsRepository;
-  final GeoPositionSearchForWeatherRepository
+  final ImplGeoPositionSearchForWeatherRepository
       geoPositionSearchForWeatherRepository;
 
   LocationSearchBloc(

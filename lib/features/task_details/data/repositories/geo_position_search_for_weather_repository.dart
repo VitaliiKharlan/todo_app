@@ -7,11 +7,24 @@ import 'package:todo_app/features/task_details/data/models/geo_position_search_f
 
 // https://api.accuweather.com/currentconditions/v1/{locationKey}?apikey={yourApiKey}
 
-class GeoPositionSearchForWeatherRepository {
+abstract class GeoPositionSearchForWeatherRepository {
+  Future<GeoPositionSearchForWeatherModel> fetchLocalizedName(
+      {required double lat, required double lng});
+
+  Future<GeoPositionSearchForWeatherModel> fetchCountryName(
+      {required double lat, required double lng});
+
+  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
+      {required double lat, required double lng});
+}
+
+class ImplGeoPositionSearchForWeatherRepository
+    implements GeoPositionSearchForWeatherRepository {
   final String _apiKey = 'IudhJx5rUiBJAECUtkWBxs6ep8FW1uU1';
   final String _baseUrlGeoPositionSearchForWeather =
       'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search';
 
+  @override
   Future<GeoPositionSearchForWeatherModel> fetchLocalizedName({
     required double lat,
     required double lng,
@@ -42,12 +55,13 @@ class GeoPositionSearchForWeatherRepository {
 
       debugPrint('Localized name extracted: ${data['LocalizedName']}');
 
-
       return GeoPositionSearchForWeatherModel.fromJson(data);
     } else {
       throw Exception('Failed to load localized name');
     }
   }
+
+  @override
   Future<GeoPositionSearchForWeatherModel> fetchCountryName({
     required double lat,
     required double lng,
@@ -76,7 +90,6 @@ class GeoPositionSearchForWeatherRepository {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
-
       debugPrint('Country extracted: ${data['Country']['LocalizedName']}');
 
       return GeoPositionSearchForWeatherModel.fromJson(data);
@@ -85,7 +98,7 @@ class GeoPositionSearchForWeatherRepository {
     }
   }
 
-
+  @override
   Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey({
     required double lat,
     required double lng,
@@ -120,6 +133,39 @@ class GeoPositionSearchForWeatherRepository {
     } else {
       throw Exception('Failed to load location city key');
     }
+  }
+}
+
+class MockGeoPositionSearchForWeatherRepository
+    implements GeoPositionSearchForWeatherRepository {
+  @override
+  Future<GeoPositionSearchForWeatherModel> fetchLocalizedName(
+      {required double lat, required double lng}) async {
+    await Future.delayed(Duration(seconds: 1));
+    return GeoPositionSearchForWeatherModel(
+        localizedName: 'Kyiv',
+        countryName: 'Ukraine',
+        locationCityKey: '324505');
+  }
+
+  @override
+  Future<GeoPositionSearchForWeatherModel> fetchCountryName(
+      {required double lat, required double lng}) async {
+    await Future.delayed(Duration(seconds: 1));
+    return GeoPositionSearchForWeatherModel(
+        localizedName: 'Warsaw',
+        countryName: 'Poland',
+        locationCityKey: '2722931');
+  }
+
+  @override
+  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
+      {required double lat, required double lng}) async {
+    await Future.delayed(Duration(seconds: 1));
+    return GeoPositionSearchForWeatherModel(
+        localizedName: 'London',
+        countryName: 'UK',
+        locationCityKey: '2532685');
   }
 }
 
@@ -176,5 +222,3 @@ class GeoPositionSearchForWeatherRepository {
 //   }
 // }
 // //
-
-

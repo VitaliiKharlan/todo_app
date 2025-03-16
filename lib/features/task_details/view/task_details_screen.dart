@@ -50,9 +50,6 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return trimmedText;
   }
 
-  final geoPositionSearchForWeatherRepository =
-      GeoPositionSearchForWeatherRepository();
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
