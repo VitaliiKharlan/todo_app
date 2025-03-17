@@ -17,12 +17,16 @@ class WeatherSelectedState extends WeatherState {
   final String localizedName;
   final String countryName;
   final int locationCityKey;
+  final String weatherCurrentDescription;
+  final int weatherCurrentIcon;
   final double weatherCurrentTemperature;
 
   WeatherSelectedState(
     this.localizedName,
     this.countryName,
     this.locationCityKey,
+    this.weatherCurrentDescription,
+    this.weatherCurrentIcon,
     this.weatherCurrentTemperature,
   );
 
@@ -31,6 +35,8 @@ class WeatherSelectedState extends WeatherState {
         localizedName,
         countryName,
         locationCityKey,
+        weatherCurrentDescription,
+        weatherCurrentIcon,
         weatherCurrentTemperature,
       ];
 }

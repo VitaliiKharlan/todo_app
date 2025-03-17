@@ -36,7 +36,8 @@ class TaskRepository {
     return _taskDatabase.updateTask(id, task);
   }
 
-  Future<void> deleteTask(String id) {
+  Future<void> deleteTask(String id) async {
+    await NotificationService.cancelNotification(id);
     return _taskDatabase.deleteTask(id);
   }
 }

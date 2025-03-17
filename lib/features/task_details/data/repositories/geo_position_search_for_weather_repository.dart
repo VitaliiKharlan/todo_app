@@ -110,9 +110,54 @@ class ImplGeoPositionSearchForWeatherRepository
   }
 
   @override
-  Future<WeatherCurrentConditionsModel> getCurrentWeather(
-      {required double lat, required double lng}) {
-    throw UnimplementedError();
+  Future<WeatherCurrentConditionsModel> getCurrentWeather({
+    required double lat,
+    required double lng,
+  }) async {
+    debugPrint('getCurrentWeather called with lat: $lat, lng: $lng');
+
+    final String requestUrl = 'https://dataservice.'
+        'accuweather.com/currentconditions/v1/324505?'
+        'apikey=IudhJx5rUiBJAECUtkWBxs6ep8FW1uU1&'
+        'details=true';
+
+    debugPrint('Sending request to get current weather: $requestUrl');
+
+    final response = await http.get(Uri.parse(requestUrl));
+
+    debugPrint('Response status: ${response.statusCode}');
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body)[0];
+
+      debugPrint('Current weather: ${data['WeatherText']}, '
+          '${data['WeatherIcon']}, '
+          '${data['Temperature']['Metric']['Value']}');
+
+      final weatherCurrentDescription = data['WeatherText'];
+      final weatherCurrentIcon = data['WeatherIcon'];
+      // final weatherCurrentTemperature = Temperature(
+      //   metric: Metric(value: data['Temperature']['Metric']['Value']),
+      // );
+      final weatherCurrentTemperature = Temperature(
+        metric: Metric(
+            value: data['Temperature']['Metric']['Value'].round().toDouble()),
+      );
+
+      final weatherData = {
+        'WeatherText': weatherCurrentDescription,
+        'WeatherIcon': weatherCurrentIcon,
+        'Temperature': {
+          'Metric': {
+            'Value': weatherCurrentTemperature.metric.value,
+          }
+        }
+      };
+
+      return WeatherCurrentConditionsModel.fromJson(weatherData);
+    } else {
+      throw Exception('Failed to load current weather');
+    }
   }
 }
 
@@ -154,25 +199,25 @@ class MockGeoPositionSearchForWeatherRepository
     String mockData = '''
 [
   {
-    "LocalObservationDateTime": "2025-03-16T18:21:00+02:00",
-    "EpochTime": 1742142060,
+    "LocalObservationDateTime": "2025-03-16T22:46:00+02:00",
+    "EpochTime": 1742157960,
     "WeatherText": "Clear",
-    "WeatherIcon": 33,
+    "WeatherIcon": 10,
     "HasPrecipitation": false,
     "PrecipitationType": null,
     "IsDayTime": false,
     "Temperature": {
       "Metric": {
-        "Value": 4.4,
+        "Value": 5.2,
         "Unit": "C",
         "UnitType": 17
       },
       "Imperial": {
-        "Value": 40,
+        "Value": 33,
         "Unit": "F",
         "UnitType": 18
       }
-    },
+    },   
     "MobileLink": "http://www.accuweather.com/en/ua/kyiv/324505/current-weather/324505?lang=en-us",
     "Link": "http://www.accuweather.com/en/ua/kyiv/324505/current-weather/324505?lang=en-us"
   }
@@ -182,14 +227,18 @@ class MockGeoPositionSearchForWeatherRepository
     ///Make forecats request
     ///parse
     ///return model
-    final data = json.decode(mockData)[0];
+
+    final data = jsonDecode(mockData)[0];
     final weatherCurrentDescription = data['WeatherText'];
     final weatherCurrentIcon = data['WeatherIcon'];
-
+    // final weatherCurrentTemperature = Temperature(
+    //   metric: Metric(value: data['Temperature']['Metric']['Value']),
+    // );
     final weatherCurrentTemperature = Temperature(
-
-      metric: Metric(value: data['Temperature']['Metric']['Value']),
+      metric: Metric(
+          value: data['Temperature']['Metric']['Value'].round().toDouble()),
     );
+
     return WeatherCurrentConditionsModel(
         weatherCurrentDescription: weatherCurrentDescription,
         weatherCurrentIcon: weatherCurrentIcon,

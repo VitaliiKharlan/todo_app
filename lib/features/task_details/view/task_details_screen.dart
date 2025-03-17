@@ -224,18 +224,18 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           }).toList(),
                         ),
                       ],
-                      if (widget.task.taskRemindTime != null &&
-                          widget.task.taskRemindTime!.isNotEmpty) ...[
-                        SizedBox(height: 12),
-                        Text(
-                          DateFormat("dd MMMM, 'at' hh:mm a")
-                              .format(widget.task.taskRemindTime!.first),
-                          style: AppTextStyle.dateProgressIndicator.copyWith(
-                            fontSize: 12,
-                            color: AppColors.dateProgressIndicator,
-                          ),
-                        ),
-                      ],
+                      // if (widget.task.taskRemindTime != null &&
+                      //     widget.task.taskRemindTime!.isNotEmpty) ...[
+                      //   SizedBox(height: 12),
+                      //   Text(
+                      //     DateFormat("dd MMMM, 'at' hh:mm a")
+                      //         .format(widget.task.taskRemindTime!.first),
+                      //     style: AppTextStyle.dateProgressIndicator.copyWith(
+                      //       fontSize: 12,
+                      //       color: AppColors.dateProgressIndicator,
+                      //     ),
+                      //   ),
+                      // ],
                     ],
                   ),
                   SizedBox(height: 20),

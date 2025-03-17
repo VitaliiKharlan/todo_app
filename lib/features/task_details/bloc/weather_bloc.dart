@@ -16,7 +16,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final GeoPositionSearchForWeatherRepository
       _geoPositionSearchForWeatherRepository;
 
-
   WeatherBloc(
     this._geoPositionSearchForWeatherRepository,
   ) : super(WeatherInitialState()) {
@@ -44,57 +43,36 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
-      final weatherData = event.weatherCurrentConditionsModel;
+      final weatherData =
+          await _geoPositionSearchForWeatherRepository.getCurrentWeather(
+        lat: event.locationDetailsModel.lat ?? 0.0,
+        lng: event.locationDetailsModel.lng ?? 0.0,
+      );
+
+      // final weatherData = event.weatherCurrentConditionsModel;
 
       debugPrint(
           'This Is Success: ${localizedNameForWeatherData.localizedName}');
       debugPrint('This Is Success: ${countryNameForWeatherData.countryName}');
       debugPrint(
           'This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
+      debugPrint(
+          'This Is Success: ${weatherData.weatherCurrentDescription}, '
+              '${weatherData.weatherCurrentIcon},  '
+              '${weatherData.weatherCurrentTemperature.metric.value}');
 
       emit(WeatherSelectedState(
         localizedNameForWeatherData.localizedName,
         countryNameForWeatherData.countryName,
         int.tryParse(locationCityKeyForWeatherData.locationCityKey) ?? 0,
+        weatherData.weatherCurrentDescription,
+        weatherData.weatherCurrentIcon,
         weatherData.weatherCurrentTemperature.metric.value,
       ));
-      // emit(WeatherSelectedState(weatherData));
     } catch (e, s) {
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: s);
       emit(WeatherSelectedFailureState(e.toString()));
     }
   }
-
-// // alternative way
-// //
-// Future<void> _onLocationForWeatherSelect(
-//     WeatherSelectEvent event, Emitter<WeatherState> emit) async {
-//   debugPrint('Weather Select Event');
-//   emit(WeatherLoadingState());
-//
-//   try {
-//     final lat = event.locationDetailsModel.lat ?? 0.0;
-//     final lng = event.locationDetailsModel.lng ?? 0.0;
-//
-//     final localizedName = await _geoPositionSearchForWeatherRepository
-//         .fetchLocalizedName(lat: lat, lng: lng);
-//     final countryName = await _geoPositionSearchForWeatherRepository
-//         .fetchCountryName(lat: lat, lng: lng);
-//     final cityKey = await _geoPositionSearchForWeatherRepository
-//         .fetchLocationCityKey(lat: lat, lng: lng);
-//
-//     debugPrint('Localized Name: $localizedName');
-//     debugPrint('Country Name: $countryName');
-//     debugPrint('City Key: $cityKey');
-//
-//     emit(WeatherSelectedState(
-//         localizedName, countryName, int.tryParse(cityKey) ?? 0));
-//   } catch (e, s) {
-//     debugPrint('Error: $e');
-//     debugPrintStack(stackTrace: s);
-//     emit(WeatherSelectedFailureState(e.toString()));
-//   }
-// }
-// //
 }

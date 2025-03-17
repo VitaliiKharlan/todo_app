@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
@@ -24,11 +25,27 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
-  // final geoPositionSearchForWeatherRepository =
-  // ImplGeoPositionSearchForWeatherRepository();
-
   final geoPositionSearchForWeatherRepository =
       getIt<GeoPositionSearchForWeatherRepository>();
+
+  Widget _getWeatherIcon(int weatherIcon) {
+    const iconMap = {
+      1: AppImages.smallIconSun,
+      2: AppImages.smallIconPartlyCloudy,
+      3: AppImages.smallIconCloud,
+      4: AppImages.smallIconRain,
+      5: AppImages.smallIconSnow,
+    };
+
+    if (iconMap.containsKey(weatherIcon)) {
+      return Image.asset(iconMap[weatherIcon]!);
+    } else {
+      return SizedBox(
+          height: 48,
+          width: 48,
+          child: Lottie.asset('assets/lottie_animation/hare.json'));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +55,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             WeatherBloc(getIt<GeoPositionSearchForWeatherRepository>());
 
         final weatherData = WeatherCurrentConditionsModel(
-          weatherCurrentDescription: 'j',
+          weatherCurrentDescription: 'You are wrong',
           weatherCurrentIcon: 10,
           weatherCurrentTemperature: Temperature(
             metric: Metric(value: 1.5),
@@ -46,7 +63,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         );
 
         if (widget.task.taskLocation != null) {
-          weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!, weatherData));
+          weatherBloc
+              .add(WeatherSelectEvent(widget.task.taskLocation!, weatherData));
         }
         return weatherBloc;
       },
@@ -88,9 +106,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                       children: [
                         Transform.scale(
                           scale: 1.5,
-                          child: Image(
-                            image: AssetImage(AppImages.smallIconSun),
-                          ),
+                          child: _getWeatherIcon(state.weatherCurrentIcon),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,10 +120,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                               ),
                             ),
                             Text(
-                              state.weatherCurrentTemperature != null
-                                  ? '${state.weatherCurrentTemperature}°'
-                                  : 'Temperature not available',
-                              // "Rainy morning",
+                              state.weatherCurrentDescription.toString(),
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey[600],
@@ -124,7 +137,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                           ],
                         ),
                         Text(
-                          "18°",
+                          '${state.weatherCurrentTemperature.toInt().toString()}\u00B0',
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
