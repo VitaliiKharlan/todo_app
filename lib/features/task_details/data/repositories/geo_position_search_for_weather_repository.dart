@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 import 'package:todo_app/features/task_details/data/data.dart';
 
-import 'package:todo_app/features/task_details/data/models/geo_position_search_for_weather.dart';
 
 // https://api.accuweather.com/currentconditions/v1/{locationKey}?apikey={yourApiKey}
 
@@ -236,12 +236,21 @@ class MockGeoPositionSearchForWeatherRepository
     // );
     final weatherCurrentTemperature = Temperature(
       metric: Metric(
-          value: data['Temperature']['Metric']['Value'].round().toDouble()),
+        value: data['Temperature']['Metric']['Value'].round().toDouble(),
+      ),
     );
 
+    final String dateTimeString = data['LocalObservationDateTime'];
+    debugPrint(dateTimeString);
+    final DateTime weatherCurrentLocalObservationDateTime =
+        DateTime.parse(dateTimeString);
+
     return WeatherCurrentConditionsModel(
-        weatherCurrentDescription: weatherCurrentDescription,
-        weatherCurrentIcon: weatherCurrentIcon,
-        weatherCurrentTemperature: weatherCurrentTemperature);
+      weatherCurrentDescription: weatherCurrentDescription,
+      weatherCurrentIcon: weatherCurrentIcon,
+      weatherCurrentTemperature: weatherCurrentTemperature,
+      weatherCurrentLocalObservationDateTime:
+          weatherCurrentLocalObservationDateTime,
+    );
   }
 }

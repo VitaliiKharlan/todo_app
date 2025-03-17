@@ -13,6 +13,8 @@ WeatherCurrentConditionsModel _$WeatherCurrentConditionsModelFromJson(
       weatherCurrentIcon: (json['WeatherIcon'] as num).toInt(),
       weatherCurrentTemperature:
           Temperature.fromJson(json['Temperature'] as Map<String, dynamic>),
+      weatherCurrentLocalObservationDateTime: const DateTimeConverter()
+          .fromJson(json['LocalObservationDateTime'] as String),
     );
 
 Map<String, dynamic> _$WeatherCurrentConditionsModelToJson(
@@ -21,6 +23,8 @@ Map<String, dynamic> _$WeatherCurrentConditionsModelToJson(
       'WeatherText': instance.weatherCurrentDescription,
       'WeatherIcon': instance.weatherCurrentIcon,
       'Temperature': instance.weatherCurrentTemperature.toJson(),
+      'LocalObservationDateTime': const DateTimeConverter()
+          .toJson(instance.weatherCurrentLocalObservationDateTime),
     };
 
 Temperature _$TemperatureFromJson(Map<String, dynamic> json) => Temperature(

@@ -52,14 +52,15 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       // final weatherData = event.weatherCurrentConditionsModel;
 
       debugPrint(
-          'This Is Success: ${localizedNameForWeatherData.localizedName}');
-      debugPrint('This Is Success: ${countryNameForWeatherData.countryName}');
+          'This Is Success: ${localizedNameForWeatherData.localizedName} ');
+      debugPrint('This Is Success: ${countryNameForWeatherData.countryName} ');
       debugPrint(
-          'This Is Success: ${locationCityKeyForWeatherData.locationCityKey}');
+          'This Is Success: ${locationCityKeyForWeatherData.locationCityKey} ');
       debugPrint(
           'This Is Success: ${weatherData.weatherCurrentDescription}, '
-              '${weatherData.weatherCurrentIcon},  '
-              '${weatherData.weatherCurrentTemperature.metric.value}');
+              '${weatherData.weatherCurrentIcon}, '
+              '${weatherData.weatherCurrentTemperature.metric.value} '
+              '${weatherData.weatherCurrentLocalObservationDateTime} ');
 
       emit(WeatherSelectedState(
         localizedNameForWeatherData.localizedName,
@@ -68,6 +69,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         weatherData.weatherCurrentDescription,
         weatherData.weatherCurrentIcon,
         weatherData.weatherCurrentTemperature.metric.value,
+        weatherData.weatherCurrentLocalObservationDateTime,
       ));
     } catch (e, s) {
       debugPrint('Error: $e');

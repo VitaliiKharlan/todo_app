@@ -20,6 +20,7 @@ class WeatherSelectedState extends WeatherState {
   final String weatherCurrentDescription;
   final int weatherCurrentIcon;
   final double weatherCurrentTemperature;
+  final DateTime weatherLocalObservationDateTime;
 
   WeatherSelectedState(
     this.localizedName,
@@ -28,6 +29,7 @@ class WeatherSelectedState extends WeatherState {
     this.weatherCurrentDescription,
     this.weatherCurrentIcon,
     this.weatherCurrentTemperature,
+    this.weatherLocalObservationDateTime,
   );
 
   @override

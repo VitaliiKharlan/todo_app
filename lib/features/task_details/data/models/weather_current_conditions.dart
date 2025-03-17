@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:todo_app/services/date_time_converter.dart';
 
 part 'weather_current_conditions.g.dart';
 
@@ -8,6 +9,7 @@ class WeatherCurrentConditionsModel {
     required this.weatherCurrentDescription,
     required this.weatherCurrentIcon,
     required this.weatherCurrentTemperature,
+    required this.weatherCurrentLocalObservationDateTime,
   });
 
   @JsonKey(name: 'WeatherText')
@@ -18,6 +20,10 @@ class WeatherCurrentConditionsModel {
 
   @JsonKey(name: 'Temperature')
   final Temperature weatherCurrentTemperature;
+
+  @JsonKey(name: 'LocalObservationDateTime')
+  @DateTimeConverter()
+  final DateTime weatherCurrentLocalObservationDateTime;
 
   factory WeatherCurrentConditionsModel.fromJson(Map<String, dynamic> json) {
     return _$WeatherCurrentConditionsModelFromJson(json);
@@ -30,7 +36,8 @@ class WeatherCurrentConditionsModel {
     return 'WeatherCurrentConditionsModel{weatherCurrentDescription: '
         '$weatherCurrentDescription, '
         'weatherCurrentIcon: $weatherCurrentIcon, '
-        'weatherCurrentTemperature: $weatherCurrentTemperature}';
+        'weatherCurrentTemperature: $weatherCurrentTemperature, '
+        'weatherCurrentLocalObservationDateTime: $weatherCurrentLocalObservationDateTime}';
   }
 }
 

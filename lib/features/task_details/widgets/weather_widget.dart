@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
@@ -60,6 +61,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           weatherCurrentTemperature: Temperature(
             metric: Metric(value: 1.5),
           ),
+          weatherCurrentLocalObservationDateTime: DateTime(2025, 3, 17, 22, 00),
         );
 
         if (widget.task.taskLocation != null) {
@@ -128,7 +130,10 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              "08:16",
+                              DateFormat("HH:mm").format(
+                                  state.weatherLocalObservationDateTime),
+                              // "08:16",
+                              // state.weatherLocalObservationDateTime.toString(),
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[500],
