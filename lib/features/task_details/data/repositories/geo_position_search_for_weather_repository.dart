@@ -5,21 +5,27 @@ import 'package:http/http.dart' as http;
 
 import 'package:todo_app/features/task_details/data/data.dart';
 
-
 // https://api.accuweather.com/currentconditions/v1/{locationKey}?apikey={yourApiKey}
 
 abstract class GeoPositionSearchForWeatherRepository {
-  Future<GeoPositionSearchForWeatherModel> fetchLocalizedName(
-      {required double lat, required double lng});
+  Future<GeoPositionSearchForWeatherModel> getCitySearch({
+    required double lat,
+    required double lng,
+  });
 
-  Future<GeoPositionSearchForWeatherModel> fetchCountryName(
-      {required double lat, required double lng});
-
-  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
-      {required double lat, required double lng});
-
-  Future<WeatherCurrentConditionsModel> getCurrentWeather(
-      {required double lat, required double lng});
+//   Future<GeoPositionSearchForWeatherModel> fetchLocalizedName(
+//       {required double lat, required double lng});
+//
+//   Future<GeoPositionSearchForWeatherModel> fetchCountryName(
+//       {required double lat, required double lng});
+//
+//   Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
+//       {required double lat, required double lng});
+//
+  Future<WeatherCurrentConditionsModel> getCurrentWeather({
+    required double lat,
+    required double lng,
+  });
 }
 
 class ImplGeoPositionSearchForWeatherRepository
@@ -29,7 +35,7 @@ class ImplGeoPositionSearchForWeatherRepository
       'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search';
 
   @override
-  Future<GeoPositionSearchForWeatherModel> fetchLocalizedName({
+  Future<GeoPositionSearchForWeatherModel> getCitySearch({
     required double lat,
     required double lng,
   }) async {
@@ -55,59 +61,86 @@ class ImplGeoPositionSearchForWeatherRepository
     }
   }
 
-  @override
-  Future<GeoPositionSearchForWeatherModel> fetchCountryName({
-    required double lat,
-    required double lng,
-  }) async {
-    debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
+  // @override
+  // Future<GeoPositionSearchForWeatherModel> fetchLocalizedName({
+  //   required double lat,
+  //   required double lng,
+  // }) async {
+  //   debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
+  //
+  //   final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
+  //       'apikey=$_apiKey&q=$lat%2C$lng';
+  //
+  //   debugPrint('Sending request to AccuWeather API: $requestUrl');
+  //
+  //   final response = await http.get(Uri.parse(requestUrl));
+  //
+  //   debugPrint('Response status: ${response.statusCode}');
+  //
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //
+  //     debugPrint('Localized name extracted: ${data['LocalizedName']}');
+  //
+  //     return GeoPositionSearchForWeatherModel.fromJson(data);
+  //   } else {
+  //     throw Exception('Failed to load localized name');
+  //   }
+  // }
+  //
+  // @override
+  // Future<GeoPositionSearchForWeatherModel> fetchCountryName({
+  //   required double lat,
+  //   required double lng,
+  // }) async {
+  //   debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
+  //
+  //   final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
+  //       'apikey=$_apiKey&q=$lat%2C$lng';
+  //
+  //   debugPrint('Sending request to AccuWeather API: $requestUrl');
+  //
+  //   final response = await http.get(Uri.parse(requestUrl));
+  //
+  //   debugPrint('Response status: ${response.statusCode}');
+  //
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //
+  //     debugPrint('Country extracted: ${data['Country']['LocalizedName']}');
+  //
+  //     return GeoPositionSearchForWeatherModel.fromJson(data);
+  //   } else {
+  //     throw Exception('Failed to load localized name');
+  //   }
+  // }
 
-    final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
-        'apikey=$_apiKey&q=$lat%2C$lng';
-
-    debugPrint('Sending request to AccuWeather API: $requestUrl');
-
-    final response = await http.get(Uri.parse(requestUrl));
-
-    debugPrint('Response status: ${response.statusCode}');
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      debugPrint('Country extracted: ${data['Country']['LocalizedName']}');
-
-      return GeoPositionSearchForWeatherModel.fromJson(data);
-    } else {
-      throw Exception('Failed to load localized name');
-    }
-  }
-
-  @override
-  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey({
-    required double lat,
-    required double lng,
-  }) async {
-    debugPrint('fetchLocationCityKey called with lat: $lat, lng: $lng');
-
-    final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
-        'apikey=$_apiKey&q=$lat%2C$lng';
-
-    debugPrint('Sending request to AccuWeather API: $requestUrl');
-
-    final response = await http.get(Uri.parse(requestUrl));
-
-    debugPrint('Response status: ${response.statusCode}');
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-
-      debugPrint('Location city key: ${data['Key']}');
-
-      return GeoPositionSearchForWeatherModel.fromJson(data);
-    } else {
-      throw Exception('Failed to load location city key');
-    }
-  }
+  // @override
+  // Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey({
+  //   required double lat,
+  //   required double lng,
+  // }) async {
+  //   debugPrint('fetchLocationCityKey called with lat: $lat, lng: $lng');
+  //
+  //   final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
+  //       'apikey=$_apiKey&q=$lat%2C$lng';
+  //
+  //   debugPrint('Sending request to AccuWeather API: $requestUrl');
+  //
+  //   final response = await http.get(Uri.parse(requestUrl));
+  //
+  //   debugPrint('Response status: ${response.statusCode}');
+  //
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //
+  //     debugPrint('Location city key: ${data['Key']}');
+  //
+  //     return GeoPositionSearchForWeatherModel.fromJson(data);
+  //   } else {
+  //     throw Exception('Failed to load location city key');
+  //   }
+  // }
 
   @override
   Future<WeatherCurrentConditionsModel> getCurrentWeather({
@@ -136,14 +169,10 @@ class ImplGeoPositionSearchForWeatherRepository
 
       final weatherCurrentDescription = data['WeatherText'];
       final weatherCurrentIcon = data['WeatherIcon'];
-      // final weatherCurrentTemperature = Temperature(
-      //   metric: Metric(value: data['Temperature']['Metric']['Value']),
-      // );
       final weatherCurrentTemperature = Temperature(
         metric: Metric(
             value: data['Temperature']['Metric']['Value'].round().toDouble()),
       );
-
       final weatherData = {
         'WeatherText': weatherCurrentDescription,
         'WeatherIcon': weatherCurrentIcon,
@@ -164,37 +193,58 @@ class ImplGeoPositionSearchForWeatherRepository
 class MockGeoPositionSearchForWeatherRepository
     implements GeoPositionSearchForWeatherRepository {
   @override
-  Future<GeoPositionSearchForWeatherModel> fetchLocalizedName(
+  Future<GeoPositionSearchForWeatherModel> getCitySearch(
       {required double lat, required double lng}) async {
-    await Future.delayed(Duration(seconds: 1));
-    return GeoPositionSearchForWeatherModel(
-        localizedName: 'Kyiv',
-        countryName: 'Ukraine',
-        locationCityKey: '324505');
-  }
+    await Future.delayed(Duration(milliseconds: 500));
+    String mockData = '''
+    [
+      {
+        "Version": 1,
+        "Key": "2601546",
+        "Type": "City",
+        "Rank": 45,
+        "LocalizedName": "Mitte",
+        "EnglishName": "Mitte",
+        "PrimaryPostalCode": "10178",
+        "Region": {
+          "ID": "EUR",
+          "LocalizedName": "Europe",
+          "EnglishName": "Europe"
+        },
+        "Country": {
+          "ID": "DE",
+          "LocalizedName": "Germany",
+          "EnglishName": "Germany"
+        },
+        "AdministrativeArea": {
+          "ID": "BE",
+          "LocalizedName": "Berlin",
+          "EnglishName": "Berlin",
+          "Level": 1,
+          "LocalizedType": "State",
+          "EnglishType": "State",
+          "CountryID": "DE"
+        }        
+      }
+    ]
+''';
 
-  @override
-  Future<GeoPositionSearchForWeatherModel> fetchCountryName(
-      {required double lat, required double lng}) async {
-    await Future.delayed(Duration(seconds: 1));
-    return GeoPositionSearchForWeatherModel(
-        localizedName: 'Warsaw',
-        countryName: 'Poland',
-        locationCityKey: '2722931');
-  }
+    final data = jsonDecode(mockData)[0];
+    final weatherLocalizedName = data['LocalizedName'];
+    final weatherCountryLocalizedName = data['Country']['LocalizedName'];
+    final weatherCityKey = data['Key'];
 
-  @override
-  Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
-      {required double lat, required double lng}) async {
-    await Future.delayed(Duration(seconds: 1));
     return GeoPositionSearchForWeatherModel(
-        localizedName: 'London', countryName: 'UK', locationCityKey: '2532685');
+      localizedName: weatherLocalizedName,
+      countryName: weatherCountryLocalizedName,
+      locationCityKey: weatherCityKey,
+    );
   }
 
   @override
   Future<WeatherCurrentConditionsModel> getCurrentWeather(
       {required double lat, required double lng}) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 500));
     // final cityId = await fetchLocationCityKey(lat: lat, lng: lng);
     String mockData = '''
 [
@@ -231,9 +281,6 @@ class MockGeoPositionSearchForWeatherRepository
     final data = jsonDecode(mockData)[0];
     final weatherCurrentDescription = data['WeatherText'];
     final weatherCurrentIcon = data['WeatherIcon'];
-    // final weatherCurrentTemperature = Temperature(
-    //   metric: Metric(value: data['Temperature']['Metric']['Value']),
-    // );
     final weatherCurrentTemperature = Temperature(
       metric: Metric(
         value: data['Temperature']['Metric']['Value'].round().toDouble(),
@@ -241,9 +288,8 @@ class MockGeoPositionSearchForWeatherRepository
     );
 
     final String dateTimeString = data['LocalObservationDateTime'];
-    debugPrint(dateTimeString);
     final DateTime weatherCurrentLocalObservationDateTime =
-        DateTime.parse(dateTimeString);
+        DateTime.parse(dateTimeString).toLocal();
 
     return WeatherCurrentConditionsModel(
       weatherCurrentDescription: weatherCurrentDescription,

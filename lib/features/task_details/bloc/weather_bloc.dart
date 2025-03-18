@@ -28,22 +28,29 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     emit(WeatherLoadingState());
 
     try {
-      final localizedNameForWeatherData =
-          await _geoPositionSearchForWeatherRepository.fetchLocalizedName(
+      final citySearch =
+      await _geoPositionSearchForWeatherRepository.getCitySearch(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
-      final countryNameForWeatherData =
-          await _geoPositionSearchForWeatherRepository.fetchCountryName(
-        lat: event.locationDetailsModel.lat ?? 0.0,
-        lng: event.locationDetailsModel.lng ?? 0.0,
-      );
-      final locationCityKeyForWeatherData =
-          await _geoPositionSearchForWeatherRepository.fetchLocationCityKey(
-        lat: event.locationDetailsModel.lat ?? 0.0,
-        lng: event.locationDetailsModel.lng ?? 0.0,
-      );
-      final weatherData =
+      //
+      // final localizedNameForWeatherData =
+      //     await _geoPositionSearchForWeatherRepository.fetchLocalizedName(
+      //   lat: event.locationDetailsModel.lat ?? 0.0,
+      //   lng: event.locationDetailsModel.lng ?? 0.0,
+      // );
+      // final countryNameForWeatherData =
+      //     await _geoPositionSearchForWeatherRepository.fetchCountryName(
+      //   lat: event.locationDetailsModel.lat ?? 0.0,
+      //   lng: event.locationDetailsModel.lng ?? 0.0,
+      // );
+      // final locationCityKeyForWeatherData =
+      //     await _geoPositionSearchForWeatherRepository.fetchLocationCityKey(
+      //   lat: event.locationDetailsModel.lat ?? 0.0,
+      //   lng: event.locationDetailsModel.lng ?? 0.0,
+      // );
+      //
+      final currentWeather =
           await _geoPositionSearchForWeatherRepository.getCurrentWeather(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
@@ -52,24 +59,24 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       // final weatherData = event.weatherCurrentConditionsModel;
 
       debugPrint(
-          'This Is Success: ${localizedNameForWeatherData.localizedName} ');
-      debugPrint('This Is Success: ${countryNameForWeatherData.countryName} ');
+          'This Is Success: ${citySearch.localizedName} ');
+      debugPrint('This Is Success: ${citySearch.countryName} ');
       debugPrint(
-          'This Is Success: ${locationCityKeyForWeatherData.locationCityKey} ');
+          'This Is Success: ${citySearch.locationCityKey} ');
       debugPrint(
-          'This Is Success: ${weatherData.weatherCurrentDescription}, '
-              '${weatherData.weatherCurrentIcon}, '
-              '${weatherData.weatherCurrentTemperature.metric.value} '
-              '${weatherData.weatherCurrentLocalObservationDateTime} ');
+          'This Is Success: ${currentWeather.weatherCurrentDescription}, '
+              '${currentWeather.weatherCurrentIcon}, '
+              '${currentWeather.weatherCurrentTemperature.metric.value} '
+              '${currentWeather.weatherCurrentLocalObservationDateTime} ');
 
       emit(WeatherSelectedState(
-        localizedNameForWeatherData.localizedName,
-        countryNameForWeatherData.countryName,
-        int.tryParse(locationCityKeyForWeatherData.locationCityKey) ?? 0,
-        weatherData.weatherCurrentDescription,
-        weatherData.weatherCurrentIcon,
-        weatherData.weatherCurrentTemperature.metric.value,
-        weatherData.weatherCurrentLocalObservationDateTime,
+        citySearch.localizedName,
+        citySearch.countryName,
+        int.tryParse(citySearch.locationCityKey) ?? 0,
+        currentWeather.weatherCurrentDescription,
+        currentWeather.weatherCurrentIcon,
+        currentWeather.weatherCurrentTemperature.metric.value,
+        currentWeather.weatherCurrentLocalObservationDateTime,
       ));
     } catch (e, s) {
       debugPrint('Error: $e');

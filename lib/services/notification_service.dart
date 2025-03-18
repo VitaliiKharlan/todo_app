@@ -62,7 +62,7 @@ class NotificationService {
     );
   }
 
-  static Future<void> cancelNotification(String taskId) async {
-    await _notificationsPlugin.cancel(int.parse(taskId));
-  }
+  // static Future<void> cancelNotification(String taskId) async {
+  //   await _notificationsPlugin.cancel(int.parse(taskId));
+  // }
 }

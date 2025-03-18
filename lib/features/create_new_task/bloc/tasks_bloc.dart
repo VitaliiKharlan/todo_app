@@ -80,7 +80,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       DeleteTaskEvent event, Emitter<TasksState> emit) async {
     try {
       debugPrint('Delete Tasks Event');
-      await taskRepository.deleteTask(event.taskDelete.taskTitle);
+      await taskRepository.deleteTask(event.taskDelete.taskId);
 
       if (state is TasksLoadedState) {
         final currentTasks = (state as TasksLoadedState).tasks;
