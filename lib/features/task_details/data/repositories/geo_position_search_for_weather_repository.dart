@@ -13,15 +13,6 @@ abstract class GeoPositionSearchForWeatherRepository {
     required double lng,
   });
 
-//   Future<GeoPositionSearchForWeatherModel> fetchLocalizedName(
-//       {required double lat, required double lng});
-//
-//   Future<GeoPositionSearchForWeatherModel> fetchCountryName(
-//       {required double lat, required double lng});
-//
-//   Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey(
-//       {required double lat, required double lng});
-//
   Future<WeatherCurrentConditionsModel> getCurrentWeather({
     required double lat,
     required double lng,
@@ -54,93 +45,26 @@ class ImplGeoPositionSearchForWeatherRepository
       final data = json.decode(response.body);
 
       debugPrint('Localized name extracted: ${data['LocalizedName']}');
+      debugPrint('Country extracted: ${data['Country']['LocalizedName']}');
+      debugPrint('Location city key: ${data['Key']}');
 
-      return GeoPositionSearchForWeatherModel.fromJson(data);
+      final citySearchLocalizedName = data['LocalizedName'];
+      final citySearchCountryLocalizedName = data['Country']['LocalizedName'];
+      final citySearchLocationCityKey = data['Key'];
+
+      final citySearchData = {
+        'LocalizedName': citySearchLocalizedName,
+        'Country': {
+          'LocalizedName': citySearchCountryLocalizedName,
+        },
+        'Key': citySearchLocationCityKey,
+      };
+
+      return GeoPositionSearchForWeatherModel.fromJson(citySearchData);
     } else {
       throw Exception('Failed to load localized name');
     }
   }
-
-  // @override
-  // Future<GeoPositionSearchForWeatherModel> fetchLocalizedName({
-  //   required double lat,
-  //   required double lng,
-  // }) async {
-  //   debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
-  //
-  //   final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
-  //       'apikey=$_apiKey&q=$lat%2C$lng';
-  //
-  //   debugPrint('Sending request to AccuWeather API: $requestUrl');
-  //
-  //   final response = await http.get(Uri.parse(requestUrl));
-  //
-  //   debugPrint('Response status: ${response.statusCode}');
-  //
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //
-  //     debugPrint('Localized name extracted: ${data['LocalizedName']}');
-  //
-  //     return GeoPositionSearchForWeatherModel.fromJson(data);
-  //   } else {
-  //     throw Exception('Failed to load localized name');
-  //   }
-  // }
-  //
-  // @override
-  // Future<GeoPositionSearchForWeatherModel> fetchCountryName({
-  //   required double lat,
-  //   required double lng,
-  // }) async {
-  //   debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
-  //
-  //   final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
-  //       'apikey=$_apiKey&q=$lat%2C$lng';
-  //
-  //   debugPrint('Sending request to AccuWeather API: $requestUrl');
-  //
-  //   final response = await http.get(Uri.parse(requestUrl));
-  //
-  //   debugPrint('Response status: ${response.statusCode}');
-  //
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //
-  //     debugPrint('Country extracted: ${data['Country']['LocalizedName']}');
-  //
-  //     return GeoPositionSearchForWeatherModel.fromJson(data);
-  //   } else {
-  //     throw Exception('Failed to load localized name');
-  //   }
-  // }
-
-  // @override
-  // Future<GeoPositionSearchForWeatherModel> fetchLocationCityKey({
-  //   required double lat,
-  //   required double lng,
-  // }) async {
-  //   debugPrint('fetchLocationCityKey called with lat: $lat, lng: $lng');
-  //
-  //   final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
-  //       'apikey=$_apiKey&q=$lat%2C$lng';
-  //
-  //   debugPrint('Sending request to AccuWeather API: $requestUrl');
-  //
-  //   final response = await http.get(Uri.parse(requestUrl));
-  //
-  //   debugPrint('Response status: ${response.statusCode}');
-  //
-  //   if (response.statusCode == 200) {
-  //     final data = json.decode(response.body);
-  //
-  //     debugPrint('Location city key: ${data['Key']}');
-  //
-  //     return GeoPositionSearchForWeatherModel.fromJson(data);
-  //   } else {
-  //     throw Exception('Failed to load location city key');
-  //   }
-  // }
 
   @override
   Future<WeatherCurrentConditionsModel> getCurrentWeather({
@@ -165,7 +89,8 @@ class ImplGeoPositionSearchForWeatherRepository
 
       debugPrint('Current weather: ${data['WeatherText']}, '
           '${data['WeatherIcon']}, '
-          '${data['Temperature']['Metric']['Value']}');
+          '${data['Temperature']['Metric']['Value']}, '
+          '${data['LocalObservationDateTime']}');
 
       final weatherCurrentDescription = data['WeatherText'];
       final weatherCurrentIcon = data['WeatherIcon'];
@@ -173,6 +98,10 @@ class ImplGeoPositionSearchForWeatherRepository
         metric: Metric(
             value: data['Temperature']['Metric']['Value'].round().toDouble()),
       );
+      final String dateTimeString = data['LocalObservationDateTime'];
+      final DateTime weatherCurrentLocalObservationDateTime =
+          DateTime.parse(dateTimeString).toLocal();
+
       final weatherData = {
         'WeatherText': weatherCurrentDescription,
         'WeatherIcon': weatherCurrentIcon,
@@ -180,7 +109,8 @@ class ImplGeoPositionSearchForWeatherRepository
           'Metric': {
             'Value': weatherCurrentTemperature.metric.value,
           }
-        }
+        },
+        'LocalObservationDateTime': weatherCurrentLocalObservationDateTime,
       };
 
       return WeatherCurrentConditionsModel.fromJson(weatherData);
