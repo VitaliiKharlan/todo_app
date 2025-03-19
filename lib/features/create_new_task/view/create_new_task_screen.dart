@@ -86,24 +86,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       );
       return;
     }
-    // if (taskType == null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a task type')),
-    //   );
-    //   return;
-    // }
-    // if (taskDeadline == null) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a task deadline')),
-    //   );
-    //   return;
-    // }
-    // if (taskDescription.isEmpty) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('Please enter a task description')),
-    //   );
-    //   return;
-    // }
 
     if (widget.editTask == null) {
       // Create New Task
@@ -184,7 +166,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   Future<void> _selectRemindDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      // initialDate: _selectedRemindTime ?? DateTime.now(),
       initialDate: _selectedRemindTime?.isNotEmpty ?? false
           ? _selectedRemindTime!.first
           : DateTime.now(),
@@ -400,6 +381,50 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   ),
                   SizedBox(height: 32),
                   Text(
+                    'Priority',
+                    style: AppTextStyle.appBar.copyWith(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.priority_high),
+                      label: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(width: 8),
+                          Text(
+                            'Pick a priority',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Colors.white),
+                        foregroundColor: WidgetStateProperty.all(
+                          Colors.black.withAlpha(60),
+                        ),
+                        side: WidgetStateProperty.all(
+                          BorderSide(
+                            color: Colors.grey.withAlpha(80),
+                            width: 2,
+                          ),
+                        ),
+                        overlayColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        shadowColor:
+                            WidgetStateProperty.all<Color>(Colors.white),
+                        elevation: WidgetStateProperty.all<double>(0.1),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
                     'Date & Time',
                     style: AppTextStyle.appBar.copyWith(
                         fontSize: 22,
@@ -525,8 +550,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ),
                   ),
-                  //
-                  //
                   SizedBox(height: 20),
                   Text(
                     'Pick a place',
@@ -575,8 +598,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ),
                   ),
-                  //
-                  //
                   SizedBox(height: 20),
                   Text(
                     'Remind me',
@@ -663,8 +684,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                     ],
                   ),
-                  //
-                  //
                   SizedBox(height: 20),
                   SizedBox(
                     width: double.infinity,
