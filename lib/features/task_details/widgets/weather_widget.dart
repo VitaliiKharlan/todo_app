@@ -7,7 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/data/models/weather_current_conditions.dart';
-import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
+import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 import 'package:todo_app/main_prod.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
@@ -27,7 +27,7 @@ class WeatherWidget extends StatefulWidget {
 
 class _WeatherWidgetState extends State<WeatherWidget> {
   final geoPositionSearchForWeatherRepository =
-      getIt<GeoPositionSearchForWeatherRepository>();
+      getIt<WeatherRepository>();
 
   Widget _getWeatherIcon(int weatherIcon) {
     const iconMap = {
@@ -53,7 +53,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     return BlocProvider(
       create: (context) {
         final weatherBloc =
-            WeatherBloc(getIt<GeoPositionSearchForWeatherRepository>());
+            WeatherBloc(getIt<WeatherRepository>());
 
         final weatherData = WeatherCurrentConditionsModel(
           weatherCurrentDescription: 'You are wrong',

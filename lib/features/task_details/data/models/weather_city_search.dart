@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'geo_position_search_for_weather.g.dart';
+part 'weather_city_search.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class GeoPositionSearchForWeatherModel {
-  GeoPositionSearchForWeatherModel({
+class WeatherCitySearchModel {
+  WeatherCitySearchModel({
     required this.localizedName,
     required this.countryName,
     required this.locationCityKey,
@@ -23,12 +23,12 @@ class GeoPositionSearchForWeatherModel {
     return json?['LocalizedName'] ?? 'Unknown';
   }
 
-  factory GeoPositionSearchForWeatherModel.fromJson(Map<String, dynamic> json) {
-    return _$GeoPositionSearchForWeatherModelFromJson(json);
+  factory WeatherCitySearchModel.fromJson(Map<String, dynamic> json) {
+    return _$WeatherCitySearchModelFromJson(json);
   }
 
   Map<String, dynamic> toJson() =>
-      _$GeoPositionSearchForWeatherModelToJson(this);
+      _$WeatherCitySearchModelToJson(this);
 
   @override
   String toString() {

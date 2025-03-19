@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/create_new_task/data/data.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
+import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 
 part 'location_search_event.dart';
 

@@ -12,7 +12,7 @@ part 'weather_event.dart';
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
-  final GeoPositionSearchForWeatherRepository
+  final WeatherRepository
       _geoPositionSearchForWeatherRepository;
 
   WeatherBloc(
@@ -31,6 +31,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           await _geoPositionSearchForWeatherRepository.getCitySearch(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
+
       );
 
       debugPrint('This Is Success: ${citySearch.localizedName}, '
@@ -41,6 +42,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
           await _geoPositionSearchForWeatherRepository.getCurrentConditions(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
+            locationCityKey: int.tryParse(citySearch.locationCityKey) ?? 0,
       );
 
       debugPrint(

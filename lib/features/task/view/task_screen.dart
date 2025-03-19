@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
-import 'package:todo_app/features/task_details/data/repositories/geo_position_search_for_weather_repository.dart';
+import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
 

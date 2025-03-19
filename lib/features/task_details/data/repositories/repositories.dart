@@ -1,1 +1,2 @@
-export 'geo_position_search_for_weather_repository.dart';
+export 'weather_repository.dart';
+
