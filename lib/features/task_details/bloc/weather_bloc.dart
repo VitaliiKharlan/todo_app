@@ -33,29 +33,12 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
 
-      debugPrint('This Is Success: ${citySearch.localizedName} ');
-      debugPrint('This Is Success: ${citySearch.countryName} ');
-      debugPrint('This Is Success: ${citySearch.locationCityKey} ');
+      debugPrint('This Is Success: ${citySearch.localizedName}, '
+          '${citySearch.countryName}, '
+          '${citySearch.locationCityKey} ');
 
-      //
-      // final localizedNameForWeatherData =
-      //     await _geoPositionSearchForWeatherRepository.fetchLocalizedName(
-      //   lat: event.locationDetailsModel.lat ?? 0.0,
-      //   lng: event.locationDetailsModel.lng ?? 0.0,
-      // );
-      // final countryNameForWeatherData =
-      //     await _geoPositionSearchForWeatherRepository.fetchCountryName(
-      //   lat: event.locationDetailsModel.lat ?? 0.0,
-      //   lng: event.locationDetailsModel.lng ?? 0.0,
-      // );
-      // final locationCityKeyForWeatherData =
-      //     await _geoPositionSearchForWeatherRepository.fetchLocationCityKey(
-      //   lat: event.locationDetailsModel.lat ?? 0.0,
-      //   lng: event.locationDetailsModel.lng ?? 0.0,
-      // );
-      //
       final currentWeather =
-          await _geoPositionSearchForWeatherRepository.getCurrentWeather(
+          await _geoPositionSearchForWeatherRepository.getCurrentConditions(
         lat: event.locationDetailsModel.lat ?? 0.0,
         lng: event.locationDetailsModel.lng ?? 0.0,
       );
@@ -73,7 +56,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         currentWeather.weatherCurrentDescription,
         currentWeather.weatherCurrentIcon,
         currentWeather.weatherCurrentTemperature.metric.value,
-        currentWeather.weatherCurrentLocalObservationDateTime,
+        currentWeather.weatherCurrentLocalObservationDateTime.toLocal(),
       ));
     } catch (e, s) {
       debugPrint('Error: $e');

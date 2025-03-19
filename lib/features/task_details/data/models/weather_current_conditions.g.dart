@@ -7,8 +7,8 @@ part of 'weather_current_conditions.dart';
 // **************************************************************************
 
 WeatherCurrentConditionsModel _$WeatherCurrentConditionsModelFromJson(
-        Map<String, dynamic> json) =>
-    WeatherCurrentConditionsModel(
+        Map<String, dynamic> json) {
+  return WeatherCurrentConditionsModel(
       weatherCurrentDescription: json['WeatherText'] as String,
       weatherCurrentIcon: (json['WeatherIcon'] as num).toInt(),
       weatherCurrentTemperature:
@@ -16,6 +16,7 @@ WeatherCurrentConditionsModel _$WeatherCurrentConditionsModelFromJson(
       weatherCurrentLocalObservationDateTime: const DateTimeConverter()
           .fromJson(json['LocalObservationDateTime'] as String),
     );
+}
 
 Map<String, dynamic> _$WeatherCurrentConditionsModelToJson(
         WeatherCurrentConditionsModel instance) =>

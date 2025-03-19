@@ -5,15 +5,13 @@ import 'package:http/http.dart' as http;
 
 import 'package:todo_app/features/task_details/data/data.dart';
 
-// https://api.accuweather.com/currentconditions/v1/{locationKey}?apikey={yourApiKey}
-
 abstract class GeoPositionSearchForWeatherRepository {
   Future<GeoPositionSearchForWeatherModel> getCitySearch({
     required double lat,
     required double lng,
   });
 
-  Future<WeatherCurrentConditionsModel> getCurrentWeather({
+  Future<WeatherCurrentConditionsModel> getCurrentConditions({
     required double lat,
     required double lng,
   });
@@ -22,8 +20,11 @@ abstract class GeoPositionSearchForWeatherRepository {
 class ImplGeoPositionSearchForWeatherRepository
     implements GeoPositionSearchForWeatherRepository {
   final String _apiKey = 'IudhJx5rUiBJAECUtkWBxs6ep8FW1uU1';
-  final String _baseUrlGeoPositionSearchForWeather =
+  final String _baseUrlCitySearch =
       'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search';
+  final String _baseUrlCurrentConditions =
+      'http://dataservice.accuweather.com/currentconditions/v1/';
+  final String _locationCityKey = '324505';
 
   @override
   Future<GeoPositionSearchForWeatherModel> getCitySearch({
@@ -32,7 +33,7 @@ class ImplGeoPositionSearchForWeatherRepository
   }) async {
     debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
 
-    final String requestUrl = '$_baseUrlGeoPositionSearchForWeather?'
+    final String requestUrl = '$_baseUrlCitySearch?'
         'apikey=$_apiKey&q=$lat%2C$lng';
 
     debugPrint('Sending request to AccuWeather API: $requestUrl');
@@ -67,16 +68,14 @@ class ImplGeoPositionSearchForWeatherRepository
   }
 
   @override
-  Future<WeatherCurrentConditionsModel> getCurrentWeather({
+  Future<WeatherCurrentConditionsModel> getCurrentConditions({
     required double lat,
     required double lng,
   }) async {
     debugPrint('getCurrentWeather called with lat: $lat, lng: $lng');
 
-    final String requestUrl = 'https://dataservice.'
-        'accuweather.com/currentconditions/v1/324505?'
-        'apikey=IudhJx5rUiBJAECUtkWBxs6ep8FW1uU1&'
-        'details=true';
+    final String requestUrl = '$_baseUrlCurrentConditions'
+        '$_locationCityKey?apikey=$_apiKey';
 
     debugPrint('Sending request to get current weather: $requestUrl');
 
@@ -96,11 +95,11 @@ class ImplGeoPositionSearchForWeatherRepository
       final weatherCurrentIcon = data['WeatherIcon'];
       final weatherCurrentTemperature = Temperature(
         metric: Metric(
-            value: data['Temperature']['Metric']['Value'].round().toDouble()),
+          value: data['Temperature']['Metric']['Value'].round().toDouble(),
+        ),
       );
-      final String dateTimeString = data['LocalObservationDateTime'];
-      final DateTime weatherCurrentLocalObservationDateTime =
-          DateTime.parse(dateTimeString).toLocal();
+      final String weatherCurrentLocalObservationDateTime =
+          data['LocalObservationDateTime'];
 
       final weatherData = {
         'WeatherText': weatherCurrentDescription,
@@ -127,36 +126,70 @@ class MockGeoPositionSearchForWeatherRepository
       {required double lat, required double lng}) async {
     await Future.delayed(Duration(milliseconds: 500));
     String mockData = '''
-    [
-      {
-        "Version": 1,
-        "Key": "2601546",
-        "Type": "City",
-        "Rank": 45,
-        "LocalizedName": "Mitte",
-        "EnglishName": "Mitte",
-        "PrimaryPostalCode": "10178",
-        "Region": {
-          "ID": "EUR",
-          "LocalizedName": "Europe",
-          "EnglishName": "Europe"
+[
+  {
+    "Version": 1,
+    "Key": "324505",
+    "Type": "City",
+    "Rank": 20,
+    "LocalizedName": "Kyiv",
+    "EnglishName": "Kyiv",
+    "PrimaryPostalCode": "",
+    "Region": {
+      "ID": "EUR",
+      "LocalizedName": "Europe",
+      "EnglishName": "Europe"
+    },
+    "Country": {
+      "ID": "UA",
+      "LocalizedName": "Ukraine",
+      "EnglishName": "Ukraine"
+    },
+    "AdministrativeArea": {
+      "ID": "30",
+      "LocalizedName": "Kyiv",
+      "EnglishName": "Kyiv",
+      "Level": 1,
+      "LocalizedType": "City",
+      "EnglishType": "City",
+      "CountryID": "UA"
+    },
+    "TimeZone": {
+      "Code": "EET",
+      "Name": "Europe/Kiev",
+      "GmtOffset": 2,
+      "IsDaylightSaving": false,
+      "NextOffsetChange": "2025-03-30T01:00:00Z"
+    },
+    "GeoPosition": {
+      "Latitude": 50.45,
+      "Longitude": 30.524,
+      "Elevation": {
+        "Metric": {
+          "Value": 136,
+          "Unit": "m",
+          "UnitType": 5
         },
-        "Country": {
-          "ID": "DE",
-          "LocalizedName": "Germany",
-          "EnglishName": "Germany"
-        },
-        "AdministrativeArea": {
-          "ID": "BE",
-          "LocalizedName": "Berlin",
-          "EnglishName": "Berlin",
-          "Level": 1,
-          "LocalizedType": "State",
-          "EnglishType": "State",
-          "CountryID": "DE"
-        }        
+        "Imperial": {
+          "Value": 446,
+          "Unit": "ft",
+          "UnitType": 0
+        }
       }
+    },
+    "IsAlias": false,
+    "SupplementalAdminAreas": [],
+    "DataSets": [
+      "AirQualityCurrentConditions",
+      "AirQualityForecasts",
+      "Alerts",
+      "DailyPollenForecast",
+      "ForecastConfidence",
+      "FutureRadar",
+      "MinuteCast"
     ]
+  }
+]
 ''';
 
     final data = jsonDecode(mockData)[0];
@@ -172,7 +205,7 @@ class MockGeoPositionSearchForWeatherRepository
   }
 
   @override
-  Future<WeatherCurrentConditionsModel> getCurrentWeather(
+  Future<WeatherCurrentConditionsModel> getCurrentConditions(
       {required double lat, required double lng}) async {
     await Future.delayed(Duration(milliseconds: 500));
     // final cityId = await fetchLocationCityKey(lat: lat, lng: lng);
