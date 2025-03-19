@@ -34,8 +34,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
 
       );
 
-      debugPrint('This Is Success: ${citySearch.localizedName}, '
-          '${citySearch.countryName}, '
+      debugPrint('This Is Success: ${citySearch.localizedName}; '
+          '${citySearch.countryName}; '
           '${citySearch.locationCityKey} ');
 
       final currentWeather =
@@ -46,9 +46,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       );
 
       debugPrint(
-          'This Is Success: ${currentWeather.weatherCurrentDescription}, '
-          '${currentWeather.weatherCurrentIcon}, '
-          '${currentWeather.weatherCurrentTemperature.metric.value} '
+          'This Is Success: ${currentWeather.weatherCurrentDescription}; '
+          '${currentWeather.weatherCurrentIcon}; '
+          '${currentWeather.weatherCurrentTemperature.metric.value}; '
           '${currentWeather.weatherCurrentLocalObservationDateTime} ');
 
       emit(WeatherSelectedState(

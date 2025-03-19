@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:todo_app/features/task_details/data/models/weather_city_search.dart';
+import 'package:todo_app/features/task_details/data/models/weather_current_conditions.dart';
 
-import 'package:todo_app/features/task_details/data/data.dart';
+import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
+
+
+
+
 
 
 

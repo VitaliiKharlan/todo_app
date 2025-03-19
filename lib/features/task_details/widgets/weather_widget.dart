@@ -104,14 +104,16 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                       vertical: 12,
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Transform.scale(
-                          scale: 1.5,
+                          scale: 1.25,
                           child: _getWeatherIcon(state.weatherCurrentIcon),
                         ),
+                        SizedBox(width: 12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
                               '${state.localizedName}, ${state.countryName}',
@@ -141,6 +143,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             ),
                           ],
                         ),
+                        SizedBox(width: 60),
                         Text(
                           '${state.weatherCurrentTemperature.toInt().toString()}\u00B0',
                           style: TextStyle(

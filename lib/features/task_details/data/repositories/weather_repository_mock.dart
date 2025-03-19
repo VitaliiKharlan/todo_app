@@ -101,13 +101,13 @@ class MockWeatherRepository implements WeatherRepository {
     "LocalObservationDateTime": "2025-03-16T22:46:00+02:00",
     "EpochTime": 1742157960,
     "WeatherText": "Clear",
-    "WeatherIcon": 10,
+    "WeatherIcon": 1,
     "HasPrecipitation": false,
     "PrecipitationType": null,
     "IsDayTime": false,
     "Temperature": {
       "Metric": {
-        "Value": 5.2,
+        "Value": 25.2,
         "Unit": "C",
         "UnitType": 17
       },
