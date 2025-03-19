@@ -97,8 +97,6 @@ class MockWeatherRepository implements WeatherRepository {
 
   @override
   Future<WeatherCurrentConditionsModel> getCurrentConditions({
-    required double lat,
-    required double lng,
     required int locationCityKey,
   }) async {
     await Future.delayed(Duration(milliseconds: 500));

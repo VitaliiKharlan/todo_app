@@ -18,7 +18,6 @@ class LocationSearchBloc
     this._placeDetailsRepository,
   ) : super(LocationSearchInitialState()) {
     on<LocationSearchTextChangeEvent>(_onTextChange);
-    on<LocationSelectEvent>(_onLocationSelect);
   }
 
   Future<void> _onTextChange(LocationSearchTextChangeEvent event,
@@ -42,10 +41,5 @@ class LocationSearchBloc
 
       emit(LocationSearchFailureState(e.toString()));
     }
-  }
-
-  Future<void> _onLocationSelect(
-      LocationSelectEvent event, Emitter<LocationSearchState> emit) async {
-    debugPrint('Location Select Event');
   }
 }

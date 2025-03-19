@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
-import 'package:todo_app/features/task_details/data/models/weather_current_conditions.dart';
 import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 import 'package:todo_app/main_prod.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
@@ -26,8 +25,6 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
-  final geoPositionSearchForWeatherRepository = getIt<WeatherRepository>();
-
   Widget _getWeatherIcon(int weatherIcon) {
     const iconMap = {
       1: AppImages.smallIconSun,
@@ -35,8 +32,12 @@ class _WeatherWidgetState extends State<WeatherWidget> {
       3: AppImages.smallIconCloud,
       4: AppImages.smallIconRain,
       5: AppImages.smallIconSnow,
+      6: AppImages.smallIconSun,
+      7: AppImages.smallIconPartlyCloudy,
+      8: AppImages.smallIconCloud,
+      9: AppImages.smallIconRain,
+      10: AppImages.smallIconSnow,
     };
-
     if (iconMap.containsKey(weatherIcon)) {
       return Image.asset(iconMap[weatherIcon]!);
     } else {
@@ -49,23 +50,13 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.task.taskLocation == null) {
+      return const SizedBox.shrink();
+    }
     return BlocProvider(
       create: (context) {
         final weatherBloc = WeatherBloc(getIt<WeatherRepository>());
-
-        final weatherData = WeatherCurrentConditionsModel(
-          weatherCurrentDescription: 'You are wrong',
-          weatherCurrentIcon: 10,
-          weatherCurrentTemperature: Temperature(
-            metric: Metric(value: 1.5),
-          ),
-          weatherCurrentLocalObservationDateTime: DateTime(2025, 3, 17, 22, 00),
-        );
-
-        if (widget.task.taskLocation != null) {
-          weatherBloc
-              .add(WeatherSelectEvent(widget.task.taskLocation!, weatherData));
-        }
+        weatherBloc.add(WeatherSelectEvent(widget.task.taskLocation!));
         return weatherBloc;
       },
       child: BlocBuilder<WeatherBloc, WeatherState>(
@@ -141,7 +132,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                         ),
                         SizedBox(width: 60),
                         Text(
-                          '${state.weatherCurrentTemperature.toInt().toString()}\u00B0',
+                          '${state.weatherCurrentTemperature.toStringAsFixed(0)}\u00B0',
                           style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,

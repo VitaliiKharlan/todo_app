@@ -36,9 +36,9 @@ class ImplWeatherRepository implements WeatherRepository {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
-      debugPrint('Localized name extracted: ${data['LocalizedName']}');
-      debugPrint('Country extracted: ${data['Country']['LocalizedName']}');
-      debugPrint('Location city key: ${data['Key']}');
+      debugPrint('City search: ${data['LocalizedName']}; '
+          '${data['Country']['LocalizedName']}; '
+          '${data['Key']}');
 
       final citySearchLocalizedName = data['LocalizedName'];
       final citySearchCountryLocalizedName = data['Country']['LocalizedName'];
@@ -60,8 +60,6 @@ class ImplWeatherRepository implements WeatherRepository {
 
   @override
   Future<WeatherCurrentConditionsModel> getCurrentConditions({
-    required double lat,
-    required double lng,
     required int locationCityKey,
   }) async {
     debugPrint(
@@ -79,9 +77,10 @@ class ImplWeatherRepository implements WeatherRepository {
     if (response.statusCode == 200) {
       final data = json.decode(response.body)[0];
 
-      debugPrint('City search: ${data['LocalizedName']}; '
-          '${data['Country']['LocalizedName']}; '
-          '${data['Key']}');
+      debugPrint('Current weather: ${data['WeatherText']}, '
+          '${data['WeatherIcon']}, '
+          '${data['Temperature']['Metric']['Value']}, '
+          '${data['LocalObservationDateTime']}');
 
       final weatherCurrentDescription = data['WeatherText'];
       final weatherCurrentIcon = data['WeatherIcon'];
