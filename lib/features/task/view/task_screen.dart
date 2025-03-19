@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:ui';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'dart:ui';
+
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
+export 'package:todo_app/main_prod.dart' show useMockData;
 
 @RoutePage()
 class TaskScreen extends StatelessWidget {
@@ -59,8 +61,8 @@ class TaskScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is TasksLoadedState) {
                   final tasks = state.tasks;
-                  tasks.sort(
-                      (a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
+                  tasks.sort((a, b) =>
+                      b.taskCreatedAt.compareTo(a.taskCreatedAt));
                   if (tasks.isEmpty) {
                     return SliverToBoxAdapter(
                       child: Center(
@@ -89,9 +91,9 @@ class TaskScreen extends StatelessWidget {
                                 children: [
                                   SlidableAction(
                                     onPressed: (_) {
-                                      context.pushRoute(CreateNewTaskRoute(
-                                          editTask: editTask));
-
+                                      context.pushRoute(
+                                          CreateNewTaskRoute(
+                                              editTask: editTask));
                                     },
                                     backgroundColor: Colors.green,
                                     foregroundColor: Colors.white,
@@ -100,13 +102,13 @@ class TaskScreen extends StatelessWidget {
                                     spacing: 8,
                                     padding: EdgeInsets.only(
                                         left: 4, top: 12, right: 4),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius:
+                                        BorderRadius.circular(12),
                                   ),
                                   SlidableAction(
                                     onPressed: (_) {
-                                      context
-                                          .read<TasksBloc>()
-                                          .add(DeleteTaskEvent(deleteTask));
+                                      context.read<TasksBloc>().add(
+                                          DeleteTaskEvent(deleteTask));
                                     },
                                     backgroundColor: Colors.red,
                                     foregroundColor: Colors.white,
@@ -115,13 +117,13 @@ class TaskScreen extends StatelessWidget {
                                     spacing: 8,
                                     padding: EdgeInsets.only(
                                         left: 4, top: 12, right: 4),
-                                    borderRadius: BorderRadius.circular(12),
+                                    borderRadius:
+                                        BorderRadius.circular(12),
                                   ),
                                 ],
                               ),
                               child: TaskListCard(
                                 task: tasks[index],
-
                               ),
                             ),
                           ),

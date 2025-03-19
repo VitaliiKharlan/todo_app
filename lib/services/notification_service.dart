@@ -33,9 +33,8 @@ class NotificationService {
 
     const platformDetails = NotificationDetails(android: androidDetails);
 
-    debugPrint(
-        'One hour notice before completion '
-            '"$title" at $reminderTime');
+    debugPrint('One hour notice before completion '
+        '"$title" at $reminderTime');
 
     await _notificationsPlugin.zonedSchedule(
       id.hashCode,
@@ -48,9 +47,8 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
     );
 
-    debugPrint(
-        'Notification after time ends '
-            '"$title" at $deadlineTZ');
+    debugPrint('Notification after time ends '
+        '"$title" at $deadlineTZ');
 
     await _notificationsPlugin.zonedSchedule(
       id.hashCode + 1,

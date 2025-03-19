@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
-
 import 'package:todo_app/todo_app.dart';
+
+void appRunner() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  tz.initializeTimeZones();
+  await initNotifications();
+
+  await _showNotification();
+
+  runApp(const TodoApp());
+}
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -38,19 +48,4 @@ Future<void> _showNotification() async {
     'This notification appeared when the application todo_app was launched.',
     platformDetails,
   );
-}
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  tz.initializeTimeZones();
-  await initNotifications();
-
-  await _showNotification();
-
-  // final repository = GeoPositionSearchForWeatherRepository();
-  // final geoData = await repository.fetchLocalizedName();
-  // print(geoData.localizedName);
-
-  runApp(const TodoApp());
 }

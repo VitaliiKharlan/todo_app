@@ -1,10 +1,14 @@
+import 'package:flutter/material.dart';
+
 import 'package:sembast/sembast_io.dart';
 import 'package:path_provider/path_provider.dart';
 
 // create class TaskDatabase. it`s a Singleton
 class TaskDatabase {
   static final TaskDatabase _instance = TaskDatabase._internal();
+
   TaskDatabase._internal();
+
   factory TaskDatabase() => _instance;
 
   Database? _database;
@@ -21,10 +25,15 @@ class TaskDatabase {
   }
 
   Future<String> insertTask(Map<String, dynamic> task) async {
-    return await _taskStore.add(await database, task);
+    final db = await database;
+    final String id = task['taskId'];
+    await _taskStore.record(id).put(db, task);
+    debugPrint('Insert task with id $id');
+    return id;
   }
 
-  Future<List<RecordSnapshot<String, Map<String, dynamic>>>> getAllTasks() async {
+  Future<List<RecordSnapshot<String, Map<String, dynamic>>>>
+      getAllTasks() async {
     return await _taskStore.find(await database);
   }
 
@@ -36,7 +45,3 @@ class TaskDatabase {
     await _taskStore.record(id).delete(await database);
   }
 }
-
-
-
-

@@ -22,7 +22,10 @@ class LocationDetailsModel {
 
   @override
   String toString() {
-    return '$description, \nlat: $lat, lng: $lng';
+    String formattedLat = lat != null ? lat!.toStringAsFixed(5) : 'null';
+    String formattedLng = lng != null ? lng!.toStringAsFixed(5) : 'null';
+
+    return '$description, \nlat: $formattedLat, lng: $formattedLng';
 
     //
     // stupid output of data

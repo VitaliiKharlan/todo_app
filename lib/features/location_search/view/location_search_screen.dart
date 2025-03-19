@@ -4,13 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-import 'package:todo_app/features/create_new_task/data/repositories/geo_position_search_for_weather_repository.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/place_details_repository.dart';
 import 'package:todo_app/features/location_search/bloc/location_search_bloc.dart';
 
 @RoutePage()
 class LocationSearchScreen extends StatefulWidget {
-  LocationSearchScreen({
+  const LocationSearchScreen({
     super.key,
   });
 
@@ -21,15 +20,12 @@ class LocationSearchScreen extends StatefulWidget {
 class _LocationSearchScreenState extends State<LocationSearchScreen> {
   final placeDetailsRepository = PlaceDetailsRepository();
   TextEditingController controllerLocationSearch = TextEditingController();
-  final geoPositionSearchForWeatherRepository =
-      GeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LocationSearchBloc>(
       create: (context) => LocationSearchBloc(
         placeDetailsRepository,
-        geoPositionSearchForWeatherRepository,
       ),
       child: Builder(builder: (context) {
         return Scaffold(
