@@ -7,7 +7,6 @@ import 'package:todo_app/features/create_new_task/data/models/location_details.d
 import 'package:todo_app/features/create_new_task/data/repositories/place_details_repository.dart';
 import 'package:todo_app/features/location_search/bloc/location_search_bloc.dart';
 
-
 @RoutePage()
 class LocationSearchScreen extends StatefulWidget {
   const LocationSearchScreen({
@@ -21,15 +20,12 @@ class LocationSearchScreen extends StatefulWidget {
 class _LocationSearchScreenState extends State<LocationSearchScreen> {
   final placeDetailsRepository = PlaceDetailsRepository();
   TextEditingController controllerLocationSearch = TextEditingController();
-  // final geoPositionSearchForWeatherRepository =
-  //     ImplGeoPositionSearchForWeatherRepository();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LocationSearchBloc>(
       create: (context) => LocationSearchBloc(
         placeDetailsRepository,
-        // geoPositionSearchForWeatherRepository,
       ),
       child: Builder(builder: (context) {
         return Scaffold(

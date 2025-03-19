@@ -26,8 +26,7 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
-  final geoPositionSearchForWeatherRepository =
-      getIt<WeatherRepository>();
+  final geoPositionSearchForWeatherRepository = getIt<WeatherRepository>();
 
   Widget _getWeatherIcon(int weatherIcon) {
     const iconMap = {
@@ -52,8 +51,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        final weatherBloc =
-            WeatherBloc(getIt<WeatherRepository>());
+        final weatherBloc = WeatherBloc(getIt<WeatherRepository>());
 
         final weatherData = WeatherCurrentConditionsModel(
           weatherCurrentDescription: 'You are wrong',
@@ -134,8 +132,6 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             Text(
                               DateFormat("HH:mm").format(
                                   state.weatherLocalObservationDateTime),
-                              // "08:16",
-                              // state.weatherLocalObservationDateTime.toString(),
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[500],

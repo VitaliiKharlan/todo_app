@@ -107,14 +107,14 @@ class _TaskListCardState extends State<TaskListCard> {
                     ),
                   ),
                   SizedBox(
-                    // width: 48,
                     width: 72,
                     child: Center(
                       child: Column(
                         children: [
                           SizedBox(height: 4),
                           Text(
-                            DateFormat('d MMM').format(widget.task.taskCreatedAt),
+                            DateFormat('d MMM')
+                                .format(widget.task.taskCreatedAt),
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
@@ -123,7 +123,8 @@ class _TaskListCardState extends State<TaskListCard> {
                           ),
                           SizedBox(height: 4),
                           Text(
-                            DateFormat('HH:mm').format(widget.task.taskCreatedAt),
+                            DateFormat('HH:mm')
+                                .format(widget.task.taskCreatedAt),
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontSize: 10,
                               fontWeight: FontWeight.w500,

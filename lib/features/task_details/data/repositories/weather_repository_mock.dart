@@ -6,8 +6,10 @@ import 'package:todo_app/features/task_details/data/data.dart';
 
 class MockWeatherRepository implements WeatherRepository {
   @override
-  Future<WeatherCitySearchModel> getCitySearch(
-      {required double lat, required double lng}) async {
+  Future<WeatherCitySearchModel> getCitySearch({
+    required double lat,
+    required double lng,
+  }) async {
     await Future.delayed(Duration(milliseconds: 500));
     String mockData = '''
 [
@@ -77,6 +79,11 @@ class MockWeatherRepository implements WeatherRepository {
 ''';
 
     final data = jsonDecode(mockData)[0];
+
+    debugPrint('City search: ${data['LocalizedName']}; '
+        '${data['Country']['LocalizedName']}; '
+        '${data['Key']}');
+
     final weatherLocalizedName = data['LocalizedName'];
     final weatherCountryLocalizedName = data['Country']['LocalizedName'];
     final weatherCityKey = data['Key'];
@@ -89,12 +96,13 @@ class MockWeatherRepository implements WeatherRepository {
   }
 
   @override
-  Future<WeatherCurrentConditionsModel> getCurrentConditions(
-      {required double lat,
-      required double lng,
-      required int locationCityKey}) async {
+  Future<WeatherCurrentConditionsModel> getCurrentConditions({
+    required double lat,
+    required double lng,
+    required int locationCityKey,
+  }) async {
     await Future.delayed(Duration(milliseconds: 500));
-    // final cityId = await fetchLocationCityKey(lat: lat, lng: lng);
+
     String mockData = '''
 [
   {
@@ -123,11 +131,13 @@ class MockWeatherRepository implements WeatherRepository {
 ]
 ''';
 
-    ///Make forecats request
-    ///parse
-    ///return model
-
     final data = jsonDecode(mockData)[0];
+
+    debugPrint('Current weather: ${data['WeatherText']}, '
+        '${data['WeatherIcon']}, '
+        '${data['Temperature']['Metric']['Value']}, '
+        '${data['LocalObservationDateTime']}');
+
     final weatherCurrentDescription = data['WeatherText'];
     final weatherCurrentIcon = data['WeatherIcon'];
     final weatherCurrentTemperature = Temperature(

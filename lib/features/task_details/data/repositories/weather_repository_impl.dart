@@ -7,33 +7,20 @@ import 'package:todo_app/features/task_details/data/models/weather_current_condi
 
 import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 
-
-
-
-
-
-
-
-
-
-
-
-
-class ImplWeatherRepository
-    implements WeatherRepository {
+class ImplWeatherRepository implements WeatherRepository {
   // final String _apiKey = 'IudhJx5rUiBJAECUtkWBxs6ep8FW1uU1'; // todo_app
   final String _apiKey = 'zryPxM5Pb0G7AJgltCiSH0rCqA8whNiq'; // todo_app_2
   final String _baseUrlCitySearch =
       'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search';
   final String _baseUrlCurrentConditions =
       'http://dataservice.accuweather.com/currentconditions/v1/';
+
   // final String _locationCityKey = '324505';
 
   @override
   Future<WeatherCitySearchModel> getCitySearch({
     required double lat,
     required double lng,
-
   }) async {
     debugPrint('fetchLocalizedName called with lat: $lat, lng: $lng');
 
@@ -77,7 +64,8 @@ class ImplWeatherRepository
     required double lng,
     required int locationCityKey,
   }) async {
-    debugPrint('getCurrentWeather called with locationCityKey: $locationCityKey');
+    debugPrint(
+        'getCurrentWeather called with locationCityKey: $locationCityKey');
 
     final String requestUrl = '$_baseUrlCurrentConditions'
         '$locationCityKey?apikey=$_apiKey';
@@ -91,10 +79,9 @@ class ImplWeatherRepository
     if (response.statusCode == 200) {
       final data = json.decode(response.body)[0];
 
-      debugPrint('Current weather: ${data['WeatherText']}, '
-          '${data['WeatherIcon']}, '
-          '${data['Temperature']['Metric']['Value']}, '
-          '${data['LocalObservationDateTime']}');
+      debugPrint('City search: ${data['LocalizedName']}; '
+          '${data['Country']['LocalizedName']}; '
+          '${data['Key']}');
 
       final weatherCurrentDescription = data['WeatherText'];
       final weatherCurrentIcon = data['WeatherIcon'];
@@ -104,7 +91,7 @@ class ImplWeatherRepository
         ),
       );
       final String weatherCurrentLocalObservationDateTime =
-      data['LocalObservationDateTime'];
+          data['LocalObservationDateTime'];
 
       final weatherData = {
         'WeatherText': weatherCurrentDescription,
@@ -123,4 +110,3 @@ class ImplWeatherRepository
     }
   }
 }
-
