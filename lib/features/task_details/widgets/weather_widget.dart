@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
+import 'package:todo_app/main_prod.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
-import 'package:todo_app/main_prod.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
@@ -158,7 +158,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 }
 
 class _HourlyForecastWidget extends StatelessWidget {
-  const _HourlyForecastWidget({super.key});
+  const _HourlyForecastWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +181,7 @@ class _HourlyForecastWidget extends StatelessWidget {
 }
 
 class _HourlyForecastItemWidget extends StatelessWidget {
-  const _HourlyForecastItemWidget({super.key});
+  const _HourlyForecastItemWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -224,18 +224,19 @@ class _HourlyForecastItemWidget extends StatelessWidget {
                       RichText(
                         softWrap: false,
                         text: TextSpan(
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          children: [
+                            TextSpan(text: '18 '),
+                            TextSpan(
+                              text: '\u00B0C',
+                              style: TextStyle(fontSize: 12),
                             ),
-                            children: [
-                              TextSpan(text: '18 '),
-                              TextSpan(
-                                text: '\u00B0C',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ]),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(

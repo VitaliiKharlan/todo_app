@@ -1,11 +1,10 @@
-import 'dart:ui' as ui;
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/gestures.dart';
+import 'dart:ui' as ui;
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/task_details.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
 import 'package:todo_app/todo_app.dart';
 
 void appRunner() async {
@@ -23,8 +24,9 @@ Future<void> initNotifications() async {
       AndroidInitializationSettings('@mipmap/ic_launcher');
 
   final InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: DarwinInitializationSettings());
+    android: initializationSettingsAndroid,
+    iOS: DarwinInitializationSettings(),
+  );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 }
