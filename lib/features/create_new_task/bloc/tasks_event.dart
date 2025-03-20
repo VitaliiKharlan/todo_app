@@ -8,17 +8,19 @@ class LoadTasksEvent extends TasksEvent {}
 class AddTaskEvent extends TasksEvent {
   AddTaskEvent(
     this.taskTitle,
-    this.taskDescription,
-    this.taskDeadline,
     this.taskType,
+    this.taskPriority,
+    this.taskDeadline,
+    this.taskDescription,
     this.taskLocation,
     this.taskRemindTime,
   );
 
   final String taskTitle;
-  final String? taskDescription;
-  final DateTime? taskDeadline;
   final TaskType? taskType;
+  final int taskPriority;
+  final DateTime? taskDeadline;
+  final String? taskDescription;
   final LocationDetailsModel? taskLocation;
   final List<DateTime>? taskRemindTime;
 }
@@ -35,18 +37,20 @@ class EditTaskEvent extends TasksEvent {
   EditTaskEvent({
     required this.oldTask,
     required this.taskTitle,
-    this.taskDescription,
     this.taskType,
+    required this.taskPriority,
     this.taskDeadline,
+    this.taskDescription,
     this.taskLocation,
     this.taskRemindTime,
   });
 
   final Task oldTask;
   final String taskTitle;
-  final String? taskDescription;
   final TaskType? taskType;
+  final int taskPriority;
   final DateTime? taskDeadline;
+  final String? taskDescription;
   final LocationDetailsModel? taskLocation;
   final List<DateTime>? taskRemindTime;
 }

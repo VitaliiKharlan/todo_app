@@ -53,9 +53,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final newTask = Task(
         taskId: Uuid().v4(),
         taskTitle: event.taskTitle,
-        taskDescription: event.taskDescription,
-        taskDeadline: event.taskDeadline,
         taskType: event.taskType,
+        taskPriority: event.taskPriority,
+        taskDeadline: event.taskDeadline,
+        taskDescription: event.taskDescription,
         taskLocation: event.taskLocation,
         taskRemindTime: event.taskRemindTime,
       );

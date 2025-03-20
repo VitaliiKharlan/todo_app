@@ -68,22 +68,23 @@ class Task extends Equatable {
   Task({
     required this.taskId,
     required this.taskTitle,
-    this.taskDescription,
     this.taskType,
+    required this.taskPriority,
+    this.taskDeadline,
+    this.taskDescription,
     this.taskLocation,
     DateTime? createdAt,
-    this.taskDeadline,
     this.taskRemindTime,
   }) : taskCreatedAt = createdAt ?? DateTime.now();
 
-  // taskId = taskId ?? Uuid().v4();
-
   final String taskId;
   final String taskTitle;
-  final String? taskDescription;
   final TaskType? taskType;
-  final LocationDetailsModel? taskLocation;
+  final int taskPriority;
   final DateTime? taskDeadline;
+  final String? taskDescription;
+  final LocationDetailsModel? taskLocation;
+
   final List<DateTime>? taskRemindTime;
   final DateTime taskCreatedAt;
 
@@ -100,6 +101,7 @@ class Task extends Equatable {
       'taskTitle': taskTitle,
       'taskDescription': taskDescription,
       'taskType': taskType?.name,
+      'taskPriority': taskPriority,
       'taskLocation': taskLocation?.toJson(),
       'taskCreatedAt': taskCreatedAt.toIso8601String(),
       'taskDeadline': taskDeadline?.toIso8601String(),
@@ -111,11 +113,12 @@ class Task extends Equatable {
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
       taskTitle: map['taskTitle'],
-      taskDescription: map['taskDescription'],
-      // taskType: TaskType.work,
       taskType: map['taskType'] != null
           ? TaskTypeExtension.fromString(map['taskType'])
           : null,
+      taskPriority: map['taskPriority'] != null
+          ? map['taskPriority'] as int
+          : 9,
       taskLocation: map['taskLocation'] != null
           ? LocationDetailsModel.fromJson(map['taskLocation'])
           : null,
@@ -125,6 +128,7 @@ class Task extends Equatable {
       taskDeadline: map['taskDeadline'] != null
           ? DateTime.parse(map['taskDeadline'])
           : null,
+      taskDescription: map['taskDescription'],
       taskRemindTime: map['taskRemindTime'] != null
           ? (map['taskRemindTime'] is List<dynamic>
               ? (map['taskRemindTime'] as List<dynamic>)
@@ -150,6 +154,7 @@ class Task extends Equatable {
     String? taskTitle,
     String? taskDescription,
     TaskType? taskType,
+    int? taskPriority,
     LocationDetailsModel? taskLocation,
     DateTime? taskDeadline,
     List<DateTime>? taskRemindTime,
@@ -160,6 +165,7 @@ class Task extends Equatable {
       taskTitle: taskTitle ?? this.taskTitle,
       taskDescription: taskDescription ?? this.taskDescription,
       taskType: taskType ?? this.taskType,
+      taskPriority: taskPriority ?? this.taskPriority,
       taskLocation: taskLocation ?? this.taskLocation,
       taskDeadline: taskDeadline ?? this.taskDeadline,
       taskRemindTime: taskRemindTime ?? this.taskRemindTime,

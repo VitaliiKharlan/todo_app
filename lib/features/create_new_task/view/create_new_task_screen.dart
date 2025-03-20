@@ -30,6 +30,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
+  int _taskPriority = 7;
   LocationDetailsModel? _taskLocation;
   List<DateTime>? _selectedRemindTime;
 
@@ -45,6 +46,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     _selectedDeadline = widget.editTask?.taskDeadline;
     _selectedRemindTime = widget.editTask?.taskRemindTime;
     _selectedTaskType = widget.editTask?.taskType;
+    _taskPriority = widget.editTask?.taskPriority ?? 4;
     _taskLocation = widget.editTask?.taskLocation;
   }
 
@@ -66,6 +68,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       _selectedDeadline = null;
       _selectedRemindTime = null;
       _selectedTaskType = null;
+      _taskPriority = 5;
       _taskLocation = null;
     });
   }
@@ -74,6 +77,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   void _addTodo(TasksBloc bloc) {
     final taskTitle = _controllerTaskTitle.text.trim();
     final taskType = _selectedTaskType;
+    final taskPriority = _taskPriority ?? 2;
     final taskDeadline = _selectedDeadline;
     final taskDescription = _controllerTaskDescription.text.trim();
     final taskLocation = _taskLocation;
@@ -92,9 +96,10 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       // Create New Task
       bloc.add(AddTaskEvent(
         taskTitle,
-        taskDescription,
-        taskDeadline,
         taskType,
+        taskPriority,
+        taskDeadline,
+        taskDescription,
         taskLocation,
         taskRemindTime,
       ));
@@ -103,9 +108,10 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       bloc.add(EditTaskEvent(
         oldTask: widget.editTask!,
         taskTitle: _controllerTaskTitle.text.trim(),
-        taskDescription: _controllerTaskDescription.text.trim(),
-        taskDeadline: _selectedDeadline,
         taskType: _selectedTaskType,
+        taskPriority: _taskPriority,
+        taskDeadline: _selectedDeadline,
+        taskDescription: _controllerTaskDescription.text.trim(),
         taskLocation: _taskLocation,
         taskRemindTime: _selectedRemindTime,
       ));
@@ -226,15 +232,32 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     }
   }
 
-  Future<int> showPriorityDialog(
-      BuildContext context, int currentPriority) async {
-    return await showDialog<int>(
-          context: context,
-          builder: (context) {
-            return PriorityDialog(currentPriority: currentPriority);
-          },
-        ) ??
-        currentPriority;
+  // Future<int> showPriorityDialog(
+  //     BuildContext context, int currentPriority) async {
+  //   return await showDialog<int>(
+  //         context: context,
+  //         builder: (context) {
+  //           return PriorityDialog(currentPriority: currentPriority);
+  //         },
+  //       ) ??
+  //       currentPriority;
+  // }
+
+  void _openPriorityDialog() async {
+    final selectedPriority = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return PriorityDialog(
+          currentPriority: _taskPriority,
+        );
+      },
+    );
+
+    if (selectedPriority != null) {
+      setState(() {
+        _taskPriority = selectedPriority;
+      });
+    }
   }
 
   @override
@@ -406,7 +429,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     height: 40,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        showPriorityDialog(context, currentPriority);
+                        _openPriorityDialog();
                       },
                       icon: const Icon(Icons.priority_high),
                       label: Row(

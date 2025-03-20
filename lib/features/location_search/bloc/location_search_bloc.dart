@@ -18,6 +18,7 @@ class LocationSearchBloc
     this._placeDetailsRepository,
   ) : super(LocationSearchInitialState()) {
     on<LocationSearchTextChangeEvent>(_onTextChange);
+    on<LocationSelectEvent>(_onLocationSelect);
   }
 
   Future<void> _onTextChange(LocationSearchTextChangeEvent event,
@@ -43,3 +44,27 @@ class LocationSearchBloc
     }
   }
 }
+
+Future<void> _onLocationSelect(
+    LocationSelectEvent event, Emitter<LocationSearchState> emit) async {
+  // debugPrint('Location Select Event');
+  // emit(LocationSearchLoadingState());
+  //
+  // // try {
+  // //   final localizedNameForWeatherData =
+  // //       await geoPositionSearchForWeatherRepository.fetchLocalizedName(
+  // //     lat: event.locationDetailsModel.lat ?? 0.0,
+  // //     lng: event.locationDetailsModel.lng ?? 0.0,
+  // //   );
+  // //
+  // //   debugPrint(
+  // //       'This Is Success: ${localizedNameForWeatherData.localizedName}');
+  //   emit(LocationSelectedState(localizedNameForWeatherData.localizedName));
+  // } catch (e, s) {
+  //   debugPrint('Error: $e');
+  //   debugPrintStack(stackTrace: s);
+  //   emit(LocationSearchFailureState(e.toString()));
+  // }
+  debugPrint('Location Select Event');
+}
+

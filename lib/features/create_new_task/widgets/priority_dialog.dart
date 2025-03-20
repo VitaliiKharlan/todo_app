@@ -13,7 +13,7 @@ class PriorityDialog extends StatefulWidget {
 }
 
 class _PriorityDialogState extends State<PriorityDialog> {
-  late int selectedPriority;
+  int selectedPriority = 4;
 
   @override
   void initState() {

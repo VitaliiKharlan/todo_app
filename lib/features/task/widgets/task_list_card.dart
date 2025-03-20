@@ -79,20 +79,31 @@ class _TaskListCardState extends State<TaskListCard> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 32,
-                    height: 32,
-                    child: widget.task.taskType?.name != null
-                        ? SvgPicture.asset(
-                            'assets/svg/${widget.task.taskType!.name}.svg',
-                            width: 24,
-                            height: 24,
-                            colorFilter: ColorFilter.mode(
-                              widget.task.taskType!.color,
-                              BlendMode.srcIn,
-                            ),
-                          )
-                        : SizedBox.shrink(),
+                  Column(
+                    children: [
+                      SizedBox(
+                        width: 32,
+                        height: 32,
+                        child: widget.task.taskType?.name != null
+                            ? SvgPicture.asset(
+                                'assets/svg/${widget.task.taskType!.name}.svg',
+                                width: 24,
+                                height: 24,
+                                colorFilter: ColorFilter.mode(
+                                  widget.task.taskType!.color,
+                                  BlendMode.srcIn,
+                                ),
+                              )
+                            : SizedBox.shrink(),
+                      ),
+                      SizedBox(height: 12),
+                      Text(widget.task.taskPriority.toString(),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.purple,
+                        ),),
+                    ],
                   ),
                   const SizedBox(width: 12),
                   Expanded(
