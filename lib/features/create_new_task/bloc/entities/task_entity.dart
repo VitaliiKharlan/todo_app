@@ -69,7 +69,7 @@ class Task extends Equatable {
     required this.taskId,
     required this.taskTitle,
     this.taskType,
-    required this.taskPriority,
+    this.taskPriority,
     this.taskDeadline,
     this.taskDescription,
     this.taskLocation,
@@ -80,7 +80,7 @@ class Task extends Equatable {
   final String taskId;
   final String taskTitle;
   final TaskType? taskType;
-  final int taskPriority;
+  final int? taskPriority;
   final DateTime? taskDeadline;
   final String? taskDescription;
   final LocationDetailsModel? taskLocation;
@@ -116,9 +116,8 @@ class Task extends Equatable {
       taskType: map['taskType'] != null
           ? TaskTypeExtension.fromString(map['taskType'])
           : null,
-      taskPriority: map['taskPriority'] != null
-          ? map['taskPriority'] as int
-          : 9,
+      taskPriority:
+          map['taskPriority'] != null ? map['taskPriority'] as int : null,
       taskLocation: map['taskLocation'] != null
           ? LocationDetailsModel.fromJson(map['taskLocation'])
           : null,
@@ -142,10 +141,12 @@ class Task extends Equatable {
 
   @override
   List<Object?> get props => [
+        taskId,
         taskTitle,
-        taskDescription,
-        taskDeadline,
         taskType,
+        taskPriority,
+        taskDeadline,
+        taskDescription,
         taskLocation,
       ];
 

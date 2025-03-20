@@ -18,7 +18,7 @@ class AddTaskEvent extends TasksEvent {
 
   final String taskTitle;
   final TaskType? taskType;
-  final int taskPriority;
+  final int? taskPriority;
   final DateTime? taskDeadline;
   final String? taskDescription;
   final LocationDetailsModel? taskLocation;
@@ -38,7 +38,7 @@ class EditTaskEvent extends TasksEvent {
     required this.oldTask,
     required this.taskTitle,
     this.taskType,
-    required this.taskPriority,
+    this.taskPriority,
     this.taskDeadline,
     this.taskDescription,
     this.taskLocation,
@@ -48,7 +48,7 @@ class EditTaskEvent extends TasksEvent {
   final Task oldTask;
   final String taskTitle;
   final TaskType? taskType;
-  final int taskPriority;
+  final int? taskPriority;
   final DateTime? taskDeadline;
   final String? taskDescription;
   final LocationDetailsModel? taskLocation;

@@ -30,7 +30,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   DateTime? _selectedDeadline;
   TaskType? _selectedTaskType;
-  int _taskPriority = 7;
+  int? _taskPriority;
   LocationDetailsModel? _taskLocation;
   List<DateTime>? _selectedRemindTime;
 
@@ -46,7 +46,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     _selectedDeadline = widget.editTask?.taskDeadline;
     _selectedRemindTime = widget.editTask?.taskRemindTime;
     _selectedTaskType = widget.editTask?.taskType;
-    _taskPriority = widget.editTask?.taskPriority ?? 4;
+    _taskPriority = widget.editTask?.taskPriority;
     _taskLocation = widget.editTask?.taskLocation;
   }
 
@@ -68,7 +68,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       _selectedDeadline = null;
       _selectedRemindTime = null;
       _selectedTaskType = null;
-      _taskPriority = 5;
+      _taskPriority = null;
       _taskLocation = null;
     });
   }
@@ -77,7 +77,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   void _addTodo(TasksBloc bloc) {
     final taskTitle = _controllerTaskTitle.text.trim();
     final taskType = _selectedTaskType;
-    final taskPriority = _taskPriority ?? 2;
+    final taskPriority = _taskPriority;
     final taskDeadline = _selectedDeadline;
     final taskDescription = _controllerTaskDescription.text.trim();
     final taskLocation = _taskLocation;
@@ -232,23 +232,12 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     }
   }
 
-  // Future<int> showPriorityDialog(
-  //     BuildContext context, int currentPriority) async {
-  //   return await showDialog<int>(
-  //         context: context,
-  //         builder: (context) {
-  //           return PriorityDialog(currentPriority: currentPriority);
-  //         },
-  //       ) ??
-  //       currentPriority;
-  // }
-
   void _openPriorityDialog() async {
-    final selectedPriority = await showDialog<int>(
+    final selectedPriority = await showDialog<int?>(
       context: context,
       builder: (BuildContext context) {
         return PriorityDialog(
-          currentPriority: _taskPriority,
+          taskPriority: _taskPriority,
         );
       },
     );
@@ -263,7 +252,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<TasksBloc>(context);
-    final currentPriority = 1;
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -371,7 +359,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     children: TaskType.values.take(5).map((TaskType type) {
                       return Expanded(
                         child: Row(
-                          // mainAxisSize: MainAxisSize.min,
                           children: [
                             Expanded(
                               child: ElevatedButton(
@@ -437,7 +424,9 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         children: [
                           SizedBox(width: 8),
                           Text(
-                            'Pick a priority',
+                            _taskPriority == null
+                                ? 'Pick a priority'
+                                : _taskPriority.toString(),
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
