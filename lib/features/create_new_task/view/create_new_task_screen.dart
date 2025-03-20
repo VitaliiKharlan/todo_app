@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
+import 'package:todo_app/features/create_new_task/widgets/priority_dialog.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
@@ -225,9 +226,21 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     }
   }
 
+  Future<int> showPriorityDialog(
+      BuildContext context, int currentPriority) async {
+    return await showDialog<int>(
+          context: context,
+          builder: (context) {
+            return PriorityDialog(currentPriority: currentPriority);
+          },
+        ) ??
+        currentPriority;
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<TasksBloc>(context);
+    final currentPriority = 1;
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -392,7 +405,9 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     width: double.infinity,
                     height: 40,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        showPriorityDialog(context, currentPriority);
+                      },
                       icon: const Icon(Icons.priority_high),
                       label: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
