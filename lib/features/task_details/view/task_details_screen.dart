@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/gestures.dart';
-import 'dart:ui' as ui;
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/task_details.dart';
-import 'package:todo_app/features/task_details/view/main_information.dart';
-import 'package:todo_app/ui/theme/app_colors.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
+import 'package:todo_app/features/task_details/widgets/project_milestone_widget.dart';
 
 @RoutePage()
 class TaskDetailsScreen extends StatefulWidget {
@@ -28,30 +23,8 @@ class TaskDetailsScreen extends StatefulWidget {
 }
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
-  bool _isExpanded = false;
-
-  String _getTrimmedText(String text, TextStyle style, double maxWidth) {
-    final textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: 3,
-      textDirection: ui.TextDirection.ltr,
-    )..layout(maxWidth: maxWidth);
-
-    if (!textPainter.didExceedMaxLines) return text;
-
-    String trimmedText = text;
-    while (textPainter.didExceedMaxLines) {
-      trimmedText = trimmedText.substring(0, trimmedText.length - 1);
-      textPainter.text = TextSpan(text: trimmedText, style: style);
-      textPainter.layout(maxWidth: maxWidth);
-    }
-
-    return trimmedText;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -122,189 +95,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   widget.task.taskTitle,
-              //   style: AppTextStyle.appBar.copyWith(
-              //       fontSize: 24,
-              //       fontWeight: FontWeight.w800,
-              //       color: Colors.black),
-              // ),
-              // SizedBox(height: 20),
-              // Row(
-              //   children: [
-              //     if (widget.task.taskType != null)
-              //       ClipOval(
-              //         child: Container(
-              //           color: Colors.lightBlueAccent.withAlpha(40),
-              //           height: 40,
-              //           width: 40,
-              //           child: SvgPicture.asset(
-              //             'assets/svg/${widget.task.taskType!.name}.svg',
-              //             width: 24,
-              //             height: 24,
-              //             colorFilter: ColorFilter.mode(
-              //               widget.task.taskType!.color,
-              //               BlendMode.srcIn,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     SizedBox(width: 8),
-              //     ClipOval(
-              //       child: Container(
-              //         height: 40,
-              //         width: 40,
-              //         color: Colors.lightBlueAccent.withAlpha(40),
-              //         child: Center(
-              //           child: Text(
-              //             widget.task.taskPriority.toString(),
-              //             style: theme.textTheme.bodySmall?.copyWith(
-              //               fontSize: 15,
-              //               fontWeight: FontWeight.w800,
-              //               color: Colors.black,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //     SizedBox(width: 12),
-              //     if (widget.task.taskDeadline != null) ...[
-              //       SizedBox(height: 12),
-              //       Text(
-              //         DateFormat("dd MMMM, 'at' hh:mm a")
-              //             .format(widget.task.taskDeadline!),
-              //         style: AppTextStyle.dateProgressIndicator
-              //             .copyWith(color: AppColors.dateProgressIndicator),
-              //       ),
-              //     ]
-              //   ],
-              // ),
-              // SizedBox(height: 32),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       'In Progress',
-              //       style: theme.textTheme.bodySmall?.copyWith(
-              //         fontSize: 15,
-              //         fontWeight: FontWeight.w800,
-              //         color: Colors.black,
-              //       ),
-              //     ),
-              //     Text(
-              //       '${widget.task.progress}%',
-              //       style: theme.textTheme.bodySmall?.copyWith(
-              //         fontSize: 15,
-              //         fontWeight: FontWeight.w800,
-              //         color: Colors.black,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // SizedBox(height: 8),
-              // InProgressIndicator(
-              //   progress: widget.task.progress,
-              // ),
               MainInformation(task: widget.task),
-              SizedBox(height: 32),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Project Milestone',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  if (widget.task.taskRemindTime != null &&
-                      widget.task.taskRemindTime!.isNotEmpty) ...[
-                    SizedBox(height: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: widget.task.taskRemindTime!.map((milestone) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text(
-                            DateFormat("dd MMMM, 'at' hh:mm a")
-                                .format(milestone),
-                            style: AppTextStyle.dateProgressIndicator.copyWith(
-                              fontSize: 12,
-                              color: AppColors.dateProgressIndicator,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ],
-              ),
               SizedBox(height: 20),
-              Text(
-                'Overview',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(height: 8),
-              if (widget.task.taskDescription != null)
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final textStyle = AppTextStyle.description.copyWith(
-                      color: AppColors.dateProgressIndicator,
-                      height: 1.5,
-                    );
-
-                    final fullText = widget.task.taskDescription ?? '';
-                    final textPainter = TextPainter(
-                      text: TextSpan(text: fullText, style: textStyle),
-                      maxLines: 3,
-                      textDirection: ui.TextDirection.ltr,
-                    )..layout(
-                        maxWidth: constraints.maxWidth,
-                      );
-
-                    final bool isOverflowing = textPainter.didExceedMaxLines;
-
-                    String trimmedText = fullText;
-
-                    if (isOverflowing) {
-                      trimmedText = _getTrimmedText(
-                          fullText, textStyle, constraints.maxWidth);
-                      trimmedText = '${trimmedText.trimRight()} ...';
-                    }
-
-                    return RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: _isExpanded ? fullText : trimmedText,
-                            style: textStyle,
-                          ),
-                          if (isOverflowing)
-                            TextSpan(
-                              text: _isExpanded ? ' Read Less' : ' Read More',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  setState(() {
-                                    _isExpanded = !_isExpanded;
-                                  });
-                                },
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              SizedBox(height: 32),
+              ProjectMilestoneWidget(task: widget.task),
+              SizedBox(height: 20),
+              OverviewWidget(task: widget.task),
+              SizedBox(height: 20),
               WeatherWidget(task: widget.task),
               SizedBox(height: 20),
             ],

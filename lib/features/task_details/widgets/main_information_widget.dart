@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
-import 'package:todo_app/features/task_details/widgets/in_progress_indicator.dart';
+import 'package:todo_app/features/task_details/widgets/in_progress_indicator_widget.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
