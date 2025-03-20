@@ -62,18 +62,23 @@ class _MainInformationState extends State<MainInformation> {
             Row(
               children: [
                 if (widget.task.taskType != null)
-                  ClipOval(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
                     child: Container(
                       color: Colors.lightBlueAccent.withAlpha(40),
                       height: 40,
                       width: 40,
-                      child: SvgPicture.asset(
-                        'assets/svg/${widget.task.taskType!.name}.svg',
-                        width: 24,
-                        height: 24,
-                        colorFilter: ColorFilter.mode(
-                          widget.task.taskType!.color,
-                          BlendMode.srcIn,
+                      child: Transform.scale(
+                        scale: 0.5,
+                        child: SvgPicture.asset(
+                          'assets/svg/${widget.task.taskType!.name}.svg',
+                          width: 20,
+                          height: 20,
+                          colorFilter: ColorFilter.mode(
+                            widget.task.taskType!.color,
+                            BlendMode.srcIn,
+                          ),
+                          
                         ),
                       ),
                     ),
