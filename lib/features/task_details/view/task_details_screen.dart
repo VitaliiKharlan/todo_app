@@ -15,7 +15,6 @@ class TaskDetailsScreen extends StatefulWidget {
   });
 
   final Task task;
-
   final void Function(Task) onDelete;
 
   @override

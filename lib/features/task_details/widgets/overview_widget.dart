@@ -68,7 +68,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
             Text(
               'Overview',
               style: theme.textTheme.bodySmall?.copyWith(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),

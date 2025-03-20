@@ -81,28 +81,46 @@ class _TaskListCardState extends State<TaskListCard> {
                 children: [
                   Column(
                     children: [
-                      SizedBox(
-                        width: 32,
-                        height: 32,
-                        child: widget.task.taskType?.name != null
-                            ? SvgPicture.asset(
-                                'assets/svg/${widget.task.taskType!.name}.svg',
-                                width: 24,
-                                height: 24,
-                                colorFilter: ColorFilter.mode(
-                                  widget.task.taskType!.color,
-                                  BlendMode.srcIn,
+                      widget.task.taskType?.name != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                color: Colors.lightBlueAccent.withAlpha(40),
+                                height: 40,
+                                width: 40,
+                                child: Transform.scale(
+                                  scale: 0.75,
+                                  child: SvgPicture.asset(
+                                    'assets/svg/${widget.task.taskType!.name}.svg',
+                                    width: 20,
+                                    height: 20,
+                                    colorFilter: ColorFilter.mode(
+                                      widget.task.taskType!.color,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
                                 ),
-                              )
-                            : SizedBox.shrink(),
-                      ),
+                              ),
+                            )
+                          : SizedBox.shrink(),
                       SizedBox(height: 12),
-                      Text(widget.task.taskPriority.toString(),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.purple,
-                        ),),
+                      ClipOval(
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          color: Colors.lightBlueAccent.withAlpha(40),
+                          child: Center(
+                            child: Text(
+                              widget.task.taskPriority.toString(),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.purple,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(width: 12),
@@ -132,7 +150,7 @@ class _TaskListCardState extends State<TaskListCard> {
                               color: Colors.purple,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(height: 2),
                           Text(
                             DateFormat('HH:mm')
                                 .format(widget.task.taskCreatedAt),
@@ -152,7 +170,7 @@ class _TaskListCardState extends State<TaskListCard> {
                                 color: Colors.red,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            SizedBox(height: 2),
                             Text(
                               DateFormat('d MMM')
                                   .format(widget.task.taskDeadline!),
@@ -162,12 +180,12 @@ class _TaskListCardState extends State<TaskListCard> {
                                 color: Colors.red,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            SizedBox(height: 2),
                             Text(
                               DateFormat('HH:mm')
                                   .format(widget.task.taskDeadline!),
                               style: theme.textTheme.bodySmall?.copyWith(
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.red,
                               ),
@@ -180,6 +198,7 @@ class _TaskListCardState extends State<TaskListCard> {
                 ],
               ),
             ),
+            SizedBox(height: 12),
             if (widget.task.taskLocation != null)
               Text(
                 widget.task.taskLocation.toString(),

@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
-import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
-import 'package:todo_app/features/create_new_task/widgets/priority_dialog.dart';
+import 'package:todo_app/features/create_new_task/create_new_task.dart';
+
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
@@ -25,7 +25,7 @@ class CreateNewTaskScreen extends StatefulWidget {
 }
 
 class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
-  late TextEditingController _controllerTaskTitle;
+  late TextEditingController controllerTaskTitle;
   late TextEditingController _controllerTaskDescription;
 
   DateTime? _selectedDeadline;
@@ -38,7 +38,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   void initState() {
     super.initState();
 
-    _controllerTaskTitle =
+    controllerTaskTitle =
         TextEditingController(text: widget.editTask?.taskTitle ?? '');
     _controllerTaskDescription =
         TextEditingController(text: widget.editTask?.taskDescription ?? '');
@@ -61,7 +61,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
   }
 
   void _clearInputFields() {
-    _controllerTaskTitle.clear();
+    controllerTaskTitle.clear();
     _controllerTaskDescription.clear();
 
     setState(() {
@@ -75,7 +75,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   // passing a variable to a function
   void _addTodo(TasksBloc bloc) {
-    final taskTitle = _controllerTaskTitle.text.trim();
+    final taskTitle = controllerTaskTitle.text.trim();
     final taskType = _selectedTaskType;
     final taskPriority = _taskPriority;
     final taskDeadline = _selectedDeadline;
@@ -107,7 +107,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
       // Edit Task
       bloc.add(EditTaskEvent(
         oldTask: widget.editTask!,
-        taskTitle: _controllerTaskTitle.text.trim(),
+        taskTitle: controllerTaskTitle.text.trim(),
         taskType: _selectedTaskType,
         taskPriority: _taskPriority,
         taskDeadline: _selectedDeadline,
@@ -236,7 +236,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     final selectedPriority = await showDialog<int?>(
       context: context,
       builder: (BuildContext context) {
-        return PriorityDialog(
+        return PriorityDialogWidget(
           taskPriority: _taskPriority,
         );
       },
@@ -318,89 +318,17 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 20),
-                  Text(
-                    'Task Name',
-                    style: AppTextStyle.appBar.copyWith(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black),
-                  ),
-                  SizedBox(height: 20),
-                  TextField(
-                    controller: _controllerTaskTitle,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey.withAlpha(80),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.red,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                  TaskNameFieldWidget(
+                    controllerTaskTitle: controllerTaskTitle,
                   ),
                   SizedBox(height: 32),
-                  Text(
-                    'Category',
-                    style: AppTextStyle.appBar.copyWith(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: TaskType.values.take(5).map((TaskType type) {
-                      return Expanded(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: _selectedTaskType == type
-                                      ? Colors.blue
-                                      : Colors.blue[100],
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                ).copyWith(
-                                  shape: WidgetStatePropertyAll(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _selectedTaskType = type;
-                                  });
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      type.name,
-                                      style: TextStyle(
-                                        color: _selectedTaskType == type
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 8,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                          ],
-                        ),
-                      );
-                    }).toList(),
+                  TaskTypeFieldWidget(
+                    selectedTaskType: _selectedTaskType,
+                    onTaskTypeSelected: (TaskType type) {
+                      setState(() {
+                        _selectedTaskType = type;
+                      });
+                    },
                   ),
                   SizedBox(height: 32),
                   Text(

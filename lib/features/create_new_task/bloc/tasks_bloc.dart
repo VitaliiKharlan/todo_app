@@ -8,7 +8,6 @@ import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/features/create_new_task/data/repositories/task_repository.dart';
 
-
 part 'tasks_event.dart';
 
 part 'tasks_state.dart';
@@ -60,6 +59,16 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         taskLocation: event.taskLocation,
         taskRemindTime: event.taskRemindTime,
       );
+
+      debugPrint('New Task Created: '
+          'id=${newTask.taskId}; '
+          'title=${newTask.taskTitle}; '
+          'type=${newTask.taskType}; '
+          'priority=${newTask.taskPriority}; '
+          'deadline=${newTask.taskDeadline}; '
+          'description=${newTask.taskDescription}; '
+          'location=${newTask.taskLocation}; '
+          'remindTime=${newTask.taskRemindTime}');
 
       if (state is TasksLoadedState) {
         final currentTasks = (state as TasksLoadedState).tasks;
@@ -119,18 +128,16 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
           taskRemindTime: event.taskRemindTime,
         );
 
+        await taskRepository.updateTask(
+          updatedTask.taskId,
+          updatedTask.toMap(),
+        );
 
-          await taskRepository.updateTask(
-            updatedTask.taskId,
-            updatedTask.toMap(),
-          );
-
-          final updatedTasks = currentState.tasks.map((task) {
-            return task.taskId == event.oldTask.taskId ? updatedTask : task;
-          }).toList();
+        final updatedTasks = currentState.tasks.map((task) {
+          return task.taskId == event.oldTask.taskId ? updatedTask : task;
+        }).toList();
 
         emit(TasksLoadedState(updatedTasks));
-
       }
     } catch (e, s) {
       debugPrint('Error: $e');

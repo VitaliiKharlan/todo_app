@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-class PriorityDialog extends StatefulWidget {
+class PriorityDialogWidget extends StatefulWidget {
   final int? taskPriority;
 
-  const PriorityDialog({
+  const PriorityDialogWidget({
     super.key,
     this.taskPriority,
   });
 
   @override
-  _PriorityDialogState createState() => _PriorityDialogState();
+  _PriorityDialogWidgetState createState() => _PriorityDialogWidgetState();
 }
 
-class _PriorityDialogState extends State<PriorityDialog> {
+class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
   late int selectedPriority;
 
   @override
   void initState() {
     super.initState();
-    selectedPriority = widget.taskPriority ?? 1;
+    selectedPriority = widget.taskPriority ?? 10;
   }
 
   @override
