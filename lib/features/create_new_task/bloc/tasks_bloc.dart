@@ -111,9 +111,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
         final updatedTask = event.oldTask.copyWith(
           taskTitle: event.taskTitle,
-          taskDescription: event.taskDescription,
           taskType: event.taskType,
+          taskPriority: event.taskPriority,
           taskDeadline: event.taskDeadline,
+          taskDescription: event.taskDescription,
           taskLocation: event.taskLocation,
           taskRemindTime: event.taskRemindTime,
         );
