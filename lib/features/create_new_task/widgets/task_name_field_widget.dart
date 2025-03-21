@@ -18,19 +18,30 @@ class _TaskNameFieldWidgetState extends State<TaskNameFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(height: 20),
         Text(
           'Task Name',
           style: AppTextStyle.appBar.copyWith(
               fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 12),
         TextField(
           controller: widget.controllerTaskTitle,
           decoration: InputDecoration(
+            hintText: widget.controllerTaskTitle.text.isEmpty
+                ? 'Enter a Task Name'
+                : '',
+            hintStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.black.withAlpha(80),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 12,
+            ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.grey.withAlpha(80),

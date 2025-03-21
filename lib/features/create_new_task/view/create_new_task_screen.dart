@@ -7,8 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/create_new_task/create_new_task.dart';
-
-import 'package:todo_app/router/router.dart';
+import 'package:todo_app/features/create_new_task/widgets/task_description_field_widget.dart';
+import 'package:todo_app/features/create_new_task/widgets/task_location_field_widget.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
 @RoutePage()
@@ -48,16 +48,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     _selectedTaskType = widget.editTask?.taskType;
     _taskPriority = widget.editTask?.taskPriority;
     _taskLocation = widget.editTask?.taskLocation;
-  }
-
-  _getLocationFromPreviousScreen() async {
-    final result =
-        await context.router.push<LocationDetailsModel>(LocationSearchRoute());
-    if (result != null) {
-      setState(() {
-        _taskLocation = result;
-      });
-    }
   }
 
   void _clearInputFields() {
@@ -120,6 +110,12 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     _clearInputFields();
 
     tabsRouter.setActiveIndex(0);
+  }
+
+  void onLocationPicked(LocationDetailsModel? taskLocation) {
+    setState(() {
+      _taskLocation = taskLocation;
+    });
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -232,23 +228,6 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
     }
   }
 
-  void _openPriorityDialog() async {
-    final selectedPriority = await showDialog<int?>(
-      context: context,
-      builder: (BuildContext context) {
-        return PriorityDialogWidget(
-          taskPriority: _taskPriority,
-        );
-      },
-    );
-
-    if (selectedPriority != null) {
-      setState(() {
-        _taskPriority = selectedPriority;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<TasksBloc>(context);
@@ -321,7 +300,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   TaskNameFieldWidget(
                     controllerTaskTitle: controllerTaskTitle,
                   ),
-                  SizedBox(height: 32),
+                  SizedBox(height: 20),
                   TaskTypeFieldWidget(
                     selectedTaskType: _selectedTaskType,
                     onTaskTypeSelected: (TaskType type) {
@@ -330,63 +309,24 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       });
                     },
                   ),
-                  SizedBox(height: 32),
+                  SizedBox(height: 20),
+                  TaskPriorityFieldWidget(
+                    taskPriority: _taskPriority,
+                    onPrioritySelected: (newPriority) {
+                      setState(() {
+                        _taskPriority = newPriority;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 20),
                   Text(
-                    'Priority',
+                    'Deadline',
                     style: AppTextStyle.appBar.copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
                         color: Colors.black),
                   ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        _openPriorityDialog();
-                      },
-                      icon: const Icon(Icons.priority_high),
-                      label: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 8),
-                          Text(
-                            _taskPriority == null
-                                ? 'Pick a priority'
-                                : _taskPriority.toString(),
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(Colors.white),
-                        foregroundColor: WidgetStateProperty.all(
-                          Colors.black.withAlpha(60),
-                        ),
-                        side: WidgetStateProperty.all(
-                          BorderSide(
-                            color: Colors.grey.withAlpha(80),
-                            width: 2,
-                          ),
-                        ),
-                        overlayColor:
-                            WidgetStateProperty.all<Color>(Colors.white),
-                        shadowColor:
-                            WidgetStateProperty.all<Color>(Colors.white),
-                        elevation: WidgetStateProperty.all<double>(0.1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Date & Time',
-                    style: AppTextStyle.appBar.copyWith(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black),
-                  ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 12),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -403,7 +343,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                               const SizedBox(width: 8),
                               Text(
                                 _selectedDeadline == null
-                                    ? 'Pick Date'
+                                    ? 'Pick Deadline Date'
                                     : DateFormat('dd MMMM, EEEE')
                                         .format(_selectedDeadline!),
                                 style: TextStyle(fontSize: 16),
@@ -427,7 +367,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                       const SizedBox(height: 12),
                       SizedBox(
-                        width: 200,
+                        width: double.infinity,
                         height: 40,
                         child: ElevatedButton.icon(
                           onPressed: () => _selectTime(context),
@@ -438,7 +378,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                               SizedBox(width: 8),
                               Text(
                                 _selectedDeadline == null
-                                    ? 'Pick Time'
+                                    ? 'Pick Deadline Time'
                                     : DateFormat('HH:mm')
                                         .format(_selectedDeadline!),
                                 style: TextStyle(fontSize: 16),
@@ -472,90 +412,17 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Description',
-                    style: AppTextStyle.appBar.copyWith(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black),
+                  TaskDescriptionFieldWidget(
+                    controllerTaskDescription: _controllerTaskDescription,
                   ),
-                  SizedBox(height: 12),
-                  TextField(
-                    controller: _controllerTaskDescription,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 24,
-                        horizontal: 8,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey.withAlpha(80),
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.red,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+                  SizedBox(height: 20),
+                  TaskLocationFieldWidget(
+                    taskLocation: _taskLocation,
+                    onLocationPicked: onLocationPicked,
                   ),
                   SizedBox(height: 20),
                   Text(
-                    'Pick a place',
-                    style: AppTextStyle.appBar.copyWith(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black),
-                  ),
-                  SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: ElevatedButton.icon(
-                      onPressed: () => {
-                        _getLocationFromPreviousScreen(),
-                      },
-                      icon: const Icon(Icons.location_city),
-                      label: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 8),
-                          Text(
-                            _taskLocation == null
-                                ? 'Pick a place'
-                                : _taskLocation?.description ?? '',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(Colors.white),
-                        foregroundColor: WidgetStateProperty.all(
-                          Colors.black.withAlpha(60),
-                        ),
-                        side: WidgetStateProperty.all(
-                          BorderSide(
-                            color: Colors.grey.withAlpha(80),
-                            width: 2,
-                          ),
-                        ),
-                        overlayColor:
-                            WidgetStateProperty.all<Color>(Colors.white),
-                        shadowColor:
-                            WidgetStateProperty.all<Color>(Colors.white),
-                        elevation: WidgetStateProperty.all<double>(0.1),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Remind me',
+                    'Remind',
                     style: AppTextStyle.appBar.copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
@@ -603,7 +470,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       ),
                       const SizedBox(height: 12),
                       SizedBox(
-                        width: 240,
+                        width: double.infinity,
                         height: 40,
                         child: ElevatedButton.icon(
                           onPressed: () => _selectRemindTime(context),

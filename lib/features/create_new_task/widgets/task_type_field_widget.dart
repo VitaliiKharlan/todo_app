@@ -36,13 +36,14 @@ class _TaskTypeFieldWidgetState extends State<TaskTypeFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Category',
           style: AppTextStyle.appBar.copyWith(
               fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: TaskType.values.take(5).map((TaskType type) {
