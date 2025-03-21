@@ -12,7 +12,7 @@ import 'package:todo_app/ui/ui.dart';
 export 'package:todo_app/main_prod.dart' show useMockData;
 
 @RoutePage()
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   const TaskScreen({
     super.key,
     required this.theme,
@@ -21,8 +21,14 @@ class TaskScreen extends StatelessWidget {
   final ThemeData theme;
 
   @override
+  State<TaskScreen> createState() => _TaskScreenState();
+  }
+
+
+class _TaskScreenState extends State<TaskScreen> {
+  final ScrollController scrollController = ScrollController();
+  @override
   Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

@@ -80,7 +80,6 @@ class _MainInformationState extends State<MainInformation> {
                             widget.task.taskType!.color,
                             BlendMode.srcIn,
                           ),
-                          
                         ),
                       ),
                     ),
@@ -105,7 +104,6 @@ class _MainInformationState extends State<MainInformation> {
                 ),
                 SizedBox(width: 12),
                 if (widget.task.taskDeadline != null) ...[
-                  SizedBox(height: 12),
                   Text(
                     DateFormat("dd MMMM, 'at' hh:mm a")
                         .format(widget.task.taskDeadline!),
