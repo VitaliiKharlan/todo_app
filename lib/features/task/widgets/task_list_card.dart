@@ -58,7 +58,6 @@ class _TaskListCardState extends State<TaskListCard> {
         context.router.push(
           TaskDetailsRoute(
             task: widget.task,
-            // localizedName: widget.localizedName,
             onDelete: (task) {
               context.read<TasksBloc>().add(DeleteTaskEvent(task));
               context.router.maybePop();
