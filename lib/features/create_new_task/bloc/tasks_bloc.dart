@@ -14,12 +14,14 @@ part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   final TaskRepository taskRepository;
+  List<Task> allTasks = [];
 
   TasksBloc({required this.taskRepository}) : super(InitialTasksState()) {
     on<LoadTasksEvent>(_onLoadTasks);
     on<AddTaskEvent>(_onAddTask);
     on<DeleteTaskEvent>(_onDeleteTask);
     on<EditTaskEvent>(_onEditTask);
+    on<SearchTaskEvent>(_onSearchTask);
   }
 
   Future<void> _onLoadTasks(
@@ -36,6 +38,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
+      allTasks = tasks;
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
       debugPrint('Error: $e');
@@ -76,6 +79,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         debugPrint('Loaded Tasks State');
       }
       tasks.add(newTask);
+      allTasks = tasks;
 
       emit(TasksLoadedState(tasks));
       await taskRepository.addTask(newTask.toMap());
@@ -138,6 +142,37 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         }).toList();
 
         emit(TasksLoadedState(updatedTasks));
+      }
+    } catch (e, s) {
+      debugPrint('Error: $e');
+      debugPrintStack(stackTrace: s);
+      emit(TasksEditingFailureState(e.toString()));
+    }
+  }
+
+  Future<void> _onSearchTask(
+      SearchTaskEvent event, Emitter<TasksState> emit) async {
+    try {
+      debugPrint('Search Tasks Event with query: "${event.query}"');
+
+      if (state is TasksLoadedState) {
+        final currentState = state as TasksLoadedState;
+        debugPrint((currentState.tasks).toString());
+        final query = event.query.toLowerCase().trim();
+
+        if (query.isEmpty) {
+          debugPrint('Query is empty, returning all tasks');
+          emit(TasksLoadedState(allTasks));
+        } else {
+          final filteredTasks = allTasks.where((task) {
+            final taskTitle = task.taskTitle.toLowerCase();
+            final words = taskTitle.split(' ');
+            return words.any((word) => word.startsWith(query));
+          }).toList();
+
+          emit(TasksLoadedState(filteredTasks));
+          debugPrint('Filtered tasks: ${filteredTasks.length} tasks found');
+        }
       }
     } catch (e, s) {
       debugPrint('Error: $e');

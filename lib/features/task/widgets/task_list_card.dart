@@ -101,7 +101,14 @@ class _TaskListCardState extends State<TaskListCard> {
                                 ),
                               ),
                             )
-                          : SizedBox.shrink(),
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                color: Colors.lightBlueAccent.withAlpha(40),
+                                height: 40,
+                                width: 40,
+                              ),
+                            ),
                       SizedBox(height: 12),
                       ClipOval(
                         child: Container(
@@ -110,7 +117,9 @@ class _TaskListCardState extends State<TaskListCard> {
                           color: Colors.lightBlueAccent.withAlpha(40),
                           child: Center(
                             child: Text(
-                              widget.task.taskPriority.toString(),
+                              widget.task.taskPriority != null
+                                  ? widget.task.taskPriority.toString()
+                                  : '',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,

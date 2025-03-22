@@ -21,7 +21,6 @@ class ProjectMilestoneWidget extends StatefulWidget {
 class _ProjectMilestoneWidgetState extends State<ProjectMilestoneWidget> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -45,9 +44,7 @@ class _ProjectMilestoneWidgetState extends State<ProjectMilestoneWidget> {
           children: [
             Text(
               'Project Milestone',
-              style: theme.textTheme.bodySmall?.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+              style: AppTextStyle.promo.copyWith(
                 color: Colors.black,
               ),
             ),
@@ -60,10 +57,9 @@ class _ProjectMilestoneWidgetState extends State<ProjectMilestoneWidget> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
-                      DateFormat("dd MMMM, 'at' hh:mm a")
-                          .format(milestone),
+                      DateFormat("dd MMMM, 'at' hh:mm a").format(milestone),
                       style: AppTextStyle.dateProgressIndicator.copyWith(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: AppColors.dateProgressIndicator,
                       ),
                     ),

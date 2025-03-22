@@ -30,8 +30,8 @@ abstract class AppTextStyle {
 
   static const promo = TextStyle(
     fontFamily: 'Lato',
-    fontSize: 12,
-    fontStyle: FontStyle.normal,
+    fontSize: 20,
+    fontStyle: FontStyle.italic,
     fontWeight: FontWeight.w500,
     height: 1.2,
     letterSpacing: 0.0,

@@ -43,7 +43,6 @@ class _OverviewWidgetState extends State<OverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -67,9 +66,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
           children: [
             Text(
               'Overview',
-              style: theme.textTheme.bodySmall?.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+              style: AppTextStyle.promo.copyWith(
                 color: Colors.black,
               ),
             ),
@@ -77,11 +74,10 @@ class _OverviewWidgetState extends State<OverviewWidget> {
             if (widget.task.taskDescription != null)
               LayoutBuilder(
                 builder: (context, constraints) {
-                  final textStyle = AppTextStyle.description.copyWith(
+                  final textStyle = AppTextStyle.dateProgressIndicator.copyWith(
+                    fontSize: 15,
                     color: AppColors.dateProgressIndicator,
-                    height: 1.5,
                   );
-
                   final fullText = widget.task.taskDescription ?? '';
                   final textPainter = TextPainter(
                     text: TextSpan(text: fullText, style: textStyle),

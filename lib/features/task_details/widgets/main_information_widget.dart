@@ -46,19 +46,17 @@ class _MainInformationState extends State<MainInformation> {
           children: [
             Text(
               'Main Information',
-              style: theme.textTheme.bodySmall?.copyWith(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
+              style: AppTextStyle.promo.copyWith(
                 color: Colors.black,
               ),
             ),
             SizedBox(height: 12),
             Text(
               widget.task.taskTitle,
-              style: AppTextStyle.appBar.copyWith(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.black),
+              style: AppTextStyle.dateProgressIndicator.copyWith(
+                fontSize: 15,
+                color: AppColors.dateProgressIndicator,
+              ),
             ),
             SizedBox(height: 20),
             Row(
@@ -119,17 +117,17 @@ class _MainInformationState extends State<MainInformation> {
               children: [
                 Text(
                   'In Progress',
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: AppTextStyle.appBar.copyWith(
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.black,
                   ),
                 ),
                 Text(
                   '${widget.task.progress}%',
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: AppTextStyle.appBar.copyWith(
                     fontSize: 15,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w700,
                     color: Colors.black,
                   ),
                 ),

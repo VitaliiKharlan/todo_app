@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'dart:ui';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
@@ -22,11 +23,14 @@ class TaskScreen extends StatefulWidget {
 
   @override
   State<TaskScreen> createState() => _TaskScreenState();
-  }
-
+}
 
 class _TaskScreenState extends State<TaskScreen> {
   final ScrollController scrollController = ScrollController();
+  final TextEditingController searchController = TextEditingController();
+
+  List<Task> filteredTasks = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +46,16 @@ class _TaskScreenState extends State<TaskScreen> {
             ),
           ),
         ),
+        leading: MenuButtonWidget(),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(AppImages.profileImage_2),
+              radius: 20,
+            ),
+          ),
+        ],
         flexibleSpace: ClipRect(
           child: Stack(
             children: [
@@ -55,7 +69,10 @@ class _TaskScreenState extends State<TaskScreen> {
               ),
               Positioned.fill(
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                  filter: ImageFilter.blur(
+                    sigmaX: 5.0,
+                    sigmaY: 5.0,
+                  ),
                   child: Container(
                     color: Colors.black.withAlpha(30),
                   ),
@@ -97,22 +114,36 @@ class _TaskScreenState extends State<TaskScreen> {
                     const SliverToBoxAdapter(
                       child: SizedBox(height: 24),
                     ),
+                    SliverToBoxAdapter(
+                      child: SearchTextField(
+                        controller: searchController,
+                        onChanged: (query) {
+                          context.read<TasksBloc>().add(SearchTaskEvent(query));
+                        },
+                      ),
+                    ),
                     BlocBuilder<TasksBloc, TasksState>(
                       builder: (context, state) {
                         if (state is TasksLoadedState) {
                           final tasks = state.tasks;
                           tasks.sort((a, b) =>
                               b.taskCreatedAt.compareTo(a.taskCreatedAt));
+
                           if (tasks.isEmpty) {
                             return SliverToBoxAdapter(
-                              child: Center(
-                                child: Text('No tasks available'),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Center(
+                                  child: Text('No tasks available'),
+                                ),
                               ),
                             );
                           }
+
                           return SliverList.builder(
-                              itemCount: state.tasks.length,
+                              itemCount: tasks.length,
                               itemBuilder: (context, index) {
+                                final task = tasks[index];
                                 final deleteTask = tasks[index];
                                 final editTask = tasks[index];
                                 return Padding(
@@ -131,8 +162,10 @@ class _TaskScreenState extends State<TaskScreen> {
                                           SlidableAction(
                                             onPressed: (_) {
                                               context.pushRoute(
-                                                  CreateNewTaskRoute(
-                                                      editTask: editTask));
+                                                CreateNewTaskRoute(
+                                                  editTask: editTask,
+                                                ),
+                                              );
                                             },
                                             backgroundColor: Colors.green,
                                             foregroundColor: Colors.white,
@@ -140,14 +173,18 @@ class _TaskScreenState extends State<TaskScreen> {
                                             label: 'Edit',
                                             spacing: 8,
                                             padding: EdgeInsets.only(
-                                                left: 4, top: 12, right: 4),
+                                              left: 4,
+                                              top: 12,
+                                              right: 4,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                           ),
                                           SlidableAction(
                                             onPressed: (_) {
                                               context.read<TasksBloc>().add(
-                                                  DeleteTaskEvent(deleteTask));
+                                                    DeleteTaskEvent(deleteTask),
+                                                  );
                                             },
                                             backgroundColor: Colors.red,
                                             foregroundColor: Colors.white,
@@ -155,14 +192,17 @@ class _TaskScreenState extends State<TaskScreen> {
                                             label: 'Delete',
                                             spacing: 8,
                                             padding: EdgeInsets.only(
-                                                left: 4, top: 12, right: 4),
+                                              left: 4,
+                                              top: 12,
+                                              right: 4,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                           ),
                                         ],
                                       ),
                                       child: TaskListCard(
-                                        task: tasks[index],
+                                        task: task,
                                       ),
                                     ),
                                   ),
@@ -187,7 +227,9 @@ class _TaskScreenState extends State<TaskScreen> {
                                 'Your task list is empty\n'
                                 'Create a new task to get started',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.purple),
+                                style: TextStyle(
+                                  color: Colors.purple,
+                                ),
                               ),
                             ),
                           ),
@@ -200,6 +242,81 @@ class _TaskScreenState extends State<TaskScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class MenuButtonWidget extends StatelessWidget {
+  const MenuButtonWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.menu),
+      onPressed: () {
+        showMenu(
+          context: context,
+          position: RelativeRect.fromLTRB(0, 20, 0, 0),
+          items: [
+            PopupMenuItem<String>(
+              value: 'Change app color',
+              child: Text('Change app color'),
+            ),
+            PopupMenuItem<String>(
+              value: 'Change app typography',
+              child: Text('Change app typography'),
+            ),
+            PopupMenuItem<String>(
+              value: 'Change app language',
+              child: Text('Change app language'),
+            ),
+            PopupMenuItem<String>(
+              value: 'Select sorting priorities',
+              child: Text('Select sorting priorities'),
+            ),
+          ],
+          elevation: 8.0,
+        ).then((value) {
+          if (value != null) {
+            debugPrint('Selected: $value');
+          }
+        });
+      },
+    );
+  }
+}
+
+class SearchTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const SearchTextField({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        decoration: InputDecoration(
+          labelText: 'Search tasks...',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: Colors.grey,
+              width: 1,
+            ),
+          ),
+        ),
       ),
     );
   }

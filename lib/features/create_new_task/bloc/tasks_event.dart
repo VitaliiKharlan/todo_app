@@ -54,3 +54,11 @@ class EditTaskEvent extends TasksEvent {
   final LocationDetailsModel? taskLocation;
   final List<DateTime>? taskRemindTime;
 }
+
+class SearchTaskEvent extends TasksEvent {
+  final String query;
+
+  SearchTaskEvent(
+    this.query,
+  );
+}
