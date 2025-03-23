@@ -7,11 +7,11 @@ class TaskPriorityFieldWidget extends StatefulWidget {
   const TaskPriorityFieldWidget({
     super.key,
     required this.taskPriority,
-    required this.onSelectedPriority,
+    required this.onSelectedTaskPriority,
   });
 
   final int? taskPriority;
-  final ValueChanged<int?> onSelectedPriority;
+  final ValueChanged<int?> onSelectedTaskPriority;
 
   @override
   State<TaskPriorityFieldWidget> createState() =>
@@ -19,30 +19,40 @@ class TaskPriorityFieldWidget extends StatefulWidget {
 }
 
 class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
-  int? _selectedPriority;
+  int? _taskPriority;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _taskPriority = widget.taskPriority;
+  // }
 
   @override
-  void initState() {
-    super.initState();
-    _selectedPriority = widget.taskPriority;
+  void didUpdateWidget(covariant TaskPriorityFieldWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.taskPriority != oldWidget.taskPriority) {
+      _taskPriority = widget.taskPriority;
+    }
   }
 
+
   void _openPriorityDialog() async {
-    final selectedPriority = await showDialog<int?>(
+    final taskPriority = await showDialog<int?>(
       context: context,
       builder: (BuildContext context) {
         return PriorityDialogWidget(
-          taskPriority: _selectedPriority,
+          taskPriority: _taskPriority,
         );
       },
     );
 
-    if (selectedPriority != null) {
+    if (taskPriority != null) {
       setState(() {
-        _selectedPriority = selectedPriority;
+        _taskPriority = taskPriority;
       });
 
-      widget.onSelectedPriority(selectedPriority);
+      widget.onSelectedTaskPriority(taskPriority);
     }
   }
 

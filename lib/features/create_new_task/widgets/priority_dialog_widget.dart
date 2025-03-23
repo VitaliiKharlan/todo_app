@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 class PriorityDialogWidget extends StatefulWidget {
@@ -18,7 +19,7 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
   @override
   void initState() {
     super.initState();
-    selectedPriority = widget.taskPriority ?? 10;
+    selectedPriority = widget.taskPriority ?? 1;
   }
 
   @override
@@ -91,11 +92,11 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.router.maybePop(),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(selectedPriority),
+          onPressed: () => context.router.maybePop(selectedPriority),
           child: const Text('Save'),
         ),
       ],

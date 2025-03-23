@@ -298,7 +298,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   SizedBox(height: 20),
                   TaskPriorityFieldWidget(
                     taskPriority: _taskPriority,
-                    onSelectedPriority: (newPriority) {
+                    onSelectedTaskPriority: (newPriority) {
                       setState(() {
                         _taskPriority = newPriority;
                       });

@@ -14,7 +14,7 @@ part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   final TaskRepository taskRepository;
-  List<Task> displayedTasks = [];
+  List<Task> _displayedTasks = [];
 
   TasksBloc({required this.taskRepository}) : super(InitialTasksState()) {
     on<LoadTasksEvent>(_onLoadTasks);
@@ -38,7 +38,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
-      displayedTasks = tasks;
+      _displayedTasks = tasks;
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
       debugPrint('Error: $e');
@@ -63,23 +63,13 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         taskRemindTime: event.taskRemindTime,
       );
 
-      debugPrint('New Task Created: '
-          'id=${newTask.taskId}; '
-          'title=${newTask.taskTitle}; '
-          'type=${newTask.taskType}; '
-          'priority=${newTask.taskPriority}; '
-          'deadline=${newTask.taskDeadline}; '
-          'description=${newTask.taskDescription}; '
-          'location=${newTask.taskLocation}; '
-          'remindTime=${newTask.taskRemindTime}');
-
       if (state is TasksLoadedState) {
         final currentTasks = (state as TasksLoadedState).tasks;
         tasks.addAll(currentTasks);
         debugPrint('Loaded Tasks State');
       }
       tasks.add(newTask);
-      displayedTasks = tasks;
+      _displayedTasks = tasks;
 
       emit(TasksLoadedState(tasks));
       await taskRepository.addTask(newTask.toMap());
@@ -101,7 +91,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
         final updatedTasks =
             currentTasks.where((task) => task != event.taskDelete).toList();
-        displayedTasks = updatedTasks;
+        _displayedTasks = updatedTasks;
 
         debugPrint('Task deleted: ${event.taskDelete}');
         emit(TasksLoadedState(updatedTasks));
@@ -154,25 +144,19 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   Future<void> _onSearchTask(
       SearchTaskEvent event, Emitter<TasksState> emit) async {
     try {
-      debugPrint('Search Tasks Event with query: "${event.query}"');
-
       if (state is TasksLoadedState) {
-        final currentState = state as TasksLoadedState;
-        debugPrint((currentState.tasks).toString());
         final query = event.query.toLowerCase().trim();
 
         if (query.isEmpty) {
-          debugPrint('Query is empty, returning all tasks');
-          emit(TasksLoadedState(displayedTasks));
+          emit(TasksLoadedState(_displayedTasks));
         } else {
-          final filteredTasks = displayedTasks.where((task) {
+          final filteredTasks = _displayedTasks.where((task) {
             final taskTitle = task.taskTitle.toLowerCase();
             final words = taskTitle.split(' ');
             return words.any((word) => word.startsWith(query));
           }).toList();
 
           emit(TasksLoadedState(filteredTasks));
-          debugPrint('Filtered tasks: ${filteredTasks.length} tasks found');
         }
       }
     } catch (e, s) {

@@ -21,9 +21,12 @@ class _TaskTypeFieldWidgetState extends State<TaskTypeFieldWidget> {
   TaskType? _selectedTaskType;
 
   @override
-  void initState() {
-    super.initState();
-    _selectedTaskType = widget.selectedTaskType;
+  void didUpdateWidget(covariant TaskTypeFieldWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.selectedTaskType != oldWidget.selectedTaskType) {
+      _selectedTaskType = widget.selectedTaskType;
+    }
   }
 
   void _onTaskTypeSelected(TaskType type) {
@@ -48,43 +51,30 @@ class _TaskTypeFieldWidgetState extends State<TaskTypeFieldWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: TaskType.values.take(5).map((TaskType type) {
             return Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: widget.selectedTaskType == type
-                            ? Colors.blue
-                            : Colors.blue[100],
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                      ).copyWith(
-                        shape: WidgetStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        _onTaskTypeSelected(type);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            type.name,
-                            style: TextStyle(
-                              color: _selectedTaskType == type
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 8,
-                            ),
-                          ),
-                        ],
-                      ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _selectedTaskType == type
+                      ? Colors.blue
+                      : Colors.blue[100],
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                ).copyWith(
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  const SizedBox(width: 4),
-                ],
+                ),
+                onPressed: () {
+                  _onTaskTypeSelected(type);
+                },
+                child: Text(
+                  type.name,
+                  style: TextStyle(
+                    color:
+                        _selectedTaskType == type ? Colors.white : Colors.black,
+                    fontSize: 8,
+                  ),
+                ),
               ),
             );
           }).toList(),

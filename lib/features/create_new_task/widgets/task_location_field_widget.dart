@@ -20,7 +20,7 @@ class TaskLocationFieldWidget extends StatefulWidget {
 }
 
 class _TaskLocationFieldWidgetState extends State<TaskLocationFieldWidget> {
-  _getLocationFromPreviousScreen() async {
+  Future<void> _getLocationFromPreviousScreen() async {
     final result =
         await context.router.push<LocationDetailsModel>(LocationSearchRoute());
     if (result != null) {
