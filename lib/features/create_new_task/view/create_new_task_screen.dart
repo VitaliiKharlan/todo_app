@@ -298,7 +298,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   SizedBox(height: 20),
                   TaskPriorityFieldWidget(
                     taskPriority: _taskPriority,
-                    onPrioritySelected: (newPriority) {
+                    onSelectedPriority: (newPriority) {
                       setState(() {
                         _taskPriority = newPriority;
                       });
@@ -307,8 +307,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                   SizedBox(height: 20),
                   TaskDeadlineFieldWidget(
                     selectedDeadline: _selectedDeadline,
-                    onSelectDeadlineDate: () => _selectDate(context),
-                    onSelectDeadlineTime: () => _selectTime(context),
+                    onSelectedDeadlineDate: () => _selectDate(context),
+                    onSelectedDeadlineTime: () => _selectTime(context),
                   ),
                   SizedBox(height: 20),
                 ],
@@ -329,10 +329,10 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     onLocationPicked: onLocationPicked,
                   ),
                   SizedBox(height: 20),
-                  TaskRemindTimeFieldWidget(
-                    selectedRemindTime: _selectedRemindTime,
-                    onSelectRemindDate: () => _selectRemindDate(context),
-                    onSelectRemindTime: () => _selectRemindTime(context),
+                  TaskRemindDateTimeFieldWidget(
+                    selectedRemindDateTime: _selectedRemindTime,
+                    onSelectedRemindDate: () => _selectRemindDate(context),
+                    onSelectedRemindTime: () => _selectRemindTime(context),
                   ),
                   SizedBox(height: 20),
                   SizedBox(

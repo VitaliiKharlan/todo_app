@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/ui/theme/app_text_style.dart';
 
-class TaskRemindTimeFieldWidget extends StatelessWidget {
-  const TaskRemindTimeFieldWidget({
+class TaskRemindDateTimeFieldWidget extends StatelessWidget {
+  const TaskRemindDateTimeFieldWidget({
     super.key,
-    required this.selectedRemindTime,
-    required this.onSelectRemindDate,
-    required this.onSelectRemindTime,
+    required this.selectedRemindDateTime,
+    required this.onSelectedRemindDate,
+    required this.onSelectedRemindTime,
   });
 
-  final List<DateTime>? selectedRemindTime;
-  final Function() onSelectRemindDate;
-  final Function() onSelectRemindTime;
+  final List<DateTime>? selectedRemindDateTime;
+  final VoidCallback onSelectedRemindDate;
+  final VoidCallback onSelectedRemindTime;
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +32,18 @@ class TaskRemindTimeFieldWidget extends StatelessWidget {
           width: double.infinity,
           height: 40,
           child: ElevatedButton.icon(
-            onPressed: onSelectRemindDate,
+            onPressed: onSelectedRemindDate,
             icon: const Icon(Icons.calendar_today),
             label: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(width: 8),
                 Text(
-                  selectedRemindTime == null || selectedRemindTime!.isEmpty
+                  selectedRemindDateTime == null ||
+                          selectedRemindDateTime!.isEmpty
                       ? 'Pick Remind Date'
                       : DateFormat('dd MMMM, EEEE')
-                          .format(selectedRemindTime!.last),
+                          .format(selectedRemindDateTime!.last),
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -66,16 +67,18 @@ class TaskRemindTimeFieldWidget extends StatelessWidget {
           width: double.infinity,
           height: 40,
           child: ElevatedButton.icon(
-            onPressed: onSelectRemindTime,
+            onPressed: onSelectedRemindTime,
             icon: const Icon(Icons.access_time),
             label: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(width: 8),
                 Text(
-                  selectedRemindTime == null || selectedRemindTime!.isEmpty
+                  selectedRemindDateTime == null ||
+                          selectedRemindDateTime!.isEmpty
                       ? 'Pick Remind Time'
-                      : DateFormat('HH:mm').format(selectedRemindTime!.last),
+                      : DateFormat('HH:mm')
+                          .format(selectedRemindDateTime!.last),
                   style: TextStyle(fontSize: 16),
                 ),
               ],

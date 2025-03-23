@@ -7,11 +7,11 @@ class TaskPriorityFieldWidget extends StatefulWidget {
   const TaskPriorityFieldWidget({
     super.key,
     required this.taskPriority,
-    required this.onPrioritySelected,
+    required this.onSelectedPriority,
   });
 
   final int? taskPriority;
-  final ValueChanged<int?> onPrioritySelected;
+  final ValueChanged<int?> onSelectedPriority;
 
   @override
   State<TaskPriorityFieldWidget> createState() =>
@@ -42,7 +42,7 @@ class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
         _selectedPriority = selectedPriority;
       });
 
-      widget.onPrioritySelected(selectedPriority);
+      widget.onSelectedPriority(selectedPriority);
     }
   }
 

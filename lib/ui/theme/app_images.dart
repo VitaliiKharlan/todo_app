@@ -6,7 +6,6 @@ abstract class AppImages {
   //
   static const String backgroundImage = '${_basePath}background_image.jpg';
   static const String profileImage = '${_basePath}profile_image.jpg';
-  static const String profileImage_2 = '${_basePath}profile_image_2.jpg';
 
   //
   static const String smallIconSun = '${_basePathForIcons}small_icon_sun.png';

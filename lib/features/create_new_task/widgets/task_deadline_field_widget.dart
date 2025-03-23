@@ -8,13 +8,13 @@ class TaskDeadlineFieldWidget extends StatelessWidget {
   const TaskDeadlineFieldWidget({
     super.key,
     required this.selectedDeadline,
-    required this.onSelectDeadlineDate,
-    required this.onSelectDeadlineTime,
+    required this.onSelectedDeadlineDate,
+    required this.onSelectedDeadlineTime,
   });
 
   final DateTime? selectedDeadline;
-  final VoidCallback onSelectDeadlineDate;
-  final VoidCallback onSelectDeadlineTime;
+  final VoidCallback onSelectedDeadlineDate;
+  final VoidCallback onSelectedDeadlineTime;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class TaskDeadlineFieldWidget extends StatelessWidget {
               width: double.infinity,
               height: 40,
               child: ElevatedButton.icon(
-                onPressed: onSelectDeadlineDate,
+                onPressed: onSelectedDeadlineDate,
                 icon: const Icon(Icons.calendar_today),
                 label: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -72,7 +72,7 @@ class TaskDeadlineFieldWidget extends StatelessWidget {
               width: double.infinity,
               height: 40,
               child: ElevatedButton.icon(
-                onPressed: onSelectDeadlineTime,
+                onPressed: onSelectedDeadlineTime,
                 icon: const Icon(Icons.access_time),
                 label: Row(
                   mainAxisAlignment: MainAxisAlignment.start,

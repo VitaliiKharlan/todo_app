@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'dart:ui';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
@@ -29,8 +28,6 @@ class _TaskScreenState extends State<TaskScreen> {
   final ScrollController scrollController = ScrollController();
   final TextEditingController searchController = TextEditingController();
 
-  List<Task> filteredTasks = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +48,7 @@ class _TaskScreenState extends State<TaskScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: CircleAvatar(
-              backgroundImage: AssetImage(AppImages.profileImage_2),
+              backgroundImage: AssetImage(AppImages.profileImage),
               radius: 20,
             ),
           ),
@@ -115,7 +112,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       child: SizedBox(height: 24),
                     ),
                     SliverToBoxAdapter(
-                      child: SearchTextField(
+                      child: _SearchTextField(
                         controller: searchController,
                         onChanged: (query) {
                           context.read<TasksBloc>().add(SearchTaskEvent(query));
@@ -289,12 +286,11 @@ class MenuButtonWidget extends StatelessWidget {
   }
 }
 
-class SearchTextField extends StatelessWidget {
+class _SearchTextField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
-  const SearchTextField({
-    super.key,
+  const _SearchTextField({
     required this.controller,
     required this.onChanged,
   });

@@ -14,7 +14,7 @@ part 'tasks_state.dart';
 
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   final TaskRepository taskRepository;
-  List<Task> allTasks = [];
+  List<Task> displayedTasks = [];
 
   TasksBloc({required this.taskRepository}) : super(InitialTasksState()) {
     on<LoadTasksEvent>(_onLoadTasks);
@@ -38,7 +38,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
-      allTasks = tasks;
+      displayedTasks = tasks;
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
       debugPrint('Error: $e');
@@ -79,7 +79,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
         debugPrint('Loaded Tasks State');
       }
       tasks.add(newTask);
-      allTasks = tasks;
+      displayedTasks = tasks;
 
       emit(TasksLoadedState(tasks));
       await taskRepository.addTask(newTask.toMap());
@@ -101,6 +101,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
         final updatedTasks =
             currentTasks.where((task) => task != event.taskDelete).toList();
+        displayedTasks = updatedTasks;
 
         debugPrint('Task deleted: ${event.taskDelete}');
         emit(TasksLoadedState(updatedTasks));
@@ -162,9 +163,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
 
         if (query.isEmpty) {
           debugPrint('Query is empty, returning all tasks');
-          emit(TasksLoadedState(allTasks));
+          emit(TasksLoadedState(displayedTasks));
         } else {
-          final filteredTasks = allTasks.where((task) {
+          final filteredTasks = displayedTasks.where((task) {
             final taskTitle = task.taskTitle.toLowerCase();
             final words = taskTitle.split(' ');
             return words.any((word) => word.startsWith(query));
