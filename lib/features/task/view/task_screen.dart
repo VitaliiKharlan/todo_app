@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/bloc/theme/theme_cubit.dart';
 import 'dart:ui';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
@@ -251,6 +252,8 @@ class MenuButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightnessValue = context.read<ThemeCubit>();
+    final brightnessValueIsLight = brightnessValue.state.isLight;
     return IconButton(
       icon: Icon(Icons.menu),
       onPressed: () {
@@ -261,6 +264,9 @@ class MenuButtonWidget extends StatelessWidget {
             PopupMenuItem<String>(
               value: 'Change app color',
               child: Text('Change app color'),
+              onTap: () {
+                _setThemeBrightness(brightnessValue, brightnessValueIsLight);
+              },
             ),
             PopupMenuItem<String>(
               value: 'Change app typography',
@@ -283,6 +289,12 @@ class MenuButtonWidget extends StatelessWidget {
         });
       },
     );
+  }
+
+  void _setThemeBrightness(
+      ThemeCubit brightnessValue, bool brightnessValueIsLight) {
+    brightnessValue.setThemeBrightness(
+        brightnessValueIsLight ? Brightness.dark : Brightness.light);
   }
 }
 

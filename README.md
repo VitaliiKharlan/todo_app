@@ -25,6 +25,10 @@ flutter pub run flutter_launcher_icons
 flutter packages pub run build_runner watch
 dart run build_runner build --delete-conflicting-outputs
 
+# how to clean and rerun the build using build tools
+flutter clean
+dart run build_runner clean
+
 
 # how to run auto_route
 
@@ -42,3 +46,8 @@ git add .
 git commit -m "add readme"
 git branch -M main
 git push -u main
+
+# how to update local repository after making change on remote 
+# (for example creating new branch by another user)
+
+git fetch
