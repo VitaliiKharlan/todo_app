@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app/bloc/theme/theme_cubit.dart';
 import 'dart:ui';
 
 import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/features/task/task.dart';
-import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/ui.dart';
 export 'package:todo_app/main_prod.dart' show useMockData;
 
@@ -31,6 +28,8 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -91,7 +90,7 @@ class _TaskScreenState extends State<TaskScreen> {
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
             child: Container(
-              color: Colors.black.withAlpha(30),
+              color: Color(0x1A0000FF),
             ),
           ),
           ScrollbarTheme(
@@ -138,81 +137,15 @@ class _TaskScreenState extends State<TaskScreen> {
                             );
                           }
 
-                          return SliverList.builder(
-                              itemCount: tasks.length,
-                              itemBuilder: (context, index) {
-                                final task = tasks[index];
-                                final deleteTask = tasks[index];
-                                final editTask = tasks[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 12,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Slidable(
-                                      key: ValueKey(index),
-                                      endActionPane: ActionPane(
-                                        motion: const ScrollMotion(),
-                                        extentRatio: 0.4,
-                                        children: [
-                                          SlidableAction(
-                                            onPressed: (_) {
-                                              context.pushRoute(
-                                                CreateNewTaskRoute(
-                                                  editTask: editTask,
-                                                ),
-                                              );
-                                            },
-                                            backgroundColor: Colors.green,
-                                            foregroundColor: Colors.white,
-                                            icon: Icons.edit,
-                                            label: 'Edit',
-                                            spacing: 8,
-                                            padding: EdgeInsets.only(
-                                              left: 4,
-                                              top: 12,
-                                              right: 4,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          SlidableAction(
-                                            onPressed: (_) {
-                                              context.read<TasksBloc>().add(
-                                                    DeleteTaskEvent(deleteTask),
-                                                  );
-                                            },
-                                            backgroundColor: Colors.red,
-                                            foregroundColor: Colors.white,
-                                            icon: Icons.delete,
-                                            label: 'Delete',
-                                            spacing: 8,
-                                            padding: EdgeInsets.only(
-                                              left: 4,
-                                              top: 12,
-                                              right: 4,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                        ],
-                                      ),
-                                      child: TaskListCard(
-                                        task: task,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              });
+                          return CardBuilderWidget(tasks: tasks, theme: theme);
                         }
                         if (state is TasksDeletingFailureState) {
                           return SliverFillRemaining(
                             child: Center(
                               child: Text(
-                                state.exception?.toString() ?? 'MAGA',
-                                style: AppTextStyle.defaultListCardMain,
+                                state.exception?.toString() ??
+                                    'something went wrong',
+                                style: theme.textTheme.bodyMedium,
                               ),
                             ),
                           );
@@ -225,9 +158,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                 'Your task list is empty\n'
                                 'Create a new task to get started',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.purple,
-                                ),
+                                style: theme.textTheme.bodyMedium,
                               ),
                             ),
                           ),
@@ -242,59 +173,6 @@ class _TaskScreenState extends State<TaskScreen> {
         ],
       ),
     );
-  }
-}
-
-class MenuButtonWidget extends StatelessWidget {
-  const MenuButtonWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final brightnessValue = context.read<ThemeCubit>();
-    final brightnessValueIsLight = brightnessValue.state.isLight;
-    return IconButton(
-      icon: Icon(Icons.menu),
-      onPressed: () {
-        showMenu(
-          context: context,
-          position: RelativeRect.fromLTRB(0, 20, 0, 0),
-          items: [
-            PopupMenuItem<String>(
-              value: 'Change app color',
-              child: Text('Change app color'),
-              onTap: () {
-                _setThemeBrightness(brightnessValue, brightnessValueIsLight);
-              },
-            ),
-            PopupMenuItem<String>(
-              value: 'Change app typography',
-              child: Text('Change app typography'),
-            ),
-            PopupMenuItem<String>(
-              value: 'Change app language',
-              child: Text('Change app language'),
-            ),
-            PopupMenuItem<String>(
-              value: 'Select sorting priorities',
-              child: Text('Select sorting priorities'),
-            ),
-          ],
-          elevation: 8.0,
-        ).then((value) {
-          if (value != null) {
-            debugPrint('Selected: $value');
-          }
-        });
-      },
-    );
-  }
-
-  void _setThemeBrightness(
-      ThemeCubit brightnessValue, bool brightnessValueIsLight) {
-    brightnessValue.setThemeBrightness(
-        brightnessValueIsLight ? Brightness.dark : Brightness.light);
   }
 }
 

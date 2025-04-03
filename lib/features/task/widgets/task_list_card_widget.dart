@@ -11,8 +11,8 @@ import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 import 'package:todo_app/router/router.dart';
 import 'package:todo_app/ui/widgets/base_container.dart';
 
-class TaskListCard extends StatefulWidget {
-  const TaskListCard({
+class TaskListCardWidget extends StatefulWidget {
+  const TaskListCardWidget({
     super.key,
     required this.task,
   });
@@ -20,10 +20,10 @@ class TaskListCard extends StatefulWidget {
   final Task task;
 
   @override
-  State<TaskListCard> createState() => _TaskListCardState();
+  State<TaskListCardWidget> createState() => _TaskListCardWidgetState();
 }
 
-class _TaskListCardState extends State<TaskListCard> {
+class _TaskListCardWidgetState extends State<TaskListCardWidget> {
   late Timer _timer;
   DateTime _currentTime = DateTime.now();
 
@@ -49,9 +49,32 @@ class _TaskListCardState extends State<TaskListCard> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     final now = _currentTime;
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
+
+    final titleTextStyle = theme.textTheme.bodySmall?.copyWith(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Colors.green,
+    );
+    final taskPriorityTextStyle = theme.textTheme.bodySmall?.copyWith(
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+      color: Colors.red,
+    );
+    final createAtDateTimeTextStyle = theme.textTheme.bodySmall?.copyWith(
+      color: Colors.purple,
+    );
+    final deadlineDateTimeTextStyle = theme.textTheme.bodySmall?.copyWith(
+      color: Colors.redAccent,
+    );
+    final taskLocationTextStyle = theme.textTheme.bodySmall?.copyWith(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Colors.purpleAccent,
+    );
 
     return GestureDetector(
       onTap: () {
@@ -68,7 +91,9 @@ class _TaskListCardState extends State<TaskListCard> {
       child: BaseContainer(
         height: 160,
         width: double.infinity,
-        color: isDeadlinePassed ? Colors.red.withAlpha(50) : theme.cardColor,
+        color: isDeadlinePassed
+            ? Colors.red.withAlpha(50)
+            : theme.colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -120,11 +145,7 @@ class _TaskListCardState extends State<TaskListCard> {
                               widget.task.taskPriority != null
                                   ? widget.task.taskPriority.toString()
                                   : '',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.purple,
-                              ),
+                              style: taskPriorityTextStyle,
                             ),
                           ),
                         ),
@@ -135,11 +156,7 @@ class _TaskListCardState extends State<TaskListCard> {
                   Expanded(
                     child: Text(
                       widget.task.taskTitle,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.purple,
-                      ),
+                      style: titleTextStyle,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -152,50 +169,44 @@ class _TaskListCardState extends State<TaskListCard> {
                           Text(
                             DateFormat('d MMM')
                                 .format(widget.task.taskCreatedAt),
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontSize: 12,
+                            style: createAtDateTimeTextStyle?.copyWith(
                               fontWeight: FontWeight.w800,
-                              color: Colors.purple,
                             ),
                           ),
                           SizedBox(height: 2),
                           Text(
                             DateFormat('HH:mm')
                                 .format(widget.task.taskCreatedAt),
-                            style: theme.textTheme.bodySmall?.copyWith(
+                            style: createAtDateTimeTextStyle?.copyWith(
                               fontSize: 10,
                               fontWeight: FontWeight.w500,
-                              color: Colors.purple,
                             ),
                           ),
                           if (widget.task.taskDeadline != null) ...[
                             SizedBox(height: 12),
                             Text(
                               'Deadline: ',
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: deadlineDateTimeTextStyle?.copyWith(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.red,
                               ),
                             ),
                             SizedBox(height: 2),
                             Text(
                               DateFormat('d MMM')
                                   .format(widget.task.taskDeadline!),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: deadlineDateTimeTextStyle?.copyWith(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w800,
-                                color: Colors.red,
                               ),
                             ),
                             SizedBox(height: 2),
                             Text(
                               DateFormat('HH:mm')
                                   .format(widget.task.taskDeadline!),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: deadlineDateTimeTextStyle?.copyWith(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.red,
                               ),
                             ),
                           ],
@@ -210,11 +221,7 @@ class _TaskListCardState extends State<TaskListCard> {
             if (widget.task.taskLocation != null)
               Text(
                 widget.task.taskLocation.toString(),
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.purple,
-                ),
+                style: taskLocationTextStyle,
                 overflow: TextOverflow.ellipsis,
               ),
           ],

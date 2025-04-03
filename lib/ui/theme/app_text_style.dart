@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 abstract class AppTextStyle {
+  static const appBar = TextStyle(
+    fontFamily: 'SF Pro Text',
+    fontSize: 15,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 1.0,
+    letterSpacing: 0.0,
+  );
+
   static const dateProgressIndicator = TextStyle(
     fontFamily: 'SF Pro Display',
     fontSize: 18,
@@ -10,9 +21,9 @@ abstract class AppTextStyle {
     letterSpacing: 0.0,
   );
 
-  static const appBar = TextStyle(
-    fontFamily: 'SF Pro Text',
-    fontSize: 15,
+  static final card = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontSize: 12,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
     height: 1.0,
@@ -45,7 +56,4 @@ abstract class AppTextStyle {
     height: 1.0,
     letterSpacing: 0.0,
   );
-
-
-
 }

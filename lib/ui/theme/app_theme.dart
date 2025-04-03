@@ -10,19 +10,29 @@ final lightTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: Colors.white,
   colorScheme: ColorScheme.fromSeed(
+    // Используется как основной цвет для генерации всех остальных цветов схемы (если не заданы явно).
     seedColor: primaryColor,
+    // Определяет цвет фона для карточек, NavigationBar, BottomSheet и других элементов UI.
     surface: Colors.white,
+    // Цвет текста и иконок, которые располагаются на surface.
     onSurface: Colors.black,
+    // Главный цвет приложения, используется для кнопок, индикаторов, AppBar, FAB и других важных элементов.
     primary: Colors.red,
-    onPrimary: Colors.black,
+    // Цвет текста и иконок, которые располагаются на primary.
+    onPrimary: Colors.blue[100],
+    // Вторичный цвет, используется для выделения менее важных кнопок, тегов, переключателей и акцентов.
     secondary: Colors.lightGreen,
+    // Цвет текста и иконок, которые располагаются на secondary.
     onSecondary: Colors.white,
-    brightness: Brightness.light,
   ),
   appBarTheme: const AppBarTheme(
+    // убирает тень.
     elevation: 0,
+    // иконки в AppBar белые.
     iconTheme: IconThemeData(color: Colors.white),
-    backgroundColor: Color.fromARGB(48, 48, 48, 48),
+    // фон AppBar
+    backgroundColor: Color(0xFF42FF00),
+    // заголовок AppBar
     titleTextStyle: TextStyle(
       color: Colors.red,
       fontWeight: FontWeight.w700,
@@ -30,7 +40,14 @@ final lightTheme = ThemeData(
     ),
   ),
   textTheme: _textTheme,
-  listTileTheme: const ListTileThemeData(iconColor: Colors.white),
+  listTileTheme: ListTileThemeData(
+    titleTextStyle: AppTextStyle.appBar.copyWith(
+      color: Colors.green,
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+    ),
+    iconColor: Colors.green,
+  ),
   dividerTheme: DividerThemeData(
     color: Colors.grey.withAlpha(20),
   ),
@@ -40,11 +57,11 @@ final darkTheme = ThemeData(
   useMaterial3: true,
   primaryColor: primaryColor,
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: const Color.fromARGB(248, 48, 48, 48),
+  scaffoldBackgroundColor: const Color(0xFF146464),
   colorScheme: ColorScheme.fromSeed(
     seedColor: primaryColor,
-    surface: Colors.white,
-    onSurface: Colors.black,
+    surface: Color(0xFF5A2323),
+    onSurface: Color(0xFFFFFFFF),
     primary: Colors.red,
     onPrimary: Colors.black,
     secondary: Colors.lightGreen,
@@ -54,7 +71,7 @@ final darkTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.white),
-    backgroundColor: Color.fromARGB(48, 48, 48, 48),
+    backgroundColor: Color(0xFF888888),
     titleTextStyle: TextStyle(
       color: Colors.red,
       fontWeight: FontWeight.w700,
@@ -62,7 +79,15 @@ final darkTheme = ThemeData(
     ),
   ),
   textTheme: _textTheme,
-  listTileTheme: const ListTileThemeData(iconColor: Colors.white),
+  listTileTheme: ListTileThemeData(
+    titleTextStyle: AppTextStyle.appBar.copyWith(
+      color: Colors.green,
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+    ),
+    iconColor: Colors.green,
+  ),
+
   dividerTheme: DividerThemeData(
     color: Colors.white.withAlpha(20),
   ),
@@ -74,11 +99,13 @@ final _textTheme = TextTheme(
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
+  bodySmall: AppTextStyle.card,
   bodyMedium: AppTextStyle.description.copyWith(
     color: Colors.white,
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
+
   labelSmall: AppTextStyle.promo.copyWith(
     color: Colors.white.withAlpha(80),
     fontSize: 14,
