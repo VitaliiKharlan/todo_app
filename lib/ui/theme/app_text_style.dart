@@ -5,9 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 abstract class AppTextStyle {
   static const appBar = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 15,
+    fontSize: 20,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w800,
     height: 1.0,
     letterSpacing: 0.0,
   );

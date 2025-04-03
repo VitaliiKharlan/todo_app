@@ -37,10 +37,7 @@ class _TaskScreenState extends State<TaskScreen> {
         title: Center(
           child: Text(
             'TODO',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: theme.appBarTheme.titleTextStyle,
           ),
         ),
         leading: MenuButtonWidget(),
@@ -93,82 +90,104 @@ class _TaskScreenState extends State<TaskScreen> {
               color: Color(0x1A0000FF),
             ),
           ),
-          ScrollbarTheme(
-            data: ScrollbarThemeData(
-              thumbColor: WidgetStateProperty.all(Colors.blue[100]),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 2),
-              child: Scrollbar(
-                controller: scrollController,
-                thumbVisibility: true,
-                trackVisibility: true,
-                thickness: 8,
-                child: CustomScrollView(
-                  controller: scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 24),
-                    ),
-                    SliverToBoxAdapter(
-                      child: _SearchTextField(
-                        controller: searchController,
-                        onChanged: (query) {
-                          context.read<TasksBloc>().add(SearchTaskEvent(query));
-                        },
+          Column(
+            children: [
+              SizedBox(height: 24),
+              _SearchTextField(
+                controller: searchController,
+                onChanged: (query) {
+                  context.read<TasksBloc>().add(SearchTaskEvent(query));
+                },
+              ),
+              SizedBox(height: 24),
+              Expanded(
+                child: ScrollbarTheme(
+                  data: ScrollbarThemeData(
+                    thumbColor: WidgetStateProperty.all(Colors.blue[100]),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 2),
+                    child: Scrollbar(
+                      controller: scrollController,
+                      thumbVisibility: true,
+                      trackVisibility: true,
+                      thickness: 8,
+                      child: CustomScrollView(
+                        controller: scrollController,
+                        physics: const BouncingScrollPhysics(),
+                        slivers: [
+                          BlocBuilder<TasksBloc, TasksState>(
+                            builder: (context, state) {
+                              if (state is TasksLoadedState) {
+                                final tasks = state.tasks;
+                                tasks.sort((a, b) =>
+                                    b.taskCreatedAt.compareTo(a.taskCreatedAt));
+
+                                if (tasks.isEmpty) {
+                                  return SliverToBoxAdapter(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'No tasks available',
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              'try looking for something else',
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                return CardBuilderWidget(
+                                    tasks: tasks, theme: theme);
+                              }
+                              if (state is TasksDeletingFailureState) {
+                                return SliverFillRemaining(
+                                  child: Center(
+                                    child: Text(
+                                      state.exception?.toString() ??
+                                          'something went wrong',
+                                      style: theme.textTheme.bodyMedium,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return SliverFillRemaining(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 400),
+                                  child: Center(
+                                    child: Text(
+                                      'Your task list is empty\n'
+                                      'Create a new task to get started',
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.bodyMedium,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                    BlocBuilder<TasksBloc, TasksState>(
-                      builder: (context, state) {
-                        if (state is TasksLoadedState) {
-                          final tasks = state.tasks;
-                          tasks.sort((a, b) =>
-                              b.taskCreatedAt.compareTo(a.taskCreatedAt));
-
-                          if (tasks.isEmpty) {
-                            return SliverToBoxAdapter(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Center(
-                                  child: Text('No tasks available'),
-                                ),
-                              ),
-                            );
-                          }
-
-                          return CardBuilderWidget(tasks: tasks, theme: theme);
-                        }
-                        if (state is TasksDeletingFailureState) {
-                          return SliverFillRemaining(
-                            child: Center(
-                              child: Text(
-                                state.exception?.toString() ??
-                                    'something went wrong',
-                                style: theme.textTheme.bodyMedium,
-                              ),
-                            ),
-                          );
-                        }
-                        return SliverFillRemaining(
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 400),
-                            child: Center(
-                              child: Text(
-                                'Your task list is empty\n'
-                                'Create a new task to get started',
-                                textAlign: TextAlign.center,
-                                style: theme.textTheme.bodyMedium,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),

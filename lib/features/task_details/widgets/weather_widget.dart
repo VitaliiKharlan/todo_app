@@ -10,7 +10,7 @@ import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
+
 
 class WeatherWidget extends StatefulWidget {
   const WeatherWidget({
@@ -107,7 +107,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             Text(
                               '${state.localizedName}, ${state.countryName}',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -115,8 +115,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             Text(
                               state.weatherCurrentDescription.toString(),
                               style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
+                                fontSize: 14,
+                                color: Color(0xFF9E9E9E),
                               ),
                             ),
                             SizedBox(height: 4),
@@ -124,17 +124,17 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                               DateFormat("HH:mm").format(
                                   state.weatherLocalObservationDateTime),
                               style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[500],
+                                fontSize: 12,
+                                color: Colors.purple,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(width: 60),
+                        SizedBox(width: 40),
                         Text(
                           '${state.weatherCurrentTemperature.toStringAsFixed(0)}\u00B0',
                           style: TextStyle(
-                            fontSize: 36,
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
@@ -185,6 +185,7 @@ class _HourlyForecastItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 4,
@@ -224,16 +225,20 @@ class _HourlyForecastItemWidget extends StatelessWidget {
                       RichText(
                         softWrap: false,
                         text: TextSpan(
-                          style: TextStyle(
+                          style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.blue,
-                            fontWeight: FontWeight.bold,
                             fontSize: 14,
+                            fontWeight: FontWeight.bold,
                           ),
                           children: [
                             TextSpan(text: '18 '),
                             TextSpan(
                               text: '\u00B0C',
-                              style: TextStyle(fontSize: 12),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: Colors.blue,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -241,7 +246,7 @@ class _HourlyForecastItemWidget extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         '09:00',
-                        style: AppTextStyle.description.copyWith(
+                        style: theme.textTheme.bodySmall?.copyWith(
                           color: Colors.red,
                           fontSize: 10,
                         ),

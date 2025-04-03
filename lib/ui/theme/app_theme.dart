@@ -25,18 +25,16 @@ final lightTheme = ThemeData(
     // Цвет текста и иконок, которые располагаются на secondary.
     onSecondary: Colors.white,
   ),
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     // убирает тень.
     elevation: 0,
     // иконки в AppBar белые.
-    iconTheme: IconThemeData(color: Colors.white),
+    iconTheme: IconThemeData(color: Colors.black),
     // фон AppBar
     backgroundColor: Color(0xFF42FF00),
     // заголовок AppBar
-    titleTextStyle: TextStyle(
-      color: Colors.red,
-      fontWeight: FontWeight.w700,
-      fontSize: 20,
+    titleTextStyle: AppTextStyle.appBar.copyWith(
+      color: Colors.black,
     ),
   ),
   textTheme: _textTheme,
@@ -68,14 +66,12 @@ final darkTheme = ThemeData(
     onSecondary: Colors.white,
     brightness: Brightness.dark,
   ),
-  appBarTheme: const AppBarTheme(
+  appBarTheme: AppBarTheme(
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.white),
     backgroundColor: Color(0xFF888888),
-    titleTextStyle: TextStyle(
-      color: Colors.red,
-      fontWeight: FontWeight.w700,
-      fontSize: 20,
+    titleTextStyle: AppTextStyle.appBar.copyWith(
+      color: Colors.white,
     ),
   ),
   textTheme: _textTheme,
@@ -101,7 +97,7 @@ final _textTheme = TextTheme(
   ),
   bodySmall: AppTextStyle.card,
   bodyMedium: AppTextStyle.description.copyWith(
-    color: Colors.white,
+    color: Colors.blueGrey,
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
