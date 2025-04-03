@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:todo_app/features/create_new_task/widgets/priority_dialog_widget.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class TaskPriorityFieldWidget extends StatefulWidget {
   const TaskPriorityFieldWidget({
@@ -21,12 +20,6 @@ class TaskPriorityFieldWidget extends StatefulWidget {
 class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
   int? _taskPriority;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _taskPriority = widget.taskPriority;
-  // }
-
   @override
   void didUpdateWidget(covariant TaskPriorityFieldWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -35,7 +28,6 @@ class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
       _taskPriority = widget.taskPriority;
     }
   }
-
 
   void _openPriorityDialog() async {
     final taskPriority = await showDialog<int?>(
@@ -58,13 +50,14 @@ class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Priority',
-          style: AppTextStyle.appBar.copyWith(
-              fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
+          style: theme.textTheme.titleLarge,
         ),
         SizedBox(height: 12),
         SizedBox(
@@ -83,18 +76,29 @@ class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
                   widget.taskPriority == null
                       ? 'Pick a priority'
                       : widget.taskPriority.toString(),
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: widget.taskPriority == null
+                        ? FontWeight.normal
+                        : FontWeight.bold,
+                    // fontStyle: widget.taskPriority == null
+                    //     ? FontStyle.normal
+                    //     : FontStyle.italic,
+                    color: widget.taskPriority == null
+                        ? Colors.grey
+                        : Colors.black,
+                  ),
                 ),
               ],
             ),
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all(Colors.white),
               foregroundColor: WidgetStateProperty.all(
-                Colors.black.withAlpha(60),
+                Color(0x40000000),
               ),
               side: WidgetStateProperty.all(
                 BorderSide(
-                  color: Colors.grey.withAlpha(80),
+                  color: Color(0x40A9A9A9),
                   width: 2,
                 ),
               ),

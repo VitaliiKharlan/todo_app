@@ -42,14 +42,14 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
           ),
           itemCount: 10,
           itemBuilder: (context, index) {
-            int priority = index + 1;
+            final priority = index + 1;
             return GestureDetector(
               onTap: () {
                 setState(() {
                   selectedPriority = priority;
                 });
               },
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: selectedPriority == priority
                       ? Colors.blue
@@ -60,7 +60,7 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
                         : Colors.grey,
                     width: 2.0,
                   ),
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

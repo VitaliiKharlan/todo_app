@@ -103,7 +103,7 @@ class _TaskScreenState extends State<TaskScreen> {
               Expanded(
                 child: ScrollbarTheme(
                   data: ScrollbarThemeData(
-                    thumbColor: WidgetStateProperty.all(Colors.blue[100]),
+                    thumbColor: WidgetStateProperty.all(Color(0xFFBBDEFB)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 2),
@@ -120,8 +120,6 @@ class _TaskScreenState extends State<TaskScreen> {
                             builder: (context, state) {
                               if (state is TasksLoadedState) {
                                 final tasks = state.tasks;
-                                tasks.sort((a, b) =>
-                                    b.taskCreatedAt.compareTo(a.taskCreatedAt));
 
                                 if (tasks.isEmpty) {
                                   return SliverToBoxAdapter(
@@ -153,7 +151,8 @@ class _TaskScreenState extends State<TaskScreen> {
                                 }
 
                                 return CardBuilderWidget(
-                                    tasks: tasks, theme: theme);
+                                  tasks: tasks,
+                                );
                               }
                               if (state is TasksDeletingFailureState) {
                                 return SliverFillRemaining(

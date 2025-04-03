@@ -43,8 +43,8 @@ abstract class AppTextStyle {
     fontFamily: 'Lato',
     fontSize: 20,
     fontStyle: FontStyle.italic,
-    fontWeight: FontWeight.w500,
-    height: 1.2,
+    fontWeight: FontWeight.w700,
+    height: 1.5,
     letterSpacing: 0.0,
   );
 

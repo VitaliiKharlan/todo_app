@@ -38,7 +38,9 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
 
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
+      tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
       _displayedTasks = tasks;
+
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
       debugPrint('Error: $e');
@@ -70,6 +72,10 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       }
       tasks.add(newTask);
       _displayedTasks = tasks;
+
+      if (tasks.isNotEmpty) {
+        tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
+      }
 
       emit(TasksLoadedState(tasks));
       await taskRepository.addTask(newTask.toMap());

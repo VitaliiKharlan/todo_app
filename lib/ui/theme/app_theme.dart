@@ -90,11 +90,13 @@ final darkTheme = ThemeData(
 );
 
 final _textTheme = TextTheme(
+  titleLarge: AppTextStyle.promo,
   titleMedium: AppTextStyle.appBar.copyWith(
     color: Colors.green,
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
+
   bodySmall: AppTextStyle.card,
   bodyMedium: AppTextStyle.description.copyWith(
     color: Colors.blueGrey,
