@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,18 +20,18 @@ class MenuButtonWidget extends StatelessWidget {
       onPressed: () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
-          if (renderBox == null)
-            return; // If the render box is still null, we do nothing.
-
-          final size = renderBox.size; // Получаем размеры виджета
+          if (renderBox == null) {
+            return;
+          }
+          final size = renderBox.size;
           final position = renderBox
-              .localToGlobal(Offset.zero); // Получаем глобальную позицию
+              .localToGlobal(Offset.zero);
 
           final RelativeRect positionForMenu = RelativeRect.fromLTRB(
-            position.dx + 20, // X позиция
-            position.dy + kToolbarHeight, // Y позиция (под AppBar)
-            position.dx + size.width, // Правый отступ
-            position.dy + size.height, // Нижний отступ
+            position.dx + 20,
+            position.dy + kToolbarHeight,
+            position.dx + size.width,
+            position.dy + size.height,
           );
 
           showMenu(
@@ -47,7 +48,10 @@ class MenuButtonWidget extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-                  _setThemeBrightness(brightnessValue, brightnessValueIsLight);
+                  _setThemeBrightness(
+                    brightnessValue,
+                    brightnessValueIsLight,
+                  );
                 },
               ),
               PopupMenuItem<String>(
@@ -72,8 +76,11 @@ class MenuButtonWidget extends StatelessWidget {
               ),
               PopupMenuItem<String>(
                 value: 'Select sorting priorities',
+                onTap: () {
+                  _showSortingSubMenu(context);
+                },
                 child: Row(
-                  children: [
+                  children: const [
                     Icon(Icons.sort, size: 20),
                     SizedBox(width: 8),
                     Text('Select sorting priorities'),
@@ -96,5 +103,71 @@ class MenuButtonWidget extends StatelessWidget {
       ThemeCubit brightnessValue, bool brightnessValueIsLight) {
     brightnessValue.setThemeBrightness(
         brightnessValueIsLight ? Brightness.dark : Brightness.light);
+  }
+
+  void _showSortingSubMenu(BuildContext context) {
+    final RenderBox renderBox = context.findRenderObject() as RenderBox;
+    final size = renderBox.size;
+    final position = renderBox.localToGlobal(Offset.zero);
+
+    final RelativeRect positionForSubMenu = RelativeRect.fromLTRB(
+      position.dx + 40,
+      position.dy + kToolbarHeight,
+      position.dx + size.width,
+      position.dy + size.height,
+    );
+
+    showMenu(
+      context: context,
+      position: positionForSubMenu,
+      items: [
+        PopupMenuItem<String>(
+          value: 'Priority: High to Low',
+          child: Row(
+            children: [
+              Icon(Icons.arrow_downward, size: 20),
+              SizedBox(width: 8),
+              Text('Priority: High to Low'),
+            ],
+          ),
+          onTap: () {
+            // Sort tasks: High to Low
+            debugPrint("Sorting: High to Low");
+            context.router.maybePop();
+          },
+        ),
+        PopupMenuItem<String>(
+          value: 'Priority: Low to High',
+          child: Row(
+            children: [
+              Icon(Icons.arrow_upward, size: 20),
+              SizedBox(width: 8),
+              Text('Priority: Low to High'),
+            ],
+          ),
+          onTap: () {
+            // Sort tasks: Low to High
+            debugPrint("Sorting: Low to High");
+            context.router.maybePop();
+          },
+        ),
+        PopupMenuItem<String>(
+          value: 'Sort by Due Date',
+          child: Row(
+            children: [
+              Icon(Icons.date_range, size: 20),
+              SizedBox(width: 8),
+              Text('Sort by Due Date'),
+            ],
+          ),
+          onTap: () {
+            // Sort tasks by due date
+            debugPrint("Sorting by Due Date");
+            context.router.maybePop();
+          },
+        ),
+      ],
+      elevation: 8.0,
+    );
   }
 }
