@@ -56,9 +56,17 @@ class EditTaskEvent extends TasksEvent {
 }
 
 class SearchTaskEvent extends TasksEvent {
-  final String query;
-
   SearchTaskEvent(
     this.query,
   );
+
+  final String query;
+}
+
+class SortTasksEvent extends TasksEvent {
+  SortTasksEvent(
+    this.sortingOption,
+  );
+
+  final SortingOption sortingOption;
 }

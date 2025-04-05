@@ -1,9 +1,11 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo_app/bloc/theme/theme_cubit.dart';
+import 'package:todo_app/features/create_new_task/bloc/entities/priorities_entity.dart';
+import 'package:todo_app/features/create_new_task/bloc/tasks_bloc.dart';
 
 class MenuButtonWidget extends StatelessWidget {
   const MenuButtonWidget({
@@ -12,6 +14,7 @@ class MenuButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final brightnessValue = context.read<ThemeCubit>();
     final brightnessValueIsLight = brightnessValue.state.isLight;
 
@@ -24,8 +27,7 @@ class MenuButtonWidget extends StatelessWidget {
             return;
           }
           final size = renderBox.size;
-          final position = renderBox
-              .localToGlobal(Offset.zero);
+          final position = renderBox.localToGlobal(Offset.zero);
 
           final RelativeRect positionForMenu = RelativeRect.fromLTRB(
             position.dx + 20,
@@ -44,7 +46,10 @@ class MenuButtonWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.color_lens, size: 20),
                     SizedBox(width: 8),
-                    Text('Change app color'),
+                    Text(
+                      'Change app color',
+                      style: theme.textTheme.labelMedium,
+                    ),
                   ],
                 ),
                 onTap: () {
@@ -60,7 +65,10 @@ class MenuButtonWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.text_fields, size: 20),
                     SizedBox(width: 8),
-                    Text('Change app typography'),
+                    Text(
+                      'Change app typography',
+                      style: theme.textTheme.labelMedium,
+                    ),
                   ],
                 ),
               ),
@@ -70,7 +78,10 @@ class MenuButtonWidget extends StatelessWidget {
                   children: [
                     Icon(Icons.language, size: 20),
                     SizedBox(width: 8),
-                    Text('Change app language'),
+                    Text(
+                      'Change app language',
+                      style: theme.textTheme.labelMedium,
+                    ),
                   ],
                 ),
               ),
@@ -80,10 +91,13 @@ class MenuButtonWidget extends StatelessWidget {
                   _showSortingSubMenu(context);
                 },
                 child: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.sort, size: 20),
                     SizedBox(width: 8),
-                    Text('Select sorting priorities'),
+                    Text(
+                      'Select sorting priorities',
+                      style: theme.textTheme.labelMedium,
+                    ),
                   ],
                 ),
               ),
@@ -97,6 +111,17 @@ class MenuButtonWidget extends StatelessWidget {
         });
       },
     );
+  }
+
+  void printTextStyle(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.labelMedium;
+
+    debugPrint('Font size: ${textStyle?.fontSize}');
+    debugPrint('Font weight: ${textStyle?.fontWeight}');
+    debugPrint('Font style: ${textStyle?.fontStyle}');
+    debugPrint('Color: ${textStyle?.color}');
+    debugPrint('Letter spacing: ${textStyle?.letterSpacing}');
+    debugPrint('Height: ${textStyle?.height}');
   }
 
   void _setThemeBrightness(
@@ -121,53 +146,56 @@ class MenuButtonWidget extends StatelessWidget {
       context: context,
       position: positionForSubMenu,
       items: [
-        PopupMenuItem<String>(
-          value: 'Priority: High to Low',
-          child: Row(
-            children: [
-              Icon(Icons.arrow_downward, size: 20),
-              SizedBox(width: 8),
-              Text('Priority: High to Low'),
-            ],
-          ),
-          onTap: () {
-            // Sort tasks: High to Low
-            debugPrint("Sorting: High to Low");
-            context.router.maybePop();
-          },
+        _buildSortingMenuItem(
+          context,
+          'Priority: High to Low',
+          SortingOption.priorityHighToLow,
+          Icons.arrow_downward,
         ),
-        PopupMenuItem<String>(
-          value: 'Priority: Low to High',
-          child: Row(
-            children: [
-              Icon(Icons.arrow_upward, size: 20),
-              SizedBox(width: 8),
-              Text('Priority: Low to High'),
-            ],
-          ),
-          onTap: () {
-            // Sort tasks: Low to High
-            debugPrint("Sorting: Low to High");
-            context.router.maybePop();
-          },
+        _buildSortingMenuItem(
+          context,
+          'Priority: Low to High',
+          SortingOption.priorityLowToHigh,
+          Icons.arrow_upward,
         ),
-        PopupMenuItem<String>(
-          value: 'Sort by Due Date',
-          child: Row(
-            children: [
-              Icon(Icons.date_range, size: 20),
-              SizedBox(width: 8),
-              Text('Sort by Due Date'),
-            ],
-          ),
-          onTap: () {
-            // Sort tasks by due date
-            debugPrint("Sorting by Due Date");
-            context.router.maybePop();
-          },
+        _buildSortingMenuItem(
+          context,
+          'Sort by Last to First',
+          SortingOption.createAtLastToFirst,
+          Icons.date_range,
+        ),
+        _buildSortingMenuItem(
+          context,
+          'Sort by First to Last',
+          SortingOption.createAtFirstToLast,
+          Icons.date_range,
         ),
       ],
       elevation: 8.0,
+    );
+  }
+
+  PopupMenuItem<String> _buildSortingMenuItem(
+      BuildContext context, String label, SortingOption option, IconData icon) {
+    final theme = Theme.of(context);
+    return PopupMenuItem<String>(
+      value: label,
+      child: Row(
+        children: [
+          Icon(icon, size: 20),
+          SizedBox(width: 8),
+          Text(
+            label,
+            style: theme.textTheme.labelMedium,
+          ),
+        ],
+      ),
+      onTap: () {
+        debugPrint("Sorting: $label");
+        printTextStyle(context);
+        context.read<TasksBloc>().add(SortTasksEvent(option));
+        context.router.maybePop();
+      },
     );
   }
 }

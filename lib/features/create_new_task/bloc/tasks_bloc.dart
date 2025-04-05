@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:todo_app/features/create_new_task/bloc/entities/priorities_entity.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
@@ -15,6 +16,35 @@ part 'tasks_state.dart';
 class TasksBloc extends Bloc<TasksEvent, TasksState> {
   final TaskRepository taskRepository;
   List<Task> _displayedTasks = [];
+  SortingOption _currentSortingOption = SortingOption.createAtLastToFirst;
+
+  void _sortTasksByCurrentOption() {
+    if (_currentSortingOption == SortingOption.priorityHighToLow) {
+      _displayedTasks.sort((a, b) {
+        final priorityA = a.taskPriority ?? 10;
+        final priorityB = b.taskPriority ?? 10;
+        return priorityA.compareTo(priorityB);
+      });
+    } else if (_currentSortingOption == SortingOption.priorityLowToHigh) {
+      _displayedTasks.sort((a, b) {
+        final priorityA = a.taskPriority ?? 0;
+        final priorityB = b.taskPriority ?? 0;
+        return priorityB.compareTo(priorityA);
+      });
+    } else if (_currentSortingOption == SortingOption.createAtLastToFirst) {
+      _displayedTasks.sort((a, b) {
+        final taskCreateAtA = a.taskCreatedAt;
+        final taskCreateAtB = b.taskCreatedAt;
+        return taskCreateAtA.compareTo(taskCreateAtB);
+      });
+    } else if (_currentSortingOption == SortingOption.createAtFirstToLast) {
+      _displayedTasks.sort((a, b) {
+        final taskCreateAtA = a.taskCreatedAt;
+        final taskCreateAtB = b.taskCreatedAt;
+        return taskCreateAtB.compareTo(taskCreateAtA);
+      });
+    }
+  }
 
   TasksBloc({required this.taskRepository}) : super(InitialTasksState()) {
     on<LoadTasksEvent>(_onLoadTasks);
@@ -22,6 +52,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
     on<DeleteTaskEvent>(_onDeleteTask);
     on<EditTaskEvent>(_onEditTask);
     on<SearchTaskEvent>(_onSearchTask);
+    on<SortTasksEvent>(_onSortTasks);
   }
 
   Future<void> _onLoadTasks(
@@ -40,6 +71,7 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       final tasks = tasksData.map((data) => Task.fromMap(data)).toList();
       tasks.sort((a, b) => b.taskCreatedAt.compareTo(a.taskCreatedAt));
       _displayedTasks = tasks;
+      _sortTasksByCurrentOption();
 
       emit(TasksLoadedState(tasks));
     } catch (e, s) {
@@ -169,6 +201,16 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
       debugPrint('Error: $e');
       debugPrintStack(stackTrace: s);
       emit(TasksEditingFailureState(e.toString()));
+    }
+  }
+
+  Future<void> _onSortTasks(
+      SortTasksEvent event, Emitter<TasksState> emit) async {
+    _currentSortingOption = event.sortingOption;
+    _sortTasksByCurrentOption();
+
+    if (state is TasksLoadedState) {
+      emit(TasksLoadedState(_displayedTasks));
     }
   }
 }

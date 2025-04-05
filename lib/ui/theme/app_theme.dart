@@ -83,7 +83,6 @@ final darkTheme = ThemeData(
     ),
     iconColor: Colors.green,
   ),
-
   dividerTheme: DividerThemeData(
     color: Colors.white.withAlpha(20),
   ),
@@ -96,17 +95,16 @@ final _textTheme = TextTheme(
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
-
   bodySmall: AppTextStyle.card,
   bodyMedium: AppTextStyle.description.copyWith(
     color: Colors.blueGrey,
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
-
   labelSmall: AppTextStyle.promo.copyWith(
     color: Colors.white.withAlpha(80),
     fontSize: 14,
     fontWeight: FontWeight.w700,
   ),
+  labelMedium: AppTextStyle.dropMenu,
 );

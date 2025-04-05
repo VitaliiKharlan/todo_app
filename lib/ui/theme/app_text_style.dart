@@ -56,4 +56,13 @@ abstract class AppTextStyle {
     height: 1.0,
     letterSpacing: 0.0,
   );
+
+  static final dropMenu = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontSize: 15,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 1.0,
+    letterSpacing: 0.0,
+  );
 }
