@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo_app/ui/theme/app_text_style.dart';
-
 class TaskNameFieldWidget extends StatefulWidget {
   const TaskNameFieldWidget({
     super.key,
@@ -17,44 +15,42 @@ class TaskNameFieldWidget extends StatefulWidget {
 class _TaskNameFieldWidgetState extends State<TaskNameFieldWidget> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
           'Task Name',
-          style: AppTextStyle.appBar.copyWith(
-              fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
+          style: theme.textTheme.titleLarge,
         ),
         SizedBox(height: 12),
         TextField(
           controller: widget.controllerTaskTitle,
+          style: theme.textTheme.headlineLarge,
           decoration: InputDecoration(
             hintText: widget.controllerTaskTitle.text.isEmpty
                 ? 'Enter a Task Name'
                 : '',
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              color: Colors.black.withAlpha(80),
-            ),
+            hintStyle: theme.textTheme.headlineMedium,
             contentPadding: EdgeInsets.symmetric(
               vertical: 20,
               horizontal: 12,
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.grey.withAlpha(80),
+                color: Color(0x40A9A9A9),
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(12),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.red,
+                color: Color(0xFFF44336),
                 width: 2,
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
         ),

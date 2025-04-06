@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
+
 
 class TaskTypeFieldWidget extends StatefulWidget {
   const TaskTypeFieldWidget({
@@ -38,13 +38,14 @@ class _TaskTypeFieldWidgetState extends State<TaskTypeFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Category',
-          style: AppTextStyle.appBar.copyWith(
-              fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
+          style: theme.textTheme.titleLarge,
         ),
         SizedBox(height: 12),
         Row(

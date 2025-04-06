@@ -31,8 +31,8 @@ class _InProgressIndicatorState extends State<InProgressIndicator> {
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: valuePercent,
-                  backgroundColor: Colors.lightBlueAccent[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                  backgroundColor: Color(0xFF40B6E6),
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF9C27B0)),
                 ),
               ),
             ),

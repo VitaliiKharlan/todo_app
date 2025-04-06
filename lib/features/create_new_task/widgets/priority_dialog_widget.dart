@@ -1,5 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
+import 'package:auto_route/auto_route.dart';
 
 class PriorityDialogWidget extends StatefulWidget {
   final int? taskPriority;
@@ -24,10 +25,15 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AlertDialog(
       title: Column(
-        children: const [
-          Text('Task Priority'),
+        children: [
+          Text(
+            'Task Priority',
+            style: theme.textTheme.labelMedium,
+          ),
           Divider(),
         ],
       ),
@@ -95,7 +101,7 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
           onPressed: () => context.router.maybePop(),
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: () => context.router.maybePop(selectedPriority),
           child: const Text('Save'),
         ),

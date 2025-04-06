@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-abstract class AppTextStyle {
+abstract class AppTextStyles {
   static const appBar = TextStyle(
     fontFamily: 'SF Pro Text',
     fontSize: 20,
@@ -62,6 +62,43 @@ abstract class AppTextStyle {
     fontSize: 15,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
+    height: 1.0,
+    letterSpacing: 0.0,
+  );
+
+  static final descriptionTaskField = TextStyle(
+    fontFamily: GoogleFonts.spectral().fontFamily,
+    fontSize: 12,
+    fontStyle: FontStyle.italic,
+    fontWeight: FontWeight.w400,
+    height: 1.0,
+    letterSpacing: 0.0,
+    color: Colors.grey,
+  );
+
+  static final filledTaskField = TextStyle(
+    fontFamily: GoogleFonts.raleway().fontFamily,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 1.0,
+    letterSpacing: 0.0,
+  );
+
+  static const bottomNavigationMenu = TextStyle(
+    fontFamily: 'SF Pro Text',
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w700,
+    height: 1.5,
+    letterSpacing: 0.0,
+  );
+
+  static const detailsMain = TextStyle(
+    fontFamily: 'SF Pro Display',
+    fontSize: 14,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
     height: 1.0,
     letterSpacing: 0.0,
   );

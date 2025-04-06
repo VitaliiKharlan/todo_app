@@ -5,8 +5,6 @@ import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/features/task_details/widgets/in_progress_indicator_widget.dart';
-import 'package:todo_app/ui/theme/app_colors.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class MainInformation extends StatefulWidget {
   const MainInformation({
@@ -24,6 +22,7 @@ class _MainInformationState extends State<MainInformation> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -46,17 +45,12 @@ class _MainInformationState extends State<MainInformation> {
           children: [
             Text(
               'Main Information',
-              style: AppTextStyle.promo.copyWith(
-                color: Colors.black,
-              ),
+              style: theme.textTheme.titleLarge,
             ),
             SizedBox(height: 12),
             Text(
               widget.task.taskTitle,
-              style: AppTextStyle.dateProgressIndicator.copyWith(
-                fontSize: 15,
-                color: AppColors.dateProgressIndicator,
-              ),
+              style: theme.textTheme.titleSmall,
             ),
             SizedBox(height: 20),
             Row(
@@ -65,7 +59,7 @@ class _MainInformationState extends State<MainInformation> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
-                      color: Colors.lightBlueAccent.withAlpha(40),
+                      color: Color(0x7039B7CD),
                       height: 40,
                       width: 40,
                       child: Transform.scale(
@@ -87,14 +81,12 @@ class _MainInformationState extends State<MainInformation> {
                   child: Container(
                     height: 40,
                     width: 40,
-                    color: Colors.lightBlueAccent.withAlpha(40),
+                    color: Color(0x7039B7CD),
                     child: Center(
                       child: Text(
                         widget.task.taskPriority.toString(),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -105,8 +97,7 @@ class _MainInformationState extends State<MainInformation> {
                   Text(
                     DateFormat("dd MMMM, 'at' hh:mm a")
                         .format(widget.task.taskDeadline!),
-                    style: AppTextStyle.dateProgressIndicator
-                        .copyWith(color: AppColors.dateProgressIndicator),
+                    style: theme.textTheme.titleSmall,
                   ),
                 ]
               ],
@@ -117,18 +108,14 @@ class _MainInformationState extends State<MainInformation> {
               children: [
                 Text(
                   'In Progress',
-                  style: AppTextStyle.appBar.copyWith(
-                    fontSize: 15,
+                  style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: Colors.black,
                   ),
                 ),
                 Text(
                   '${widget.task.progress}%',
-                  style: AppTextStyle.appBar.copyWith(
-                    fontSize: 15,
+                  style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: Colors.black,
                   ),
                 ),
               ],

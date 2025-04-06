@@ -215,14 +215,15 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final bloc = BlocProvider.of<TasksBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Color(0xFFFFFFFF),
+        iconTheme: IconThemeData(color: Color(0xFF000000)),
         centerTitle: true,
         automaticallyImplyLeading: false,
         title: Row(
@@ -241,7 +242,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back_ios_new,
-                        color: Colors.grey,
+                        color: Color(0xFF9E9E9E),
                       ),
                       onPressed: () {
                         AutoTabsRouter.of(context).setActiveIndex(0);
@@ -256,12 +257,8 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 32),
                   child: Text(
-                    // 'Create New Task',
                     widget.editTask == null ? 'Create New Task' : 'Edit Task',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: theme.appBarTheme.titleTextStyle,
                   ),
                 ),
               ),
@@ -342,18 +339,21 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                       onPressed: () => _addTodo(bloc),
                       style: ElevatedButton.styleFrom(
                         textStyle: TextStyle(fontSize: 18),
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blue,
+                        foregroundColor: Color(0xFFFFFFFF),
+                        backgroundColor: Color(0xFF2196F3),
                       ).copyWith(
-                        shape: WidgetStatePropertyAll(
+                        shape: WidgetStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
-                      child: Text(widget.editTask == null
-                          ? 'Create Task'
-                          : 'Save Changes'),
+                      child: Text(
+                        widget.editTask == null
+                            ? 'Create Task'
+                            : 'Save Changes',
+                        style: theme.textTheme.displayLarge,
+                      ),
                     ),
                   ),
                   SizedBox(height: 20),

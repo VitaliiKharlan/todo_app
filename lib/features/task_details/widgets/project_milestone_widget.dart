@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
-import 'package:todo_app/ui/theme/app_colors.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
+
 
 class ProjectMilestoneWidget extends StatefulWidget {
   const ProjectMilestoneWidget({
@@ -21,14 +20,16 @@ class ProjectMilestoneWidget extends StatefulWidget {
 class _ProjectMilestoneWidgetState extends State<ProjectMilestoneWidget> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
+            color: Color(0x1F000000),
             blurRadius: 10,
             spreadRadius: 2,
           ),
@@ -44,9 +45,7 @@ class _ProjectMilestoneWidgetState extends State<ProjectMilestoneWidget> {
           children: [
             Text(
               'Project Milestone',
-              style: AppTextStyle.promo.copyWith(
-                color: Colors.black,
-              ),
+              style: theme.textTheme.titleLarge,
             ),
             if (widget.task.taskRemindTime != null &&
                 widget.task.taskRemindTime!.isNotEmpty) ...[
@@ -58,10 +57,7 @@ class _ProjectMilestoneWidgetState extends State<ProjectMilestoneWidget> {
                     padding: const EdgeInsets.only(bottom: 8),
                     child: Text(
                       DateFormat("dd MMMM, 'at' hh:mm a").format(milestone),
-                      style: AppTextStyle.dateProgressIndicator.copyWith(
-                        fontSize: 14,
-                        color: AppColors.dateProgressIndicator,
-                      ),
+                      style: theme.textTheme.titleSmall,
                     ),
                   );
                 }).toList(),

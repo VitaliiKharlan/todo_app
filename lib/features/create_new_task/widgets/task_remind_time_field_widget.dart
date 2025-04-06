@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class TaskRemindDateTimeFieldWidget extends StatelessWidget {
   const TaskRemindDateTimeFieldWidget({
@@ -16,16 +16,14 @@ class TaskRemindDateTimeFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Remind',
-          style: AppTextStyle.appBar.copyWith(
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-            color: Colors.black,
-          ),
+          style: theme.textTheme.titleLarge,
         ),
         SizedBox(height: 12),
         SizedBox(
@@ -44,22 +42,14 @@ class TaskRemindDateTimeFieldWidget extends StatelessWidget {
                       ? 'Pick Remind Date'
                       : DateFormat('dd MMMM, EEEE')
                           .format(selectedRemindDateTime!.last),
-                  style: TextStyle(fontSize: 16),
+                  style: selectedRemindDateTime == null ||
+                      selectedRemindDateTime!.isEmpty
+                      ? theme.textTheme.headlineMedium
+                      : theme.textTheme.headlineLarge,
                 ),
               ],
             ),
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.white),
-              foregroundColor: WidgetStatePropertyAll(
-                Colors.black.withAlpha(60),
-              ),
-              side: WidgetStatePropertyAll(
-                BorderSide(
-                  color: Colors.grey.withAlpha(80),
-                  width: 2,
-                ),
-              ),
-            ),
+            // ✅ style defined in ThemeData
           ),
         ),
         const SizedBox(height: 12),
@@ -79,22 +69,14 @@ class TaskRemindDateTimeFieldWidget extends StatelessWidget {
                       ? 'Pick Remind Time'
                       : DateFormat('HH:mm')
                           .format(selectedRemindDateTime!.last),
-                  style: TextStyle(fontSize: 16),
+                  style: selectedRemindDateTime == null ||
+                          selectedRemindDateTime!.isEmpty
+                      ? theme.textTheme.headlineMedium
+                      : theme.textTheme.headlineLarge,
                 ),
               ],
             ),
-            style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.white),
-              foregroundColor: WidgetStatePropertyAll(
-                Colors.black.withAlpha(60),
-              ),
-              side: WidgetStatePropertyAll(
-                BorderSide(
-                  color: Colors.grey.withAlpha(80),
-                  width: 2,
-                ),
-              ),
-            ),
+            // ✅ style defined in ThemeData
           ),
         ),
       ],

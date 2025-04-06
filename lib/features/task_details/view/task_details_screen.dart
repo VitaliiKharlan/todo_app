@@ -22,8 +22,13 @@ class TaskDetailsScreen extends StatefulWidget {
 }
 
 class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
+
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -63,10 +68,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   padding: const EdgeInsets.only(right: 32),
                   child: Text(
                     'Task Details',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: theme.appBarTheme.titleTextStyle,
                   ),
                 ),
               ),

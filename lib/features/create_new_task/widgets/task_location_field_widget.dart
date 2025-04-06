@@ -1,8 +1,9 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+
+import 'package:auto_route/auto_route.dart';
+
 import 'package:todo_app/features/create_new_task/data/models/location_details.dart';
 import 'package:todo_app/router/router.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class TaskLocationFieldWidget extends StatefulWidget {
   const TaskLocationFieldWidget({
@@ -30,13 +31,14 @@ class _TaskLocationFieldWidgetState extends State<TaskLocationFieldWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Location',
-          style: AppTextStyle.appBar.copyWith(
-              fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
+          style: theme.textTheme.titleLarge,
         ),
         SizedBox(height: 12),
         SizedBox(
@@ -55,25 +57,13 @@ class _TaskLocationFieldWidgetState extends State<TaskLocationFieldWidget> {
                   widget.taskLocation == null
                       ? 'Pick a place'
                       : widget.taskLocation?.description ?? '',
-                  style: TextStyle(fontSize: 16),
+                  style: widget.taskLocation == null
+                      ? theme.textTheme.headlineMedium
+                      : theme.textTheme.headlineLarge,
                 ),
               ],
             ),
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.white),
-              foregroundColor: WidgetStateProperty.all(
-                Colors.black.withAlpha(60),
-              ),
-              side: WidgetStateProperty.all(
-                BorderSide(
-                  color: Colors.grey.withAlpha(80),
-                  width: 2,
-                ),
-              ),
-              overlayColor: WidgetStateProperty.all<Color>(Colors.white),
-              shadowColor: WidgetStateProperty.all<Color>(Colors.white),
-              elevation: WidgetStateProperty.all<double>(0.1),
-            ),
+            // ✅ style defined in ThemeData
           ),
         ),
       ],

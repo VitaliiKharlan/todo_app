@@ -14,7 +14,6 @@ class HomeScreen extends StatelessWidget {
   final taskRepository = TaskRepository();
   final placeDetailsRepository = PlaceDetailsRepository();
 
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -35,7 +34,6 @@ class HomeScreen extends StatelessWidget {
                   LoadTasksEvent(),
                 ),
             ),
-
           ],
           child: Scaffold(
             backgroundColor: Theme.of(context).colorScheme.surface,
@@ -43,7 +41,11 @@ class HomeScreen extends StatelessWidget {
             bottomNavigationBar: BottomNavigationBar(
               selectedItemColor: theme.primaryColor,
               unselectedItemColor: theme.hintColor,
-              selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+              selectedLabelStyle: theme.textTheme.labelLarge,
+              unselectedLabelStyle: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.normal,
+              ),
+
               currentIndex: tabsRouter.activeIndex,
               onTap: (index) => _openPage(index, tabsRouter),
               items: const [

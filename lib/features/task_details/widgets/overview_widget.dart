@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
+import 'package:todo_app/ui/theme/app_text_styles.dart';
 
 class OverviewWidget extends StatefulWidget {
   const OverviewWidget({
@@ -43,6 +43,8 @@ class _OverviewWidgetState extends State<OverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -66,15 +68,13 @@ class _OverviewWidgetState extends State<OverviewWidget> {
           children: [
             Text(
               'Overview',
-              style: AppTextStyle.promo.copyWith(
-                color: Colors.black,
-              ),
+              style: theme.textTheme.titleLarge,
             ),
             SizedBox(height: 8),
             if (widget.task.taskDescription != null)
               LayoutBuilder(
                 builder: (context, constraints) {
-                  final textStyle = AppTextStyle.dateProgressIndicator.copyWith(
+                  final textStyle = AppTextStyles.dateProgressIndicator.copyWith(
                     fontSize: 15,
                     color: AppColors.dateProgressIndicator,
                   );

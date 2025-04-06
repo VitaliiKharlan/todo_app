@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
-import 'package:todo_app/ui/theme/app_text_style.dart';
-
 class TaskDeadlineFieldWidget extends StatelessWidget {
   const TaskDeadlineFieldWidget({
     super.key,
@@ -18,16 +16,14 @@ class TaskDeadlineFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Deadline',
-          style: AppTextStyle.appBar.copyWith(
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-            color: Colors.black,
-          ),
+          style: theme.textTheme.titleLarge,
         ),
         SizedBox(height: 12),
         Column(
@@ -49,22 +45,13 @@ class TaskDeadlineFieldWidget extends StatelessWidget {
                           ? 'Pick Deadline Date'
                           : DateFormat('dd MMMM, EEEE')
                               .format(selectedDeadline!),
-                      style: TextStyle(fontSize: 16),
+                      style: selectedDeadline == null
+                          ? theme.textTheme.headlineMedium
+                          : theme.textTheme.headlineLarge,
                     ),
                   ],
                 ),
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.white),
-                  foregroundColor: WidgetStatePropertyAll(
-                    Colors.black.withAlpha(60),
-                  ),
-                  side: WidgetStatePropertyAll(
-                    BorderSide(
-                      color: Colors.grey.withAlpha(80),
-                      width: 2,
-                    ),
-                  ),
-                ),
+                // ✅ style defined in ThemeData
               ),
             ),
             const SizedBox(height: 12),
@@ -82,22 +69,13 @@ class TaskDeadlineFieldWidget extends StatelessWidget {
                       selectedDeadline == null
                           ? 'Pick Deadline Time'
                           : DateFormat('HH:mm').format(selectedDeadline!),
-                      style: TextStyle(fontSize: 16),
+                      style: selectedDeadline == null
+                          ? theme.textTheme.headlineMedium
+                          : theme.textTheme.headlineLarge,
                     ),
                   ],
                 ),
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(Colors.white),
-                  foregroundColor: WidgetStatePropertyAll(
-                    Colors.black.withAlpha(60),
-                  ),
-                  side: WidgetStatePropertyAll(
-                    BorderSide(
-                      color: Colors.grey.withAlpha(80),
-                      width: 2,
-                    ),
-                  ),
-                ),
+                // ✅ style defined in ThemeData
               ),
             ),
           ],

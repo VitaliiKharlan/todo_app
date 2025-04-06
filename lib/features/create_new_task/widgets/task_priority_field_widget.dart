@@ -76,23 +76,16 @@ class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
                   widget.taskPriority == null
                       ? 'Pick a priority'
                       : widget.taskPriority.toString(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: widget.taskPriority == null
-                        ? FontWeight.normal
-                        : FontWeight.bold,
-                    // fontStyle: widget.taskPriority == null
-                    //     ? FontStyle.normal
-                    //     : FontStyle.italic,
-                    color: widget.taskPriority == null
-                        ? Colors.grey
-                        : Colors.black,
-                  ),
+                  style: widget.taskPriority == null
+                      ? theme.textTheme.headlineMedium
+                      : theme.textTheme.headlineLarge,
+
+
                 ),
               ],
             ),
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.white),
+              backgroundColor: WidgetStateProperty.all(Color(0xFFFFFFFF)),
               foregroundColor: WidgetStateProperty.all(
                 Color(0x40000000),
               ),
@@ -102,8 +95,8 @@ class _TaskPriorityFieldWidgetState extends State<TaskPriorityFieldWidget> {
                   width: 2,
                 ),
               ),
-              overlayColor: WidgetStateProperty.all<Color>(Colors.white),
-              shadowColor: WidgetStateProperty.all<Color>(Colors.white),
+              overlayColor: WidgetStateProperty.all<Color>(Color(0xFFFFFFFF)),
+              shadowColor: WidgetStateProperty.all<Color>(Color(0xFFFFFFFF)),
               elevation: WidgetStateProperty.all<double>(0.1),
             ),
           ),

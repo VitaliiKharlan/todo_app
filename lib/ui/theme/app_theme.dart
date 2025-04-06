@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/ui/theme/app_button_styles.dart';
 
-import 'package:todo_app/ui/theme/app_text_style.dart';
+import 'package:todo_app/ui/theme/app_text_styles.dart';
 
 const primaryColor = Colors.deepPurple;
 
@@ -33,13 +34,13 @@ final lightTheme = ThemeData(
     // фон AppBar
     backgroundColor: Color(0xFF42FF00),
     // заголовок AppBar
-    titleTextStyle: AppTextStyle.appBar.copyWith(
+    titleTextStyle: AppTextStyles.appBar.copyWith(
       color: Colors.black,
     ),
   ),
   textTheme: _textTheme,
   listTileTheme: ListTileThemeData(
-    titleTextStyle: AppTextStyle.appBar.copyWith(
+    titleTextStyle: AppTextStyles.appBar.copyWith(
       color: Colors.green,
       fontSize: 20,
       fontWeight: FontWeight.w500,
@@ -48,6 +49,9 @@ final lightTheme = ThemeData(
   ),
   dividerTheme: DividerThemeData(
     color: Colors.grey.withAlpha(20),
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: AppButtonStyles.elevatedButtonStyleCreateTaskField,
   ),
 );
 
@@ -70,13 +74,13 @@ final darkTheme = ThemeData(
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.white),
     backgroundColor: Color(0xFF888888),
-    titleTextStyle: AppTextStyle.appBar.copyWith(
+    titleTextStyle: AppTextStyles.appBar.copyWith(
       color: Colors.white,
     ),
   ),
   textTheme: _textTheme,
   listTileTheme: ListTileThemeData(
-    titleTextStyle: AppTextStyle.appBar.copyWith(
+    titleTextStyle: AppTextStyles.appBar.copyWith(
       color: Colors.green,
       fontSize: 20,
       fontWeight: FontWeight.w500,
@@ -86,25 +90,42 @@ final darkTheme = ThemeData(
   dividerTheme: DividerThemeData(
     color: Colors.white.withAlpha(20),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: AppButtonStyles.elevatedButtonStyleCreateTaskField,
+  ),
 );
 
 final _textTheme = TextTheme(
-  titleLarge: AppTextStyle.promo,
-  titleMedium: AppTextStyle.appBar.copyWith(
+  // displayLarge:
+  // displayMedium:
+  // displaySmall:
+  //
+  headlineLarge: AppTextStyles.filledTaskField,
+  headlineMedium: AppTextStyles.descriptionTaskField,
+  // headlineSmall:
+  //
+  titleLarge: AppTextStyles.promo,
+  titleMedium: AppTextStyles.appBar.copyWith(
     color: Colors.green,
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
-  bodySmall: AppTextStyle.card,
-  bodyMedium: AppTextStyle.description.copyWith(
+  titleSmall: AppTextStyles.detailsMain,
+  //
+  // bodyLarge:
+  bodyMedium: AppTextStyles.description.copyWith(
     color: Colors.blueGrey,
     fontSize: 20,
     fontWeight: FontWeight.w500,
   ),
-  labelSmall: AppTextStyle.promo.copyWith(
+  bodySmall: AppTextStyles.card,
+  //
+  labelLarge: AppTextStyles.bottomNavigationMenu,
+  labelMedium: AppTextStyles.dropMenu,
+  labelSmall: AppTextStyles.promo.copyWith(
     color: Colors.white.withAlpha(80),
     fontSize: 14,
     fontWeight: FontWeight.w700,
   ),
-  labelMedium: AppTextStyle.dropMenu,
+
 );
