@@ -23,16 +23,18 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return BlocProvider<LocationSearchBloc>(
       create: (context) => LocationSearchBloc(
         placeDetailsRepository,
       ),
       child: Builder(builder: (context) {
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFFFFFFFF),
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black),
+            backgroundColor: Color(0xFFFFFFFF),
+            iconTheme: IconThemeData(color: Color(0xFF000000)),
             centerTitle: true,
             automaticallyImplyLeading: false,
             title: Row(
@@ -46,12 +48,12 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
-                      color: Colors.grey.withAlpha(20),
+                      color: Color(0x149E9E9E),
                       child: Center(
                         child: IconButton(
                           icon: Icon(
                             Icons.arrow_back_ios_new,
-                            color: Colors.grey,
+                            color: Color(0xFF9E9E9E),
                           ),
                           onPressed: () {
                             AutoRouter.of(context).maybePop();
@@ -64,13 +66,10 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 32),
+                      padding: const EdgeInsets.only(right: 20),
                       child: Text(
                         'Location Auto Complete',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ),
@@ -88,6 +87,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
               children: [
                 TextField(
                   controller: controllerLocationSearch,
+                  style: theme.textTheme.headlineLarge,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
@@ -110,6 +110,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     hintText: 'Search place',
+                    hintStyle: theme.textTheme.headlineMedium,
                   ),
                   onTap: () {},
                   onChanged: (value) {
@@ -124,9 +125,10 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                       if (state is LocationSearchLoadingState) {
                         return Center(
                           child: SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: CircularProgressIndicator()),
+                            height: 40,
+                            width: 40,
+                            child: CircularProgressIndicator(),
+                          ),
                         );
                       } else if (state is LocationSearchLoadedState) {
                         final suggestions = state.suggestions;
@@ -149,7 +151,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                                 title: Text(
                                   suggestions[index].description ??
                                       'no description',
-                                  style: TextStyle(color: Colors.black),
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ),
                             );
@@ -176,15 +178,11 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.my_location, color: Colors.green),
+                          Icon(Icons.my_location, color: Color(0xFF4CAF50)),
                           SizedBox(width: 12),
                           Text(
                             'My Location',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.green,
-                            ),
+                            style: theme.textTheme.titleSmall,
                           ),
                         ],
                       ),

@@ -54,27 +54,23 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
     final isDeadlinePassed = widget.task.taskDeadline != null &&
         now.isAfter(widget.task.taskDeadline!);
 
-    final titleTextStyle = theme.textTheme.bodySmall?.copyWith(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      color: Colors.green,
-    );
+    final titleTextStyle = theme.textTheme.bodySmall;
     final taskPriorityTextStyle = theme.textTheme.bodySmall?.copyWith(
       fontSize: 20,
-      fontWeight: FontWeight.w600,
-      color: Colors.red,
+      fontWeight: FontWeight.w700,
     );
     final createAtDateTimeTextStyle = theme.textTheme.bodySmall?.copyWith(
-      color: Colors.purple,
+      fontSize: 12,
+      fontWeight: FontWeight.w700,
     );
     final deadlineDateTimeTextStyle = theme.textTheme.bodySmall?.copyWith(
-      color: Colors.redAccent,
+      fontSize: 12,
+      fontWeight: FontWeight.w700,
     );
     final taskLocationTextStyle = theme.textTheme.bodySmall?.copyWith(
-      fontSize: 16,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: Colors.purpleAccent,
-    );
+    );;
 
     return GestureDetector(
       onTap: () {
@@ -92,14 +88,14 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
         height: 160,
         width: double.infinity,
         color: isDeadlinePassed
-            ? Colors.red.withAlpha(50)
+            ? Color(0x32F44336)
             : theme.colorScheme.onPrimary,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 12),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -109,7 +105,7 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Container(
-                                color: Colors.lightBlueAccent.withAlpha(40),
+                                color: Color(0x2829B6F6),
                                 height: 40,
                                 width: 40,
                                 child: Transform.scale(
@@ -129,7 +125,7 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Container(
-                                color: Colors.lightBlueAccent.withAlpha(40),
+                                color: Color(0x2829B6F6),
                                 height: 40,
                                 width: 40,
                               ),
@@ -139,7 +135,7 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
                         child: Container(
                           height: 40,
                           width: 40,
-                          color: Colors.lightBlueAccent.withAlpha(40),
+                          color: Color(0xFF40C4FF),
                           child: Center(
                             child: Text(
                               widget.task.taskPriority != null
@@ -154,14 +150,17 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      widget.task.taskTitle,
-                      style: titleTextStyle,
-                      overflow: TextOverflow.ellipsis,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        widget.task.taskTitle,
+                        style: titleTextStyle,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   SizedBox(
-                    width: 72,
+                    width: 80,
                     child: Center(
                       child: Column(
                         children: [
@@ -169,9 +168,7 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
                           Text(
                             DateFormat('d MMM')
                                 .format(widget.task.taskCreatedAt),
-                            style: createAtDateTimeTextStyle?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
+                            style: createAtDateTimeTextStyle,
                           ),
                           SizedBox(height: 2),
                           Text(
@@ -185,20 +182,14 @@ class _TaskListCardWidgetState extends State<TaskListCardWidget> {
                           if (widget.task.taskDeadline != null) ...[
                             SizedBox(height: 12),
                             Text(
-                              'Deadline: ',
-                              style: deadlineDateTimeTextStyle?.copyWith(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              'Deadline:',
+                              style: deadlineDateTimeTextStyle,
                             ),
                             SizedBox(height: 2),
                             Text(
                               DateFormat('d MMM')
                                   .format(widget.task.taskDeadline!),
-                              style: deadlineDateTimeTextStyle?.copyWith(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w800,
-                              ),
+                              style: deadlineDateTimeTextStyle,
                             ),
                             SizedBox(height: 2),
                             Text(

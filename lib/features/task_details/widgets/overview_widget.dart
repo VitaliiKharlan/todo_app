@@ -4,8 +4,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/gestures.dart';
 
 import 'package:todo_app/features/create_new_task/bloc/entities/task_entity.dart';
-import 'package:todo_app/ui/theme/app_colors.dart';
-import 'package:todo_app/ui/theme/app_text_styles.dart';
 
 class OverviewWidget extends StatefulWidget {
   const OverviewWidget({
@@ -21,29 +19,60 @@ class OverviewWidget extends StatefulWidget {
 
 class _OverviewWidgetState extends State<OverviewWidget> {
   bool _isExpanded = false;
+  static const int _maxLines = 3;
 
-  String _getTrimmedText(String text, TextStyle style, double maxWidth) {
+  String _getTrimmedText({
+    required String text,
+    required TextStyle style,
+    required double maxWidth,
+    required int maxLines,
+  }) {
     final textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
-      maxLines: 3,
+      maxLines: maxLines,
       textDirection: ui.TextDirection.ltr,
     )..layout(maxWidth: maxWidth);
 
     if (!textPainter.didExceedMaxLines) return text;
 
     String trimmedText = text;
-    while (textPainter.didExceedMaxLines) {
+    while (textPainter.didExceedMaxLines && trimmedText.isNotEmpty) {
       trimmedText = trimmedText.substring(0, trimmedText.length - 1);
       textPainter.text = TextSpan(text: trimmedText, style: style);
       textPainter.layout(maxWidth: maxWidth);
     }
 
-    return trimmedText;
+    return trimmedText.trimRight();
   }
+
+
+
+
+  // String _getTrimmedText(String text, TextStyle style, double maxWidth) {
+  //   final textPainter = TextPainter(
+  //     text: TextSpan(text: text, style: style),
+  //     maxLines: 3,
+  //     textDirection: ui.TextDirection.ltr,
+  //   )..layout(maxWidth: maxWidth);
+  //
+  //   if (!textPainter.didExceedMaxLines) return text;
+  //
+  //   String trimmedText = text;
+  //   while (textPainter.didExceedMaxLines) {
+  //     trimmedText = trimmedText.substring(0, trimmedText.length - 1);
+  //     textPainter.text = TextSpan(text: trimmedText, style: style);
+  //     textPainter.layout(maxWidth: maxWidth);
+  //   }
+  //
+  //   return trimmedText;
+  // }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final description = widget.task.taskDescription?.trim();
+    if (description == null || description.isEmpty) return const SizedBox();
 
     return Container(
       width: double.infinity,
@@ -74,35 +103,53 @@ class _OverviewWidgetState extends State<OverviewWidget> {
             if (widget.task.taskDescription != null)
               LayoutBuilder(
                 builder: (context, constraints) {
-                  final textStyle = AppTextStyles.dateProgressIndicator.copyWith(
-                    fontSize: 15,
-                    color: AppColors.dateProgressIndicator,
-                  );
-                  final fullText = widget.task.taskDescription ?? '';
+                  final textStyle =
+                      theme.textTheme.bodySmall ?? const TextStyle();
+                  final fullText = description;
+
                   final textPainter = TextPainter(
                     text: TextSpan(text: fullText, style: textStyle),
-                    maxLines: 3,
+                    maxLines: _maxLines,
                     textDirection: ui.TextDirection.ltr,
-                  )..layout(
-                      maxWidth: constraints.maxWidth,
-                    );
+                  )..layout(maxWidth: constraints.maxWidth);
 
                   final bool isOverflowing = textPainter.didExceedMaxLines;
 
-                  String trimmedText = fullText;
-
-                  if (isOverflowing) {
-                    trimmedText = _getTrimmedText(
-                        fullText, textStyle, constraints.maxWidth);
-                    trimmedText = '${trimmedText.trimRight()} ...';
+                  String displayText = fullText;
+                  if (!_isExpanded && isOverflowing) {
+                    displayText = _getTrimmedText(
+                      text: fullText,
+                      style: textStyle,
+                      maxWidth: constraints.maxWidth,
+                      maxLines: _maxLines,
+                    );
+                    displayText += ' ...';
                   }
+
+                  // final textPainter = TextPainter(
+                  //   text: TextSpan(text: fullText, style: textStyle),
+                  //   maxLines: 3,
+                  //   textDirection: ui.TextDirection.ltr,
+                  // )..layout(
+                  //     maxWidth: constraints.maxWidth,
+                  //   );
+                  //
+                  // final bool isOverflowing = textPainter.didExceedMaxLines;
+                  //
+                  // String trimmedText = fullText;
+                  //
+                  // if (isOverflowing) {
+                  //   trimmedText = _getTrimmedText(
+                  //       fullText, textStyle, constraints.maxWidth);
+                  //   trimmedText = '${trimmedText.trimRight()} ...';
+                  // }
 
                   return RichText(
                     textAlign: TextAlign.justify,
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: _isExpanded ? fullText : trimmedText,
+                          text: displayText,
                           style: textStyle,
                         ),
                         if (isOverflowing)

@@ -96,36 +96,23 @@ final darkTheme = ThemeData(
 );
 
 final _textTheme = TextTheme(
-  // displayLarge:
-  // displayMedium:
-  // displaySmall:
+  displayLarge: AppTextStyles.displayLarge,
+  displayMedium: AppTextStyles.displayMedium,
+  displaySmall: AppTextStyles.displaySmall,
   //
   headlineLarge: AppTextStyles.filledTaskField,
   headlineMedium: AppTextStyles.descriptionTaskField,
-  // headlineSmall:
+  headlineSmall: AppTextStyles.headlineSmall,
   //
   titleLarge: AppTextStyles.promo,
-  titleMedium: AppTextStyles.appBar.copyWith(
-    color: Colors.green,
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-  ),
+  titleMedium: AppTextStyles.appBar,
   titleSmall: AppTextStyles.detailsMain,
   //
-  // bodyLarge:
-  bodyMedium: AppTextStyles.description.copyWith(
-    color: Colors.blueGrey,
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-  ),
+  bodyLarge: AppTextStyles.bodyLarge,
+  bodyMedium: AppTextStyles.description,
   bodySmall: AppTextStyles.card,
   //
   labelLarge: AppTextStyles.bottomNavigationMenu,
   labelMedium: AppTextStyles.dropMenu,
-  labelSmall: AppTextStyles.promo.copyWith(
-    color: Colors.white.withAlpha(80),
-    fontSize: 14,
-    fontWeight: FontWeight.w700,
-  ),
-
+  labelSmall: AppTextStyles.defaultListCardMain,
 );

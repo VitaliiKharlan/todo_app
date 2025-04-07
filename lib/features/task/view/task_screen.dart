@@ -195,20 +195,23 @@ class _TaskScreenState extends State<TaskScreen> {
 }
 
 class _SearchTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-
   const _SearchTextField({
     required this.controller,
     required this.onChanged,
   });
 
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: TextField(
         controller: controller,
+        style: theme.textTheme.headlineLarge,
         onChanged: onChanged,
         decoration: InputDecoration(
           labelText: 'Search tasks...',
@@ -220,6 +223,7 @@ class _SearchTextField extends StatelessWidget {
               width: 1,
             ),
           ),
+          hintStyle: theme.textTheme.headlineMedium,
         ),
       ),
     );

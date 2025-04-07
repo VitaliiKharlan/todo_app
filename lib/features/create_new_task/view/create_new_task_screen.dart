@@ -237,7 +237,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
-                  color: Colors.grey.withAlpha(20),
+                  color: Color(0x149E9E9E),
                   child: Center(
                     child: IconButton(
                       icon: Icon(
@@ -352,7 +352,7 @@ class _CreateNewTaskScreenState extends State<CreateNewTaskScreen> {
                         widget.editTask == null
                             ? 'Create Task'
                             : 'Save Changes',
-                        style: theme.textTheme.displayLarge,
+                        style: theme.textTheme.headlineLarge,
                       ),
                     ),
                   ),

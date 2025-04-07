@@ -129,7 +129,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             ),
                           ],
                         ),
-                        SizedBox(width: 120),
+                        SizedBox(width: 100),
                         Text(
                           '${state.weatherCurrentTemperature.toStringAsFixed(0)}\u00B0',
                           style: theme.textTheme.titleSmall?.copyWith(
