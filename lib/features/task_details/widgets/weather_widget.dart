@@ -67,10 +67,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           } else if (state is WeatherSelectedFailureState) {
             return Text(
               'Error: ${state.exception}',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
+              style: theme.textTheme.displaySmall,
             );
           } else if (state is WeatherSelectedState) {
             return Container(

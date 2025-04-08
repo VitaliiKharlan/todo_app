@@ -95,6 +95,7 @@ class _TaskScreenState extends State<TaskScreen> {
               SizedBox(height: 24),
               _SearchTextField(
                 controller: searchController,
+
                 onChanged: (query) {
                   context.read<TasksBloc>().add(SearchTaskEvent(query));
                 },
@@ -215,6 +216,7 @@ class _SearchTextField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           labelText: 'Search tasks...',
+          labelStyle: theme.textTheme.headlineMedium,
           prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),

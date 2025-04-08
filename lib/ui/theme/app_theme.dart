@@ -98,7 +98,7 @@ final darkTheme = ThemeData(
 final _textTheme = TextTheme(
   displayLarge: AppTextStyles.displayLarge,
   displayMedium: AppTextStyles.displayMedium,
-  displaySmall: AppTextStyles.displaySmall,
+  displaySmall: AppTextStyles.errorMessage,
   //
   headlineLarge: AppTextStyles.filledTaskField,
   headlineMedium: AppTextStyles.descriptionTaskField,

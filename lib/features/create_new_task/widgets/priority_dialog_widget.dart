@@ -99,11 +99,17 @@ class _PriorityDialogWidgetState extends State<PriorityDialogWidget> {
       actions: [
         TextButton(
           onPressed: () => context.router.maybePop(),
-          child: const Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: theme.textTheme.labelSmall,
+          ),
         ),
         TextButton(
           onPressed: () => context.router.maybePop(selectedPriority),
-          child: const Text('Save'),
+          child: Text(
+            'Save',
+            style: theme.textTheme.labelSmall,
+          ),
         ),
       ],
     );

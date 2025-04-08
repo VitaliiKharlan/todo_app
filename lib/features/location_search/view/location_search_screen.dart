@@ -97,14 +97,14 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.grey.withAlpha(80),
+                        color: Color(0x509E9E9E),
                         width: 2,
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.red,
+                        color: Color(0xFFF44336),
                         width: 2,
                       ),
                       borderRadius: BorderRadius.circular(20),
@@ -159,7 +159,10 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                         );
                       } else if (state is LocationSearchFailureState) {
                         return Center(
-                          child: Text(state.exception.toString()),
+                          child: Text(
+                            state.exception.toString(),
+                            style: theme.textTheme.displaySmall,
+                          ),
                         );
                       }
                       return SizedBox.shrink();
@@ -178,7 +181,10 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.my_location, color: Color(0xFF4CAF50)),
+                          Icon(
+                            Icons.my_location,
+                            color: Color(0xFF4CAF50),
+                          ),
                           SizedBox(width: 12),
                           Text(
                             'My Location',

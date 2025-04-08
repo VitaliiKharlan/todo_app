@@ -45,28 +45,6 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     return trimmedText.trimRight();
   }
 
-
-
-
-  // String _getTrimmedText(String text, TextStyle style, double maxWidth) {
-  //   final textPainter = TextPainter(
-  //     text: TextSpan(text: text, style: style),
-  //     maxLines: 3,
-  //     textDirection: ui.TextDirection.ltr,
-  //   )..layout(maxWidth: maxWidth);
-  //
-  //   if (!textPainter.didExceedMaxLines) return text;
-  //
-  //   String trimmedText = text;
-  //   while (textPainter.didExceedMaxLines) {
-  //     trimmedText = trimmedText.substring(0, trimmedText.length - 1);
-  //     textPainter.text = TextSpan(text: trimmedText, style: style);
-  //     textPainter.layout(maxWidth: maxWidth);
-  //   }
-  //
-  //   return trimmedText;
-  // }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -125,24 +103,6 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                     );
                     displayText += ' ...';
                   }
-
-                  // final textPainter = TextPainter(
-                  //   text: TextSpan(text: fullText, style: textStyle),
-                  //   maxLines: 3,
-                  //   textDirection: ui.TextDirection.ltr,
-                  // )..layout(
-                  //     maxWidth: constraints.maxWidth,
-                  //   );
-                  //
-                  // final bool isOverflowing = textPainter.didExceedMaxLines;
-                  //
-                  // String trimmedText = fullText;
-                  //
-                  // if (isOverflowing) {
-                  //   trimmedText = _getTrimmedText(
-                  //       fullText, textStyle, constraints.maxWidth);
-                  //   trimmedText = '${trimmedText.trimRight()} ...';
-                  // }
 
                   return RichText(
                     textAlign: TextAlign.justify,

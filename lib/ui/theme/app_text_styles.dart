@@ -28,7 +28,7 @@ abstract class AppTextStyles {
 
   //
   // displaySmall
-  static final displaySmall = TextStyle(
+  static final errorMessage = TextStyle(
     fontFamily: GoogleFonts.roboto().fontFamily,
     fontSize: 20,
     fontStyle: FontStyle.italic,
@@ -138,12 +138,12 @@ abstract class AppTextStyles {
   );
 
   // labelLarge
-  static const bottomNavigationMenu = TextStyle(
-    fontFamily: 'SF Pro Text',
-    fontSize: 16,
+  static final bottomNavigationMenu = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontSize: 15,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
-    height: 1.5,
+    height: 2.5,
     letterSpacing: 0.0,
     color: Color(0xFFFF9800),
   );
@@ -151,7 +151,7 @@ abstract class AppTextStyles {
   // labelMedium
   static final dropMenu = TextStyle(
     fontFamily: GoogleFonts.roboto().fontFamily,
-    fontSize: 15,
+    fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
     height: 1.0,
@@ -160,9 +160,9 @@ abstract class AppTextStyles {
   );
 
   // labelSmall
-  static const defaultListCardMain = TextStyle(
-    fontFamily: 'SF Pro Display',
-    fontSize: 14,
+  static final defaultListCardMain = TextStyle(
+    fontFamily: GoogleFonts.roboto().fontFamily,
+    fontSize: 12,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
     height: 1.0,
