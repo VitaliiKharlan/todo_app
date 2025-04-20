@@ -36,8 +36,11 @@ class LocationSearchFailureState extends LocationSearchState {
 }
 
 class LocationSelectedState extends LocationSearchState {
+  LocationSelectedState(
+    this.localizedName,
+  );
+
   final String localizedName;
-  LocationSelectedState(this.localizedName);
 
   @override
   List<Object> get props => [localizedName];
@@ -45,8 +48,8 @@ class LocationSelectedState extends LocationSearchState {
 
 class LocationSelectedFailureState extends LocationSearchState {
   LocationSelectedFailureState(
-      this.exception,
-      );
+    this.exception,
+  );
 
   final Object? exception;
 

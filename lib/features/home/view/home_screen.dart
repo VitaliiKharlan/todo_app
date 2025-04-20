@@ -14,7 +14,6 @@ class HomeScreen extends StatelessWidget {
   final taskRepository = TaskRepository();
   final placeDetailsRepository = PlaceDetailsRepository();
 
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -35,20 +34,22 @@ class HomeScreen extends StatelessWidget {
                   LoadTasksEvent(),
                 ),
             ),
-
           ],
           child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: theme.colorScheme.surface,
             body: child,
             bottomNavigationBar: BottomNavigationBar(
               selectedItemColor: theme.primaryColor,
+              selectedLabelStyle: theme.textTheme.labelLarge,
               unselectedItemColor: theme.hintColor,
-              selectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+              unselectedLabelStyle: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.normal,
+              ),
               currentIndex: tabsRouter.activeIndex,
               onTap: (index) => _openPage(index, tabsRouter),
               items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.update),
+                  icon: Icon(Icons.task),
                   label: 'Task',
                 ),
                 BottomNavigationBarItem(
@@ -56,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                   label: 'Settings',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add_card),
                   label: 'Create new task',
                 ),
               ],

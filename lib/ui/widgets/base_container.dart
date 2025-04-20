@@ -15,7 +15,6 @@ class BaseContainer extends StatelessWidget {
   final double? width;
   final EdgeInsets? margin;
   final EdgeInsets padding;
-
   final Color? color;
   final Widget child;
 

@@ -10,7 +10,6 @@ import 'package:todo_app/features/task_details/bloc/weather_bloc.dart';
 import 'package:todo_app/features/task_details/data/repositories/weather_repository.dart';
 import 'package:todo_app/ui/theme/app_colors.dart';
 import 'package:todo_app/ui/theme/app_images.dart';
-import 'package:todo_app/ui/theme/app_text_style.dart';
 
 class WeatherWidget extends StatefulWidget {
   const WeatherWidget({
@@ -50,6 +49,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     if (widget.task.taskLocation == null) {
       return const SizedBox.shrink();
     }
@@ -66,10 +67,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           } else if (state is WeatherSelectedFailureState) {
             return Text(
               'Error: ${state.exception}',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
+              style: theme.textTheme.displaySmall,
             );
           } else if (state is WeatherSelectedState) {
             return Container(
@@ -78,7 +76,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: Color(0x1F000000),
                     blurRadius: 10,
                     spreadRadius: 2,
                   ),
@@ -106,37 +104,34 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                           children: [
                             Text(
                               '${state.localizedName}, ${state.countryName}',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
+                            SizedBox(height: 4),
                             Text(
                               state.weatherCurrentDescription.toString(),
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey[600],
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontSize: 12,
                               ),
                             ),
                             SizedBox(height: 4),
                             Text(
                               DateFormat("HH:mm").format(
                                   state.weatherLocalObservationDateTime),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[500],
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontSize: 12,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(width: 60),
+                        SizedBox(width: 100),
                         Text(
                           '${state.weatherCurrentTemperature.toStringAsFixed(0)}\u00B0',
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                          style: theme.textTheme.titleSmall?.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
@@ -185,6 +180,8 @@ class _HourlyForecastItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 4,
@@ -193,11 +190,11 @@ class _HourlyForecastItemWidget extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.description,
-          border: Border.all(color: Colors.black.withAlpha(50)),
+          border: Border.all(color: Color(0x80000000)),
           borderRadius: const BorderRadius.all(Radius.circular(20)),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.withAlpha(50),
+              color: Color(0x802196F3),
               blurRadius: 8,
               offset: const Offset(4, 2),
             ),
@@ -224,16 +221,19 @@ class _HourlyForecastItemWidget extends StatelessWidget {
                       RichText(
                         softWrap: false,
                         text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
+                          style: theme.textTheme.titleSmall,
                           children: [
-                            TextSpan(text: '18 '),
+                            TextSpan(
+                              text: '18 ',
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontSize: 12,
+                              ),
+                            ),
                             TextSpan(
                               text: '\u00B0C',
-                              style: TextStyle(fontSize: 12),
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),
@@ -241,9 +241,8 @@ class _HourlyForecastItemWidget extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         '09:00',
-                        style: AppTextStyle.description.copyWith(
-                          color: Colors.red,
-                          fontSize: 10,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontSize: 12,
                         ),
                         maxLines: 1,
                       ),
